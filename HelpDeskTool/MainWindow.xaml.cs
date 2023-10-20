@@ -48,7 +48,7 @@ namespace DTTool
             return false;
         }
         //Restart Button
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
             {
@@ -68,7 +68,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //Ping Button
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void PingButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
             {
@@ -110,7 +110,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //Sys Info Button
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void SysinfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
             {
@@ -150,7 +150,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //AD info button
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void ADinfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -171,7 +171,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //Member of Button
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void MemberOfButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -192,7 +192,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //Get Serial Button
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void SerialButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
             {
@@ -214,7 +214,7 @@ namespace DTTool
         }
         // Members Button
         // This button uses the powershell command "Get-ADGroupMember to list the usernames and names of a group, this allows for easy copy/paste into AD or HDAMU
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private void MembersButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -236,7 +236,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //Add group button
-        private void Button_Click_7(object sender, RoutedEventArgs e)
+        private void AddgroupButton_Click(object sender, RoutedEventArgs e)
         {
             AddRemoveWindow win = new AddRemoveWindow();
             win.Show();
@@ -244,7 +244,7 @@ namespace DTTool
         // Pass Last Set Button
         // Runs powershell commands to get AD info which includes the user's Password set date and when it last failed
         // There is a current issue determining the accuracy of the Last Bad Password fucntion because there are more that one DC's to use
-        private void Button_Click_8(object sender, RoutedEventArgs e)
+        private void PassButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -268,7 +268,7 @@ namespace DTTool
         }
         // Clear Button
         // Completely deletes all text from the main text box
-        private void Button_Click_9(object sender, RoutedEventArgs e)
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             OutputBox.Document.Blocks.Clear();
         }
