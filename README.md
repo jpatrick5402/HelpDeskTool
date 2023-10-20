@@ -1,5 +1,5 @@
 # Help Desk Tool
-This tool provides easy use 3 main systems.
+This tool provides easy use of 3 main systems.
 
 1. Command line computer management
 2. Active Directory Users and Computers management
