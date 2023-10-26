@@ -183,7 +183,7 @@ namespace DTTool
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADPrincipalGroupMembership " + Username + " | select name";
+                command.StartInfo.Arguments = "Get-ADPrincipalGroupMembership " + Username + " | select name | Sort-Object -Property name";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd().Replace(" ", ""));
@@ -227,7 +227,7 @@ namespace DTTool
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADGroupMember -Identity \'" + Username + "\' | select SamAccountName";
+                command.StartInfo.Arguments = "Get-ADGroupMember -Identity \'" + Username + "\' | select SamAccountName | Sort-Object -Property SamAccountName";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd().Replace(" ", ""));
