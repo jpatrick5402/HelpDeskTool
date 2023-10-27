@@ -52,17 +52,28 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text;
-                Clipboard.SetText(PCName);
-                NameBox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "cmd";
-                command.StartInfo.Arguments = "/C shutdown -r -t 2 -m " + PCName;
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText("Restart Initiated");
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to restart this computer?",
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    var PCName = NameBox.Text;
+                    Clipboard.SetText(PCName);
+                    NameBox.Clear();
+                    System.Diagnostics.Process command = new System.Diagnostics.Process();
+                    command.StartInfo.CreateNoWindow = true;
+                    command.StartInfo.FileName = "cmd";
+                    command.StartInfo.Arguments = "/C shutdown -r -t 2 -m " + PCName;
+                    command.StartInfo.RedirectStandardOutput = true;
+                    command.Start();
+                    OutputBox.AppendText("Restart Initiated");
+                    OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                }
+                else
+                {
+                    OutputBox.AppendText("PC not restarted\n");
+                }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
