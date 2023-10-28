@@ -1,3 +1,5 @@
 HelpDeskTool/PSTools/*
 HelpDeskTool/bin/*
 HelpDeskTool/obj/*
+.vs/*
+HelpDeskTool/.vs/*
