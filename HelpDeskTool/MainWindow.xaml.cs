@@ -37,6 +37,7 @@ namespace DTTool
         {
             if (NameBox.Text != "")
                 return true;
+            MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             OutputBox.AppendText("No PC Name/IP Detected");
             return false;
         }
@@ -44,7 +45,8 @@ namespace DTTool
         {
             if (UserTextbox.Text != "")
                 return true;
-            OutputBox.AppendText("No AD Name Detected\n");
+            MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            OutputBox.AppendText("No AD Name Detected");
             return false;
         }
         //Restart Button
