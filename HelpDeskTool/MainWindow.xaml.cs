@@ -244,6 +244,18 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd().Replace(" ", ""));
+                
+                
+                OutputBox.AppendText("\n\n");
+
+                // Gather names
+                System.Diagnostics.Process command2 = new System.Diagnostics.Process();
+                command2.StartInfo.CreateNoWindow = true;
+                command2.StartInfo.FileName = "powershell";
+                command2.StartInfo.Arguments = "Get-ADGroupMember -Identity \'" + Username + "\' | select name | Sort-Object -Property name";
+                command2.StartInfo.RedirectStandardOutput = true;
+                command2.Start();
+                OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
