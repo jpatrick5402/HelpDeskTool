@@ -43,7 +43,7 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 var console_output = command.StandardOutput.ReadToEnd();
-                ARoutputbox.AppendText("Exit Code: " + command.ExitCode.ToString() + "\n\n");
+                ARoutputbox.AppendText(console_output);
                 if (command.ExitCode == 0)
                 {
                     ARoutputbox.AppendText(user + " Removed from " + group + "\n");
@@ -76,7 +76,7 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 var console_output = command.StandardOutput.ReadToEnd();
-                ARoutputbox.AppendText("Exit Code: " + command.ExitCode.ToString() + "\n\n");
+                ARoutputbox.AppendText(console_output);
                 if (command.ExitCode == 0)
                 {
                     ARoutputbox.AppendText(user + " Added to " + group + "\n");
