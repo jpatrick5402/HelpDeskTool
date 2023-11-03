@@ -28,14 +28,14 @@
         </Button>
         <Label Content="Enter Username(s)" HorizontalAlignment="Left" Height="29" Margin="37,7,0,0" VerticalAlignment="Top" Width="108"/>
         <Label Content="Enter AD Group(s):" HorizontalAlignment="Center" Height="29" Margin="0,7,0,0" VerticalAlignment="Top" Width="114"/>
-        <RichTextBox x:Name="ARusernameBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="224" Margin="37,36,0,0" VerticalAlignment="Top" Width="242" BorderBrush="#FF4A4A4A">
+        <RichTextBox x:Name="ARusernameBox" TextBlock.LineHeight=".5" HorizontalAlignment="Left" Height="224" Margin="37,36,0,0" VerticalAlignment="Top" Width="242" BorderBrush="#FF4A4A4A">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <RichTextBox x:Name="ARgroupBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="224" Margin="307,36,0,0" VerticalAlignment="Top" Width="238" BorderBrush="#FF4A4A4A">
+        <RichTextBox x:Name="ARgroupBox" TextBlock.LineHeight=".5" HorizontalAlignment="Left" Height="224" Margin="307,36,0,0" VerticalAlignment="Top" Width="238" BorderBrush="#FF4A4A4A">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
