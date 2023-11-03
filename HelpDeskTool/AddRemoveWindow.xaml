@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="Add/Remove" Height="415" Width="637" ResizeMode="NoResize">
+        Title="Add/Remove" Height="435" Width="637" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Center" Height="26" Margin="0,285,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
+        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Center" Height="26" Margin="0,274,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -18,7 +18,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Center" Height="26" Margin="0,316,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
+        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Center" Height="26" Margin="0,305,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White"/>
@@ -42,6 +42,7 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
+        <ProgressBar x:Name="aProgressBar" Minimum="0" Maximum="100" HorizontalAlignment="Center" Height="26" Margin="0,347,0,0" VerticalAlignment="Top" Width="443"/>
 
     </Grid>
 </Window>

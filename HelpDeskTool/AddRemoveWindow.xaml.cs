@@ -66,12 +66,18 @@ namespace DTTool
                 var myUserList = usertext.Split("\r\n");
                 var myGroupList = grouptext.Split("\r\n");
 
+                aProgressBar.Maximum = myUserList.Length + myGroupList.Length - 2;
+
                 foreach (var group in myGroupList)
                 {
+                    aProgressBar.Value++;
+
                     foreach (var user in myUserList)
                     {
                         if (user == "" || group == "")
                             break;
+
+                        aProgressBar.Value++;
 
                         group.Trim();
                         user.Trim();
@@ -100,6 +106,7 @@ namespace DTTool
                     MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     ARusernameBox.Document.Blocks.Clear();
                     ARgroupBox.Document.Blocks.Clear();
+                    aProgressBar.Value = 0;
                 }
                 else
                 {
