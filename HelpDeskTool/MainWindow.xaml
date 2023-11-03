@@ -33,7 +33,7 @@
         <Button x:Name="SerialButton" Content="Get Serial" HorizontalAlignment="Left" Height="30" Margin="556,10,0,0" VerticalAlignment="Top" Width="60" Click="SerialButton_Click"/>
         <Button x:Name="MembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="362,54,0,0" VerticalAlignment="Top" Width="60" Click="MembersButton_Click"/>
         <Border BorderBrush="Black" BorderThickness="1" Margin="0,106,0,0">
-            <RichTextBox x:Name="OutputBox" Margin="19,17,19,9" IsReadOnly="True" FontSize="11" TextBlock.LineHeight="1" Background="Black" Foreground="#FFF3F3F3">
+            <RichTextBox x:Name="OutputBox" Margin="19,17,19,9" IsReadOnly="True" FontSize="11" TextBlock.LineHeight="1" Background="#FFD6D6D6">
                 <FlowDocument>
                     <Paragraph>
                         <Run Text=""/>

@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="Add/Remove" Height="234" Width="637" ResizeMode="NoResize">
+        Title="Add/Remove" Height="415" Width="637" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Center" Height="26" Margin="0,129,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
+        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Center" Height="26" Margin="0,285,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -18,7 +18,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Center" Height="26" Margin="0,160,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
+        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Center" Height="26" Margin="0,316,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White"/>
@@ -28,14 +28,14 @@
         </Button>
         <Label Content="Username" HorizontalAlignment="Left" Height="29" Margin="62,7,0,0" VerticalAlignment="Top" Width="70"/>
         <Label Content="AD Group:" HorizontalAlignment="Left" Height="29" Margin="332,7,0,0" VerticalAlignment="Top" Width="62"/>
-        <RichTextBox x:Name="ARusernameBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="78" Margin="62,36,0,0" VerticalAlignment="Top" Width="242">
+        <RichTextBox x:Name="ARusernameBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="224" Margin="62,36,0,0" VerticalAlignment="Top" Width="242">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <RichTextBox x:Name="ARgroupBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="78" Margin="332,36,0,0" VerticalAlignment="Top" Width="238">
+        <RichTextBox x:Name="ARgroupBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="224" Margin="332,36,0,0" VerticalAlignment="Top" Width="238">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
