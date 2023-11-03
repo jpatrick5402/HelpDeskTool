@@ -63,7 +63,7 @@ namespace DTTool
             string errString = "";
 
             var myUserList = usertext.Split("\r\n");
-            var myGroupList = usertext.Split("\r\n");
+            var myGroupList = grouptext.Split("\r\n");
 
             foreach (var group in myGroupList)
             {
@@ -129,17 +129,6 @@ namespace DTTool
                 else ARoutputbox.AppendText("No Input Detected\n");
                 ARoutputbox.ScrollToEnd();
             */
-        }
-        
-
-        private void AddGUButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void RemoveGUButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
