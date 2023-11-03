@@ -55,42 +55,43 @@ namespace DTTool
         // Remove Button
         private void RemoveUGButton_Click(object sender, RoutedEventArgs e)
         {
-            RTPHasText(ARusernameBox);
-            RTPHasText(ARgroupBox);
-
-            string usertext = StringFromRichTextBox(ARusernameBox);
-            string grouptext = StringFromRichTextBox(ARgroupBox);
-            string errString = "";
-
-            var myUserList = usertext.Split("\r\n");
-            var myGroupList = grouptext.Split("\r\n");
-
-            foreach (var group in myGroupList)
+            if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox))
             {
-                foreach (var user in myUserList)
+
+                string usertext = StringFromRichTextBox(ARusernameBox);
+                string grouptext = StringFromRichTextBox(ARgroupBox);
+                string errString = "";
+
+                var myUserList = usertext.Split("\r\n");
+                var myGroupList = grouptext.Split("\r\n");
+
+                foreach (var group in myGroupList)
                 {
-                    group.Trim();
-                    user.Trim();
-                    System.Diagnostics.Process command = new System.Diagnostics.Process();
-                    command.StartInfo.CreateNoWindow = true;
-                    command.StartInfo.FileName = "cmd";
-                    command.StartInfo.Arguments = "/C powershell Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
-                    command.StartInfo.RedirectStandardOutput = true;
-                    command.Start();
-                    var console_output = command.StandardOutput.ReadToEnd();
-                    if (command.ExitCode != 0)
+                    foreach (var user in myUserList)
                     {
-                        errString += console_output + "\n";
+                        group.Trim();
+                        user.Trim();
+                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        command.StartInfo.CreateNoWindow = true;
+                        command.StartInfo.FileName = "cmd";
+                        command.StartInfo.Arguments = "/C powershell Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
+                        command.StartInfo.RedirectStandardOutput = true;
+                        command.Start();
+                        var console_output = command.StandardOutput.ReadToEnd();
+                        if (command.ExitCode != 0)
+                        {
+                            errString += console_output + "\n";
+                        }
                     }
                 }
-            }
-            if (errString == "")
-            {
-                MessageBox.Show("All users deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (errString == "")
+                {
+                    MessageBox.Show("All users deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
