@@ -28,13 +28,6 @@
         </Button>
         <Label Content="Username" HorizontalAlignment="Left" Height="29" Margin="62,7,0,0" VerticalAlignment="Top" Width="70"/>
         <Label Content="AD Group:" HorizontalAlignment="Left" Height="29" Margin="332,7,0,0" VerticalAlignment="Top" Width="62"/>
-        <RichTextBox x:Name="ARoutputbox" IsReadOnly="True" HorizontalAlignment="Left" Height="170" Margin="28,195,0,0" VerticalAlignment="Top" Width="290" Background="Black" Foreground="White" TextBlock.LineHeight="1">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="Results of Add/Remove will show here"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
         <RichTextBox x:Name="ARusernameBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="78" Margin="62,36,0,0" VerticalAlignment="Top" Width="242">
             <FlowDocument>
                 <Paragraph>
