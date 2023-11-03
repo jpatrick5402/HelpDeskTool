@@ -130,5 +130,25 @@ namespace DTTool
         {
             AddOrRemove("Add");
         }
+
+        private void AddGP_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddCisco_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddMyApps_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddeRecord_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
