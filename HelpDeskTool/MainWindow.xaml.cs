@@ -1,6 +1,7 @@
 ﻿/// Program HDTool written by Joseph Patrick for use in the URMC ISD Help Desk environment
 /// Created 9/25/2023
 
+using HelpDeskTool;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

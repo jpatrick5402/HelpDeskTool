@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="Add/Remove" Height="306" Width="473" ResizeMode="NoResize">
+        Title="Add/Remove" Height="406" Width="637" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Content="Add" HorizontalAlignment="Left" Height="26" Margin="338,3,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click_1">
+        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Left" Height="26" Margin="107,124,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -18,7 +18,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content="Remove" HorizontalAlignment="Left" Height="26" Margin="338,45,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click">
+        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Left" Height="26" Margin="107,155,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White"/>
@@ -26,22 +26,51 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Label Content="Username:" HorizontalAlignment="Left" Height="23" Margin="14,0,0,0" VerticalAlignment="Top" Width="90"/>
-        <Label Content="AD Group:" HorizontalAlignment="Left" Height="29" Margin="14,30,0,0" VerticalAlignment="Top" Width="90"/>
-        <TextBox x:Name="ARusernameBox" HorizontalAlignment="Left" Height="15" Margin="82,6,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222" FontSize="9"/>
-        <TextBox x:Name="ARgroupBox" HorizontalAlignment="Left" Height="15" Margin="82,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222" FontSize="9"/>
-        <RichTextBox x:Name="ARoutputbox" IsReadOnly="True" HorizontalAlignment="Left" Height="170" Margin="26,82,0,0" VerticalAlignment="Top" Width="276" Background="Black" Foreground="White" TextBlock.LineHeight="1">
+        <Label Content="Username" HorizontalAlignment="Left" Height="29" Margin="62,7,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label Content="AD Group:" HorizontalAlignment="Left" Height="29" Margin="332,7,0,0" VerticalAlignment="Top" Width="62"/>
+        <RichTextBox x:Name="ARoutputbox" IsReadOnly="True" HorizontalAlignment="Left" Height="170" Margin="28,195,0,0" VerticalAlignment="Top" Width="290" Background="Black" Foreground="White" TextBlock.LineHeight="1">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="Results of Add/Remove will show here"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <RichTextBox x:Name="ARusernameBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="78" Margin="62,36,0,0" VerticalAlignment="Top" Width="242">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Label Content="Quick Add" HorizontalAlignment="Left" Height="37" Margin="330,93,0,0" VerticalAlignment="Top" Width="92" HorizontalContentAlignment="Center" FontSize="16"/>
-        <Button Content="ISDG_CTX_eRecord2" HorizontalAlignment="Left" Height="27" Margin="326,129,0,0" VerticalAlignment="Top" Width="104" FontSize="10" Click="Button_Click_2"/>
-        <Button Content="ISDU_CitrixAccessGateway" HorizontalAlignment="Left" Height="27" Margin="326,161,0,0" VerticalAlignment="Top" Width="104" FontSize="9" Click="Button_Click_3"/>
-        <Button Content="ISDU_VPN_GP_FullAccess" HorizontalAlignment="Left" Height="27" Margin="326,193,0,0" VerticalAlignment="Top" Width="104" FontSize="9" Click="Button_Click_5"/>
-        <Button Content="ISDG_VPN_FullAccess" HorizontalAlignment="Left" Height="27" Margin="326,225,0,0" VerticalAlignment="Top" Width="104" Click="Button_Click_4" FontSize="10"/>
+        <RichTextBox x:Name="ARgroupBox" TextBlock.LineHeight=".7" HorizontalAlignment="Left" Height="78" Margin="332,36,0,0" VerticalAlignment="Top" Width="238">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button x:Name="AddGUButton" Content="Add Users to Groups" HorizontalAlignment="Left" Height="26" Margin="375,124,0,0" VerticalAlignment="Top" Width="152" Click="AddGUButton_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0.178"/>
+                    <GradientStop Color="#FF47FF07" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="RemoveGUButton" Content="Remove Users from Groups" HorizontalAlignment="Left" Height="26" Margin="375,155,0,0" VerticalAlignment="Top" Width="152" Click="RemoveGUButton_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FFFF8181" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Label Content="Quick Add" HorizontalAlignment="Left" Margin="431,195,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="343,232,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="435,232,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="535,232,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="343,268,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="435,268,0,0" VerticalAlignment="Top" Width="76"/>
 
     </Grid>
 </Window>
