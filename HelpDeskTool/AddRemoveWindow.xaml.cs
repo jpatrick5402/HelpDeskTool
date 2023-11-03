@@ -26,29 +26,51 @@ namespace DTTool
             InitializeComponent();
         }
 
-        public bool isRTBEmpty(RichTextBox rtb)
+        public bool RTPHasText(RichTextBox rtb)
         {
             if (rtb.Document.Blocks.Count == 0) return true;
             TextPointer startPointer = rtb.Document.ContentStart.GetNextInsertionPosition(LogicalDirection.Forward);
             TextPointer endPointer = rtb.Document.ContentEnd.GetNextInsertionPosition(LogicalDirection.Backward);
             if (startPointer.CompareTo(endPointer) == 0)
             {
-                return true;
-            }
-            else
-            {
                 MessageBox.Show("No text in " + rtb.Name, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            
+            return false;
+        }
+        public string StringFromRichTextBox(RichTextBox rtb)
+        {
+            TextRange textRange = new TextRange(
+                // TextPointer to the start of content in the RichTextBox.
+                rtb.Document.ContentStart,
+                // TextPointer to the end of content in the RichTextBox.
+                rtb.Document.ContentEnd
+            );
+
+            // The Text property on a TextRange object returns a string
+            // representing the plain text content of the TextRange.
+            return textRange.Text;
         }
 
         // Remove Button
         private void RemoveUGButton_Click(object sender, RoutedEventArgs e)
         {
-            isRTBEmpty(ARusernameBox);
-            isRTBEmpty(ARgroupBox);
+            RTPHasText(ARusernameBox);
+            RTPHasText(ARgroupBox);
 
+            string usertext = StringFromRichTextBox(ARusernameBox);
+            string grouptext = StringFromRichTextBox(ARgroupBox);
+
+            var myUserList = usertext.Split("\r\n");
+            var myGroupList = usertext.Split("\r\n");
+
+            foreach ( var group in myGroupList )
+            {
+                foreach ( var user in myUserList )
+                {
+
+                }
+            }
 
         /* Prevously used code
             ARoutputbox.Document.Blocks.Clear();
@@ -85,8 +107,6 @@ namespace DTTool
         // Add Button
         private void AddUGButton_Click(object sender, RoutedEventArgs e)
         {
-            isRTBEmpty(ARusernameBox);
-            isRTBEmpty(ARgroupBox);
 
             /* Prevously used code
                 ARoutputbox.Document.Blocks.Clear();
@@ -124,14 +144,12 @@ namespace DTTool
 
         private void AddGUButton_Click(object sender, RoutedEventArgs e)
         {
-            isRTBEmpty(ARusernameBox);
-            isRTBEmpty(ARgroupBox);
+
         }
 
         private void RemoveGUButton_Click(object sender, RoutedEventArgs e)
         {
-            isRTBEmpty(ARusernameBox);
-            isRTBEmpty(ARgroupBox);
+
         }
     }
 }
