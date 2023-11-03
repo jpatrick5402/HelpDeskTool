@@ -60,50 +60,40 @@ namespace DTTool
 
             string usertext = StringFromRichTextBox(ARusernameBox);
             string grouptext = StringFromRichTextBox(ARgroupBox);
+            string errString = "";
 
             var myUserList = usertext.Split("\r\n");
             var myGroupList = usertext.Split("\r\n");
 
-            foreach ( var group in myGroupList )
+            foreach (var group in myGroupList)
             {
-                foreach ( var user in myUserList )
+                foreach (var user in myUserList)
                 {
-
+                    group.Trim();
+                    user.Trim();
+                    System.Diagnostics.Process command = new System.Diagnostics.Process();
+                    command.StartInfo.CreateNoWindow = true;
+                    command.StartInfo.FileName = "cmd";
+                    command.StartInfo.Arguments = "/C powershell Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
+                    command.StartInfo.RedirectStandardOutput = true;
+                    command.Start();
+                    var console_output = command.StandardOutput.ReadToEnd();
+                    if (command.ExitCode != 0)
+                    {
+                        errString += console_output + "\n";
+                    }
                 }
             }
-
-        /* Prevously used code
-            ARoutputbox.Document.Blocks.Clear();
-            var user = ARusernameBox.Text;
-            var group = ARgroupBox.Text;
-            if (user != "" && group != "")
+            if (errString == "")
             {
-                ARusernameBox.Clear();
-                ARgroupBox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "cmd";
-                // Remove-ADGroupMember
-                // Remove-ADGroupMember -Identity GROUP -Members USERNAME
-                command.StartInfo.Arguments = "/C powershell Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                var console_output = command.StandardOutput.ReadToEnd();
-                ARoutputbox.AppendText(console_output);
-                if (command.ExitCode == 0)
-                {
-                    ARoutputbox.AppendText(user + " Removed from " + group + "\n");
-                    ARoutputbox.AppendText("May take up to 30 seconds for changes to reflect in AD");
-                }
-                else
-                {
-                    ARoutputbox.AppendText("\nAction Failed\n");
-                }
+                MessageBox.Show("All users deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else ARoutputbox.AppendText("No Input Detected\n");
-            ARoutputbox.ScrollToEnd();
-        */
+            else
+            {
+                MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
         // Add Button
         private void AddUGButton_Click(object sender, RoutedEventArgs e)
         {
