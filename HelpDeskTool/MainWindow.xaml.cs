@@ -274,6 +274,8 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
+                OutputBox.AppendText("\nLastBadPasswordAttempt NOT ALWAYS ACCURATE\n");
+
                 var Username = UserTextbox.Text;
                 OutputBox.AppendText("Gathering Password information for " + Username + "\n\n");
 
@@ -287,7 +289,6 @@ namespace DTTool
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
 
-                OutputBox.AppendText("\nLastBadPasswordAttempt NOT ALWAYS ACCURATE\n");
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();

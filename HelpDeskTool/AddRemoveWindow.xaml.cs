@@ -77,13 +77,13 @@ namespace DTTool
 
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
-                        command.StartInfo.FileName = "cmd";
+                        command.StartInfo.FileName = "powershell";
                         if (AddorRemove == "Remove")
                         {
-                            command.StartInfo.Arguments = "/C powershell Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
+                            command.StartInfo.Arguments = "Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
                         }else if(AddorRemove == "Add")
                         {
-                            command.StartInfo.Arguments = "/C powershell Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
+                            command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
                         }
                         command.StartInfo.RedirectStandardOutput = true;
                         command.Start();
@@ -129,8 +129,8 @@ namespace DTTool
 
                     System.Diagnostics.Process command = new System.Diagnostics.Process();
                     command.StartInfo.CreateNoWindow = true;
-                    command.StartInfo.FileName = "cmd";
-                    command.StartInfo.Arguments = "/C powershell Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
+                    command.StartInfo.FileName = "powershell";
+                    command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
                     command.StartInfo.RedirectStandardOutput = true;
                     command.Start();
                     var console_output = command.StandardOutput.ReadToEnd();
