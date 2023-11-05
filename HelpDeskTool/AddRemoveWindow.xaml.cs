@@ -63,11 +63,8 @@ namespace DTTool
                 var myUserList = usertext.Split("\r\n");
                 var myGroupList = grouptext.Split("\r\n");
 
-                aProgressBar.Maximum = myUserList.Length + myGroupList.Length - 2;
-
                 foreach (var group in myGroupList)
                 {
-                    aProgressBar.Value++;
 
                     foreach (var user in myUserList)
                     {
@@ -95,8 +92,6 @@ namespace DTTool
                         {
                             errString += console_output + "\n";
                         }
-                        aProgressBar.Value++;
-
                     }
                 }
                 if (errString == "")
@@ -104,12 +99,10 @@ namespace DTTool
                     MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     ARusernameBox.Document.Blocks.Clear();
                     ARgroupBox.Document.Blocks.Clear();
-                    aProgressBar.Value = 0;
                 }
                 else
                 {
                     MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    aProgressBar.Value = 0;
                 }
             }
             else
@@ -126,7 +119,6 @@ namespace DTTool
                 string usertext = StringFromRTB(ARusernameBox);
                 string errString = "";
                 var myUserList = usertext.Split("\r\n");
-                aProgressBar.Maximum = myUserList.Length - 1;
 
                 foreach (var user in myUserList)
                 {
@@ -146,18 +138,15 @@ namespace DTTool
                     {
                         errString += console_output + "\n";
                     }
-                    aProgressBar.Value++;
                 }
                 if (errString == "")
                 {
                     MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     ARusernameBox.Document.Blocks.Clear();
-                    aProgressBar.Value = 0;
                 }
                 else
                 {
                     MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    aProgressBar.Value = 0;
                 }
             }
             else

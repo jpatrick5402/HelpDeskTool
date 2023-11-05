@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="Add/Remove" Height="435" Width="752" ResizeMode="NoResize" Background="#FF989898">
+        Title="Add/Remove" Height="386" Width="752" ResizeMode="NoResize" Background="#FF989898">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -42,8 +42,6 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <ProgressBar x:Name="aProgressBar" Minimum="0" Maximum="100" HorizontalAlignment="Left" Height="26" Margin="72,347,0,0" VerticalAlignment="Top" Width="443" BorderBrush="#FF4A4A4A"/>
-        <Label Content="Progress:" HorizontalAlignment="Left" Height="29" Margin="72,318,0,0" VerticalAlignment="Top" Width="59"/>
         <Label Content="Quick Add Buttons" HorizontalAlignment="Left" Height="44" Margin="566,22,0,0" VerticalAlignment="Top" Width="125" FontSize="14"/>
         <Button x:Name="AddGP" Content="ISDU_VPN_GP_FullAccess" HorizontalAlignment="Left" Height="26" Margin="556,57,0,0" VerticalAlignment="Top" Width="152" Click="AddGP_Click">
             <Button.Background>
