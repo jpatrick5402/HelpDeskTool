@@ -45,7 +45,7 @@
         <ProgressBar x:Name="aProgressBar" Minimum="0" Maximum="100" HorizontalAlignment="Left" Height="26" Margin="72,347,0,0" VerticalAlignment="Top" Width="443" BorderBrush="#FF4A4A4A"/>
         <Label Content="Progress:" HorizontalAlignment="Left" Height="29" Margin="72,318,0,0" VerticalAlignment="Top" Width="59"/>
         <Label Content="Quick Add Buttons" HorizontalAlignment="Left" Height="44" Margin="566,22,0,0" VerticalAlignment="Top" Width="125" FontSize="14"/>
-        <Button x:Name="AddGP" Content="ISDG..." HorizontalAlignment="Left" Height="26" Margin="556,57,0,0" VerticalAlignment="Top" Width="152" Click="AddGP_Click">
+        <Button x:Name="AddGP" Content="ISDU_VPN_GP_FullAccess" HorizontalAlignment="Left" Height="26" Margin="556,57,0,0" VerticalAlignment="Top" Width="152" Click="AddGP_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -53,7 +53,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="AddCisco" Content="ISDG..." HorizontalAlignment="Left" Height="26" Margin="556,93,0,0" VerticalAlignment="Top" Width="152" Click="AddCisco_Click" >
+        <Button x:Name="AddCisco" Content="ISDG_VPN_FullAccess" HorizontalAlignment="Left" Height="26" Margin="556,93,0,0" VerticalAlignment="Top" Width="152" Click="AddCisco_Click" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -61,7 +61,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="AddMyApps" Content="ISDG..." HorizontalAlignment="Left" Height="26" Margin="556,130,0,0" VerticalAlignment="Top" Width="152" Click="AddMyApps_Click" >
+        <Button x:Name="AddMyApps" Content="ISDU_CitrixAccessGateway" HorizontalAlignment="Left" Height="26" Margin="556,130,0,0" VerticalAlignment="Top" Width="152" Click="AddMyApps_Click" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -69,7 +69,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="AddeRecord" Content="ISDG..." HorizontalAlignment="Left" Height="26" Margin="556,166,0,0" VerticalAlignment="Top" Width="152" Click="AddeRecord_Click" >
+        <Button x:Name="AddeRecord" Content="ISDG_CTX_eRecord2" HorizontalAlignment="Left" Height="26" Margin="556,166,0,0" VerticalAlignment="Top" Width="152" Click="AddeRecord_Click" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>

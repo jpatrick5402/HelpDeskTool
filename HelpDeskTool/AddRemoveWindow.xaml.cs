@@ -19,6 +19,8 @@ namespace DTTool
 {
     /// <summary>
     /// Interaction logic for AddRemoveWindow.xaml
+    /// There are two main functions, one is AddOrRemoveBulk, meaning add ever user in the user box to every group in the group box,
+    /// and there is AddGroup which only adds each user to the group specified
     /// </summary>
     public partial class AddRemoveWindow : Window
     {
@@ -41,26 +43,21 @@ namespace DTTool
                 return true;
             }
         }
-        public string StringFromRichTextBox(RichTextBox rtb)
+        public string StringFromRTB(RichTextBox rtb)
         {
             TextRange textRange = new TextRange(
-                // TextPointer to the start of content in the RichTextBox.
                 rtb.Document.ContentStart,
-                // TextPointer to the end of content in the RichTextBox.
                 rtb.Document.ContentEnd
             );
-
-            // The Text property on a TextRange object returns a string
-            // representing the plain text content of the TextRange.
             return textRange.Text;
         }
 
-        public void AddOrRemove(string AddorRemove)
+        public void AddOrRemoveBulk(string AddorRemove)
         {
             if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox))
             {
-                string usertext = StringFromRichTextBox(ARusernameBox);
-                string grouptext = StringFromRichTextBox(ARgroupBox);
+                string usertext = StringFromRTB(ARusernameBox);
+                string grouptext = StringFromRTB(ARgroupBox);
                 string errString = "";
 
                 var myUserList = usertext.Split("\r\n");
@@ -77,7 +74,6 @@ namespace DTTool
                         if (user == "" || group == "")
                             break;
 
-                        aProgressBar.Value++;
 
                         group.Trim();
                         user.Trim();
@@ -99,6 +95,8 @@ namespace DTTool
                         {
                             errString += console_output + "\n";
                         }
+                        aProgressBar.Value++;
+
                     }
                 }
                 if (errString == "")
@@ -111,6 +109,7 @@ namespace DTTool
                 else
                 {
                     MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    aProgressBar.Value = 0;
                 }
             }
             else
@@ -119,36 +118,84 @@ namespace DTTool
             }
         }
 
+        // add group to speed up process to and a singular group to users
+        private void AddGroup(string group)
+        {
+            if (RTPHasText(ARusernameBox))
+            {
+                string usertext = StringFromRTB(ARusernameBox);
+                string errString = "";
+                var myUserList = usertext.Split("\r\n");
+                aProgressBar.Maximum = myUserList.Length - 1;
+
+                foreach (var user in myUserList)
+                {
+                    if (user == "")
+                        break;
+
+                    user.Trim();
+
+                    System.Diagnostics.Process command = new System.Diagnostics.Process();
+                    command.StartInfo.CreateNoWindow = true;
+                    command.StartInfo.FileName = "cmd";
+                    command.StartInfo.Arguments = "/C powershell Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
+                    command.StartInfo.RedirectStandardOutput = true;
+                    command.Start();
+                    var console_output = command.StandardOutput.ReadToEnd();
+                    if (command.ExitCode != 0)
+                    {
+                        errString += console_output + "\n";
+                    }
+                    aProgressBar.Value++;
+                }
+                if (errString == "")
+                {
+                    MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ARusernameBox.Document.Blocks.Clear();
+                    aProgressBar.Value = 0;
+                }
+                else
+                {
+                    MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    aProgressBar.Value = 0;
+                }
+            }
+            else
+            {
+                MessageBox.Show("User Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         // Remove Button
         private void RemoveUGButton_Click(object sender, RoutedEventArgs e)
         {
-            AddOrRemove("Remove");
+            AddOrRemoveBulk("Remove");
         }
 
         // Add Button
         private void AddUGButton_Click(object sender, RoutedEventArgs e)
         {
-            AddOrRemove("Add");
+            AddOrRemoveBulk("Add");
         }
 
         private void AddGP_Click(object sender, RoutedEventArgs e)
         {
-
+            AddGroup("ISDU_VPN_GP_FullAccess");
         }
 
         private void AddCisco_Click(object sender, RoutedEventArgs e)
         {
-
+            AddGroup("ISDG_VPN_FullAccess");
         }
 
         private void AddMyApps_Click(object sender, RoutedEventArgs e)
         {
-
+            AddGroup("ISDU_CitrixAccessGateway");
         }
 
         private void AddeRecord_Click(object sender, RoutedEventArgs e)
         {
-
+            AddGroup("ISDG_CTX_eRecord2");
         }
     }
 }
