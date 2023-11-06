@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.DirectoryServices.ActiveDirectory;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -91,7 +93,11 @@ namespace DTTool
                         var console_output = command.StandardOutput.ReadToEnd();
                         if (command.ExitCode != 0)
                         {
-                            errString += console_output + "\n";
+                            using (var reader = new StringReader(console_output))
+                            {
+                                string first = reader.ReadLine();
+                                errString += first + "\n";
+                            }
                         }
                     }
                 }
@@ -137,7 +143,11 @@ namespace DTTool
                     var console_output = command.StandardOutput.ReadToEnd();
                     if (command.ExitCode != 0)
                     {
-                        errString += console_output + "\n";
+                        using (var reader = new StringReader(console_output))
+                        {
+                            string first = reader.ReadLine();
+                            errString += first + "\n";
+                        }
                     }
                 }
                 if (errString == "")
