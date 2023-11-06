@@ -63,6 +63,7 @@ namespace DTTool
                 var myUserList = usertext.Split("\r\n");
                 var myGroupList = grouptext.Split("\r\n");
 
+                // Will need to optimize, see https://www.imanami.com/add-users-in-group-via-add-adgroupmember-powershell-cmdlet/#Add-Bulk-Users-to-an-AD-Group-using-Add-ADGroupMember
                 foreach (var group in myGroupList)
                 {
 
