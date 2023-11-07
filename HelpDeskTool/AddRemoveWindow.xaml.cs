@@ -62,8 +62,8 @@ namespace DTTool
                 string grouptext = StringFromRTB(ARgroupBox);
                 string errString = "";
 
-                var myUserList = usertext.Split("\r\n");
-                var myGroupList = grouptext.Split("\r\n");
+                string [] myUserList = usertext.Split("\r\n");
+                string [] myGroupList = grouptext.Split("\r\n");
 
                 // Will need to optimize, see https://www.imanami.com/add-users-in-group-via-add-adgroupmember-powershell-cmdlet/#Add-Bulk-Users-to-an-AD-Group-using-Add-ADGroupMember
                 foreach (var group in myGroupList)
@@ -75,18 +75,18 @@ namespace DTTool
                             break;
 
 
-                        group.Trim();
-                        user.Trim();
+                        string groupClean = group.Trim();
+                        string userClean = user.Trim();
 
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
                         command.StartInfo.FileName = "powershell";
                         if (AddorRemove == "Remove")
                         {
-                            command.StartInfo.Arguments = "Remove-ADGroupMember \'" + group + "\' \'" + user + "\' -Confirm:$false";
+                            command.StartInfo.Arguments = "Remove-ADGroupMember \'" + groupClean + "\' \'" + userClean + "\' -Confirm:$false";
                         }else if(AddorRemove == "Add")
                         {
-                            command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
+                            command.StartInfo.Arguments = "Add-ADGroupMember \'" + groupClean + "\' \'" + userClean + "\'";
                         }
                         command.StartInfo.RedirectStandardOutput = true;
                         command.Start();
@@ -132,12 +132,12 @@ namespace DTTool
                     if (user == "")
                         break;
 
-                    user.Trim();
+                    string userClean = user.Trim();
 
                     System.Diagnostics.Process command = new System.Diagnostics.Process();
                     command.StartInfo.CreateNoWindow = true;
                     command.StartInfo.FileName = "powershell";
-                    command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' \'" + user + "\'";
+                    command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' \'" + userClean + "\'";
                     command.StartInfo.RedirectStandardOutput = true;
                     command.Start();
                     var console_output = command.StandardOutput.ReadToEnd();
