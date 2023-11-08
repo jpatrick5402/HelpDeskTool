@@ -200,7 +200,7 @@ namespace DTTool
                 command.StartInfo.Arguments = "Get-ADPrincipalGroupMembership " + Username + " | select name | Sort-Object -Property name";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd().Replace(" ", ""));
+                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
