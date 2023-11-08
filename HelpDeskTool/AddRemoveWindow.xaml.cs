@@ -66,10 +66,21 @@ namespace DTTool
                 string [] myUserList = usertext.Split("\r\n");
                 string [] myGroupList = grouptext.Split("\r\n");
 
-                foreach(string user in myUserList)
+                foreach (string user in myUserList)
                 {
                     string userClean = user.Trim();
-                    userStringFormatted += userClean + ",";
+                    if (user == "" || user == " ")
+                    { 
+                        continue;
+                    }
+                    if (myUserList.Length > 2)
+                    {
+                        userStringFormatted += userClean + ",";
+                    }
+                    else 
+                    {
+                        userStringFormatted += userClean; 
+                    }
                 }
 
                 if (AddorRemove == "Remove")
@@ -156,7 +167,18 @@ namespace DTTool
                 foreach (string user in myUserList)
                 {
                     string userClean = user.Trim();
-                    userStringFormatted += userClean + ",";
+                    if (user == "" || user == " ")
+                    {
+                        continue;
+                    }
+                    if (myUserList.Length > 2)
+                    {
+                        userStringFormatted += userClean + ",";
+                    }
+                    else
+                    {
+                        userStringFormatted += userClean;
+                    }
                 }
 
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
