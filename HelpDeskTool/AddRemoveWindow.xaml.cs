@@ -31,7 +31,7 @@ namespace DTTool
             InitializeComponent();
         }
 
-        public bool RTPHasText(RichTextBox rtb)
+        public static bool RTPHasText(RichTextBox rtb)
         {
             if (rtb.Document.Blocks.Count == 0) return true;
             TextPointer startPointer = rtb.Document.ContentStart.GetNextInsertionPosition(LogicalDirection.Forward);
@@ -45,9 +45,9 @@ namespace DTTool
                 return true;
             }
         }
-        public string StringFromRTB(RichTextBox rtb)
+        public static string StringFromRTB(RichTextBox rtb)
         {
-            TextRange textRange = new TextRange(
+            TextRange textRange = new(
                 rtb.Document.ContentStart,
                 rtb.Document.ContentEnd
             );
@@ -63,17 +63,17 @@ namespace DTTool
                 string errString = "";
                 string userStringFormatted = "";
 
-                string [] myUserList = usertext.Split("\r\n");
-                string [] myGroupList = grouptext.Split("\r\n");
+                List<string> myUserList = new(usertext.Split("\r\n"));
+                List<string> myGroupList = new(grouptext.Split("\r\n"));
 
+                myUserList.Remove(" ");
+                myUserList.Remove("");
+
+                string last = myUserList.Last();
                 foreach (string user in myUserList)
                 {
                     string userClean = user.Trim();
-                    if (user == "" || user == " ")
-                    { 
-                        continue;
-                    }
-                    if (myUserList.Length > 2)
+                    if (user != last)
                     {
                         userStringFormatted += userClean + ",";
                     }
@@ -92,20 +92,18 @@ namespace DTTool
 
                         string groupClean = group.Trim();
 
-                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        var command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
                         command.StartInfo.FileName = "powershell";
-                        command.StartInfo.Arguments = "Remove-ADGroupMember \'" + groupClean + "\' \'" + userStringFormatted + "\' -Confirm:$false";
+                        command.StartInfo.Arguments = "Remove-ADGroupMember \'" + groupClean + "\' " + userStringFormatted + " -Confirm:$false";
                         command.StartInfo.RedirectStandardOutput = true;
                         command.Start();
                         var console_output = command.StandardOutput.ReadToEnd();
                         if (command.ExitCode != 0)
                         {
-                            using (var reader = new StringReader(console_output))
-                            {
-                                string first = reader.ReadLine();
-                                errString += first + "\n";
-                            }
+                            using var reader = new StringReader(console_output);
+                            string? first = reader.ReadLine();
+                            errString += first + "\n";
                         }
 
                     }
@@ -119,20 +117,18 @@ namespace DTTool
 
                         string groupClean = group.Trim();
 
-                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        var command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
                         command.StartInfo.FileName = "powershell";
-                        command.StartInfo.Arguments = "Add-ADGroupMember \'" + groupClean + "\' \'" + userStringFormatted + "\'";
+                        command.StartInfo.Arguments = "Add-ADGroupMember \'" + groupClean + "\' " + userStringFormatted;
                         command.StartInfo.RedirectStandardOutput = true;
                         command.Start();
                         var console_output = command.StandardOutput.ReadToEnd();
                         if (command.ExitCode != 0)
                         {
-                            using (var reader = new StringReader(console_output))
-                            {
-                                string first = reader.ReadLine();
-                                errString += first + "\n";
-                            }
+                            using var reader = new StringReader(console_output);
+                            string? first = reader.ReadLine();
+                            errString += first + "\n";
                         }
 
                     }
@@ -159,19 +155,20 @@ namespace DTTool
         {
             if (RTPHasText(ARusernameBox))
             {
-                string usertext = StringFromRTB(ARusernameBox);
-                string errString = "";
-                string [] myUserList = usertext.Split("\r\n");
-                string userStringFormatted = "";
+                var usertext = StringFromRTB(ARusernameBox);
+                var errString = "";
+                var userStringFormatted = "";
 
+                List<string> myUserList = new(usertext.Split("\r\n"));
+
+                myUserList.Remove(" ");
+                myUserList.Remove("");
+
+                var last = myUserList.Last();
                 foreach (string user in myUserList)
                 {
-                    string userClean = user.Trim();
-                    if (user == "" || user == " ")
-                    {
-                        continue;
-                    }
-                    if (myUserList.Length > 2)
+                    var userClean = user.Trim();
+                    if (user != last)
                     {
                         userStringFormatted += userClean + ",";
                     }
@@ -181,20 +178,18 @@ namespace DTTool
                     }
                 }
 
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
+                var command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' \'" + userStringFormatted + "\'";
+                command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' " + userStringFormatted;
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 var console_output = command.StandardOutput.ReadToEnd();
                 if (command.ExitCode != 0)
                 {
-                    using (var reader = new StringReader(console_output))
-                    {
-                        string first = reader.ReadLine();
-                        errString += first + "\n";
-                    }
+                    using var reader = new StringReader(console_output);
+                    string? first = reader.ReadLine();
+                    errString += first + "\n";
                 }
                 if (errString == "")
                 {
