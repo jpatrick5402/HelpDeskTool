@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="Add/Remove" Height="386" Width="752" ResizeMode="NoResize" Background="#FF989898">
+        Title="Add/Remove" Height="360" Width="752" ResizeMode="NoResize" Background="#FF989898">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Left" Height="26" Margin="217,274,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
+        <Button x:Name="AddUGButton" Content="Add Users to Groups" HorizontalAlignment="Left" Height="26" Margin="82,274,0,0" VerticalAlignment="Top" Width="152" Click="AddUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0.178"/>
@@ -18,7 +18,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Left" Height="26" Margin="217,305,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
+        <Button x:Name="RemoveUGButton" Content="Remove Users from Groups" HorizontalAlignment="Left" Height="26" Margin="350,274,0,0" VerticalAlignment="Top" Width="152" Click="RemoveUGButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White"/>
