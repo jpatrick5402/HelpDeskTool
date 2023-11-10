@@ -60,7 +60,7 @@ namespace DTTool
         public LoadingWindow ShowLoadingWindow()
         {
             LoadingWindow win = new LoadingWindow();
-            win.Show()
+            win.Show();
             win.Topmost = true;
             win.Focus();
             return win;
