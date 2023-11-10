@@ -299,5 +299,26 @@ namespace DTTool
         {
             OutputBox.Document.Blocks.Clear();
         }
+
+        private void ADGroupInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsTextInUserBox())
+            {
+                var Username = UserTextbox.Text;
+                OutputBox.AppendText("Gathering info for " + Username + "\n\n");
+
+                Clipboard.SetText(Username);
+                UserTextbox.Clear();
+                System.Diagnostics.Process command = new System.Diagnostics.Process();
+                command.StartInfo.CreateNoWindow = true;
+                command.StartInfo.FileName = "powershell";
+                command.StartInfo.Arguments = "Get-ADGroup \'" + Username + "\' -Properties *";
+                command.StartInfo.RedirectStandardOutput = true;
+                command.Start();
+                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+            }
+            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
+        }
     }
 }

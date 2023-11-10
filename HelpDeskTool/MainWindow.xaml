@@ -28,10 +28,10 @@
         <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="491,10,0,0" VerticalAlignment="Top" Width="60" Click="RemoteButton_Click"/>
         <Label Content="AD Name:" HorizontalAlignment="Left" Height="29" Margin="13,56,0,0" VerticalAlignment="Top" Width="84"/>
         <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="97,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="ADinfoButton" Content="AD info" HorizontalAlignment="Left" Height="30" Margin="231,54,0,0" VerticalAlignment="Top" Width="60" Click="ADinfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
-        <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Left" Height="30" Margin="297,54,0,0" VerticalAlignment="Top" Width="60" Click="MemberOfButton_Click" FontSize="11"/>
+        <Button x:Name="ADinfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="231,54,0,0" VerticalAlignment="Top" Width="60" Click="ADinfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
+        <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Center" Height="30" Margin="0,54,0,0" VerticalAlignment="Top" Width="60" Click="MemberOfButton_Click" FontSize="11"/>
         <Button x:Name="SerialButton" Content="Get Serial" HorizontalAlignment="Left" Height="30" Margin="556,10,0,0" VerticalAlignment="Top" Width="60" Click="SerialButton_Click"/>
-        <Button x:Name="MembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="362,54,0,0" VerticalAlignment="Top" Width="60" Click="MembersButton_Click"/>
+        <Button x:Name="MembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="427,54,0,0" VerticalAlignment="Top" Width="60" Click="MembersButton_Click"/>
         <Border BorderBrush="Black" BorderThickness="1" Margin="0,106,0,0">
             <RichTextBox x:Name="OutputBox" Margin="19,17,19,9" IsReadOnly="True" FontSize="11" TextBlock.LineHeight="1">
                 <FlowDocument>
@@ -41,8 +41,9 @@
                 </FlowDocument>
             </RichTextBox>
         </Border>
-        <Button x:Name="AddgroupButton" Content="Add/Remove&#xD;&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="426,54,0,0" VerticalAlignment="Top" Width="60" Click="AddgroupButton_Click" FontSize="9"/>
-        <Button x:Name="PassButton" Content="Pass Last Set/&#xD;&#xA;Last Bad Pass" HorizontalAlignment="Left" Height="30" Margin="491,54,0,0" VerticalAlignment="Top" Width="60" FontSize="9" Click="PassButton_Click"/>
+        <Button x:Name="AddgroupButton" Content="Add/Remove&#xD;&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="491,54,0,0" VerticalAlignment="Top" Width="60" Click="AddgroupButton_Click" FontSize="9"/>
+        <Button x:Name="PassButton" Content="Pass Last Set/&#xD;&#xA;Last Bad Pass" HorizontalAlignment="Left" Height="30" Margin="556,54,0,0" VerticalAlignment="Top" Width="60" FontSize="9" Click="PassButton_Click"/>
         <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Left" Height="30" Margin="569,125,0,0" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2"/>
+        <Button x:Name="ADGroupInfoButton" Content="Group info" HorizontalAlignment="Left" Height="30" Margin="361,54,0,0" VerticalAlignment="Top" Width="60" Click="ADGroupInfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
     </Grid>
 </Window>
