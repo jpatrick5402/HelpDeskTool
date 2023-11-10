@@ -1,7 +1,9 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+﻿using HelpDeskTool;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -54,6 +57,20 @@ namespace DTTool
             return textRange.Text;
         }
 
+        public LoadingWindow ShowLoadingWindow()
+        {
+            LoadingWindow win = new LoadingWindow();
+            win.Show()
+            win.Topmost = true;
+            win.Focus();
+            return win;
+        }
+
+        public void CloseLoadingWinodw(LoadingWindow win)
+        {
+            win.Close();
+        }
+
         public void AddOrRemoveBulk(string AddorRemove)
         {
             if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox))
@@ -82,6 +99,8 @@ namespace DTTool
                         userStringFormatted += userClean; 
                     }
                 }
+
+                LoadingWindow Window = ShowLoadingWindow();
 
                 if (AddorRemove == "Remove")
                 {
@@ -133,6 +152,7 @@ namespace DTTool
 
                     }
                 }
+                CloseLoadingWinodw(Window);
                 if (errString == "")
                 {
                     MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -164,6 +184,8 @@ namespace DTTool
                 myUserList.Remove(" ");
                 myUserList.Remove("");
 
+                LoadingWindow Window = ShowLoadingWindow();
+
                 var last = myUserList.Last();
                 foreach (string user in myUserList)
                 {
@@ -185,6 +207,9 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 var console_output = command.StandardOutput.ReadToEnd();
+
+                CloseLoadingWinodw(Window);
+
                 if (command.ExitCode != 0)
                 {
                     using var reader = new StringReader(console_output);
