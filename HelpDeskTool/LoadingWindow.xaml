@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HelpDeskTool"
-        mc:Ignorable="d" Height="264" Width="480">
+        mc:Ignorable="d" Height="113" Width="192">
     <Grid>
-        <ProgressBar HorizontalAlignment="Center" Height="20" Margin="0,140,0,0" VerticalAlignment="Top" Width="342" IsIndeterminate="True" RenderTransformOrigin="0.595,2.004"/>
-        <Label Content="Processing..." HorizontalAlignment="Center" Height="29" Margin="0,25,0,0" VerticalAlignment="Top" Width="79"/>
+        <Label Content="Processing..." HorizontalAlignment="Center" Height="29" Margin="0,20,0,0" VerticalAlignment="Top" Width="80"/>
 
     </Grid>
 </Window>
