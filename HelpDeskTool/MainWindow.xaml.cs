@@ -329,37 +329,38 @@ namespace DTTool
                 OutputBox.Document.ContentStart,
                 OutputBox.Document.ContentEnd
             );
-            ExcelEngine excelEngine = new ExcelEngine();
             var text = textRange.Text;
-            List<string> separatedList = new(text.Split("\r\n"));
-            IApplication application = excelEngine.Excel;
-            application.DefaultVersion = ExcelVersion.Excel2016;
+            List<string> separatedList = new(text.Split("\n"));
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                //Instantiate the Excel application object
+                IApplication application = excelEngine.Excel;
 
-            //Reads input Excel stream as a workbook
-            IWorkbook workbook = application.Workbooks.Open(File.OpenRead(System.IO.Path.GetFullPath(@"C:\\Users\\USER\Desktop\Expenses.xlsx")));
-            IWorksheet sheet = workbook.Worksheets[0];
+                //Assigns default application version
+                application.DefaultVersion = ExcelVersion.Xlsx;
 
-            //Preparing first array with different data types
-            object[] expenseArray = new object[14]
-            {"Paul Pogba", 469.00d, 263.00d, 131.00d, 139.00d, 474.00d, 253.00d, 467.00d, 142.00d, 417.00d, 324.00d, 328.00d, 497.00d, "=SUM(B11:M11)"};
+                //A new workbook is created equivalent to creating a new workbook in Excel
+                //Create a workbook with 1 worksheet
+                IWorkbook workbook = application.Workbooks.Create(1);
 
-            //Inserting a new row by formatting as a previous row.
-            sheet.InsertRow(11, 1, ExcelInsertOptions.FormatAsBefore);
+                //Access first worksheet from the workbook
+                IWorksheet worksheet = workbook.Worksheets[0];
 
-            //Import Peter's expenses and fill it horizontally
-            sheet.ImportArray(expenseArray, 11, 1, false);
+                //Adding text to a cell
 
-            //Preparing second array with double data type
-            double[] expensesOnDec = new double[6]
-            {179.00d, 298.00d, 484.00d, 145.00d, 20.00d, 497.00d};
+                for(int i = 1; i < separatedList.Count; i++)
+                {
+                    worksheet.Range[$"A{i}"].Text = separatedList.ToArray()[i];
+                }
 
-            //Modify the December month's expenses and import it vertically
-            sheet.ImportArray(expensesOnDec, 6, 13, true);
+                //Saving the workbook as stream
+                FileStream stream = new FileStream("ExportLog.xlsx", FileMode.Create, FileAccess.ReadWrite);
+                workbook.SaveAs(stream);
 
-            //Save the file in the given path
-            Stream excelStream = File.Create(System.IO.Path.GetFullPath(@"Output.xlsx"));
-            workbook.SaveAs(excelStream);
-            excelStream.Dispose();
+                //Dispose stream
+                stream.Dispose();
+            }
+            // System.Diagnostics.Process.Start("ExportLog.xlsx");
         }
     }
 }
