@@ -213,7 +213,7 @@ namespace DTTool
             if (IsTextInNameBox())
             {
                 var PCName = NameBox.Text;
-                OutputBox.AppendText("Gathering Serial Number for " + PCName + "\n\n");
+                OutputBox.AppendText("Gathering Computer's AD info for " + PCName + "\n\n");
 
                 Clipboard.SetText(PCName);
                 NameBox.Clear();
