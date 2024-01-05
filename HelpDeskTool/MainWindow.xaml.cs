@@ -208,7 +208,7 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
         //Get Serial Button
-        private void SerialButton_Click(object sender, RoutedEventArgs e)
+        private void ADPCInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
             {
@@ -220,7 +220,7 @@ namespace DTTool
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "cmd";
-                command.StartInfo.Arguments = "/C powershell Get-WMIObject Win32_Bios -ComputerName " + PCName + " | find \"SerialNumber\"";
+                command.StartInfo.Arguments = "/C powershell Get-ADComputer -identity " + PCName + " -properties *";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
