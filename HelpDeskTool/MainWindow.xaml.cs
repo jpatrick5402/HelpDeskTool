@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Syncfusion.XlsIO;
 using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DTTool
 {
@@ -276,7 +277,7 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                OutputBox.AppendText("\nLastBadPasswordAttempt NOT ALWAYS ACCURATE\n");
+                OutputBox.AppendText("\nLastBadPasswordAttempt MAY NOT SHOW MOST RECENT FAILED ATTEMPT\n");
 
                 var Username = UserTextbox.Text;
                 OutputBox.AppendText("Gathering Password information for " + Username + "\n\n");
@@ -361,6 +362,14 @@ namespace DTTool
                 stream.Dispose();
             }
             // System.Diagnostics.Process.Start("ExportLog.xlsx");
+        }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            string helpInfo = "HDTool is an AD/computer managment tool to improve the effieciency of the Help Desk\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
+            OutputBox.AppendText(helpInfo);
+            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
         }
     }
 }
