@@ -58,13 +58,14 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to restart this computer?",
+                var PCName = NameBox.Text.Trim();
+
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to restart this computer? " + PCName,
                                           "Confirmation",
                                           MessageBoxButton.YesNo,
                                           MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-                    var PCName = NameBox.Text;
                     Clipboard.SetText(PCName);
                     NameBox.Clear();
                     System.Diagnostics.Process command = new System.Diagnostics.Process();
@@ -89,7 +90,7 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text;
+                var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Pinging " + PCName + "\n\n");
 
                 Clipboard.SetText(PCName);
@@ -110,7 +111,7 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text;
+                var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Looking for " + PCName + "\n\n");
 
                 Clipboard.SetText(PCName);
@@ -131,7 +132,7 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text;
+                var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info on " + PCName + "\n\n");
 
                 Clipboard.SetText(PCName);
@@ -152,7 +153,7 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text;
+                var PCName = NameBox.Text.Trim();
                 Clipboard.SetText(PCName);
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
@@ -171,7 +172,7 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text;
+                var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + Username + "\n\n");
 
                 Clipboard.SetText(Username);
@@ -192,7 +193,7 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text;
+                var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering groups for " + Username + "\n\n");
 
                 Clipboard.SetText(Username);
@@ -213,7 +214,7 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text;
+                var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering Computer's AD info for " + PCName + "\n\n");
 
                 Clipboard.SetText(PCName);
@@ -235,7 +236,7 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text;
+                var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering Group Members for " + Username + "\n\n");
 
                 // Gather usernames
@@ -279,7 +280,7 @@ namespace DTTool
             {
                 OutputBox.AppendText("\nLastBadPasswordAttempt MAY NOT SHOW MOST RECENT FAILED ATTEMPT\n");
 
-                var Username = UserTextbox.Text;
+                var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering Password information for " + Username + "\n\n");
 
                 Clipboard.SetText(Username);
@@ -307,7 +308,7 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text;
+                var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + Username + "\n\n");
 
                 Clipboard.SetText(Username);
@@ -366,9 +367,9 @@ namespace DTTool
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            string helpInfo = "HDTool is an AD/computer managment tool to improve the effieciency of the Help Desk\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
+            string helpInfo = "HDTool is an AD/computer managment tool to improve the effieciency of the Help Desk\n\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
             OutputBox.AppendText(helpInfo);
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
     }
