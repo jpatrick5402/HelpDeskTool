@@ -303,7 +303,7 @@ namespace DTTool
         {
             OutputBox.Document.Blocks.Clear();
         }
-
+        // AD Group info - outputs a groups information
         private void ADGroupInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
