@@ -19,7 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="87,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="17" HorizontalScrollBarVisibility="Disabled"/>
+        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="87,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="17" HorizontalScrollBarVisibility="Disabled" FontSize="11"/>
         <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Left" Height="30" Margin="231,10,0,0" VerticalAlignment="Top" Width="60" Click="RestartButton_Click"/>
         <Label Content="PC Name/IP:" HorizontalAlignment="Left" Height="30" Margin="10,9,0,0" VerticalAlignment="Top" Width="84"/>
         <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" Height="30" Margin="296,10,0,0" VerticalAlignment="Top" Width="60" Click="PingButton_Click"/>
@@ -27,7 +27,7 @@
         <Button x:Name="SysinfoButton" Content="Sys. info" HorizontalAlignment="Left" Height="30" Margin="361,10,0,0" VerticalAlignment="Top" Width="60" Click="SysinfoButton_Click"/>
         <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="491,10,0,0" VerticalAlignment="Top" Width="60" Click="RemoteButton_Click"/>
         <Label Content="AD Name:" HorizontalAlignment="Left" Height="29" Margin="10,55,0,0" VerticalAlignment="Top" Width="84"/>
-        <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="87,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" HorizontalScrollBarVisibility="Disabled"/>
+        <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="87,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" HorizontalScrollBarVisibility="Disabled" FontSize="11"/>
         <Button x:Name="ADinfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="231,54,0,0" VerticalAlignment="Top" Width="60" Click="ADinfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
         <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Center" Height="30" Margin="0,54,0,0" VerticalAlignment="Top" Width="60" Click="MemberOfButton_Click" FontSize="11"/>
         <Button x:Name="ADPCInfoButton" Content="AD PC info" HorizontalAlignment="Left" Height="30" Margin="556,10,0,0" VerticalAlignment="Top" Width="60" Click="ADPCInfoButton_Click" FontSize="11"/>
