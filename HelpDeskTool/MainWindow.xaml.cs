@@ -316,7 +316,7 @@ namespace DTTool
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADGroup \'" + Username + "\' -Properties *";
+                command.StartInfo.Arguments = "Get-ADGroup \'" + Username + "\' -Properties info, description, whenChanged, whenCreated, ManagedBy, CN";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
