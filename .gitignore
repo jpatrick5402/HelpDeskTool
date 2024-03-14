@@ -3,3 +3,5 @@ HelpDeskTool/bin/*
 HelpDeskTool/obj/*
 .vs/*
 HelpDeskTool/.vs/*
+/HelpDeskTool/Properties/PublishProfiles/ClickOnceProfile.pubxml.user
+/HelpDeskTool/Properties/PublishProfiles/ClickOnceProfile.pubxml
