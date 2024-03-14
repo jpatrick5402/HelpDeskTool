@@ -19,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DTTool
 {
@@ -219,6 +220,7 @@ namespace DTTool
                 if (errString == "")
                 {
                     MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Clipboard.SetText(group);
                     ARusernameBox.Document.Blocks.Clear();
                 }
                 else
