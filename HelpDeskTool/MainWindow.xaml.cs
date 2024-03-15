@@ -180,7 +180,7 @@ namespace DTTool
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADUser " + Username + " -Properties info, description, whenChanged, whenCreated, ManagedBy, CN";
+                command.StartInfo.Arguments = "Get-ADUser " + Username + " -Properties info, description, whenChanged, whenCreated, ManagedBy, CanonicalName";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
