@@ -221,8 +221,8 @@ namespace DTTool
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "cmd";
-                command.StartInfo.Arguments = "/C powershell Get-ADComputer -identity " + PCName + " -properties *";
+                command.StartInfo.FileName = "powershell";
+                command.StartInfo.Arguments = "Get-ADComputer -identity " + PCName + " -properties CanonicalName, whenChanged, whenCreated, ms-Mcs-AdmPwd, OperatingSystem";
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
