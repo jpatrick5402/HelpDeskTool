@@ -74,7 +74,7 @@ namespace DTTool
                     command.StartInfo.Arguments = "/C shutdown -r -t 2 -m " + PCName;
                     command.StartInfo.RedirectStandardOutput = true;
                     command.Start();
-                    OutputBox.AppendText("Restart Initiated (Ask to ensure as this is not 100% accurate");
+                    OutputBox.AppendText("Restart Initiated (Ask to ensure as this is not 100% accurate)");
                     OutputBox.AppendText(command.StandardOutput.ReadToEnd());
                 }
                 else
