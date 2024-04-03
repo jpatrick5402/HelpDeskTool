@@ -367,7 +367,7 @@ namespace DTTool
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            string helpInfo = "HDTool is an AD/computer managment tool to improve the effieciency of the Help Desk\n\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
+            string helpInfo = "HDTool is an AD/computer management tool to improve the efficiency of the Help Desk\n\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
             OutputBox.AppendText(helpInfo);
             OutputBox.AppendText("---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
