@@ -22,6 +22,7 @@ using Syncfusion.XlsIO;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.DirectoryServices;
+using System.Windows.Forms;
 
 namespace DTTool
 {
@@ -34,10 +35,14 @@ namespace DTTool
         {
             InitializeComponent();
             // Credit to Alex McCune for initial LDAP usage and integration
-            OutputBox.AppendText("\rConnected to LDAP server...\n");
-            DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-            DirectorySearcher searcher = new DirectorySearcher(entry);
-            OutputBox.AppendText("Connected\n");
+            try
+            {
+                OutputBox.AppendText("\rConnected to LDAP server...\n");
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+                OutputBox.AppendText("Connected\n");
+            }
+            catch (Exception e) { System.Windows.Forms.MessageBox.Show(e.Message, "Error", (MessageBoxButtons)MessageBoxButton.OK, (MessageBoxIcon)MessageBoxImage.Error); Console.WriteLine(); System.Windows.Forms.Application.Exit(); }
 
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
@@ -48,7 +53,7 @@ namespace DTTool
         {
             if (NameBox.Text != "")
                 return true;
-            MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             OutputBox.AppendText("No PC Name/IP Detected");
             return false;
         }
@@ -56,7 +61,7 @@ namespace DTTool
         {
             if (UserTextbox.Text != "")
                 return true;
-            MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             OutputBox.AppendText("No AD Name Detected");
             return false;
         }
@@ -67,13 +72,13 @@ namespace DTTool
             {
                 var PCName = NameBox.Text.Trim();
 
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to restart this computer? " + PCName,
+                MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to restart this computer? " + PCName,
                                           "Confirmation",
                                           MessageBoxButton.YesNo,
                                           MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-                    Clipboard.SetText(PCName);
+                    System.Windows.Clipboard.SetText(PCName);
                     NameBox.Clear();
                     System.Diagnostics.Process command = new System.Diagnostics.Process();
                     command.StartInfo.CreateNoWindow = true;
@@ -100,7 +105,7 @@ namespace DTTool
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Pinging " + PCName + "\n\n");
 
-                Clipboard.SetText(PCName);
+                System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -121,7 +126,7 @@ namespace DTTool
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Looking for " + PCName + "\n\n");
 
-                Clipboard.SetText(PCName);
+                System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -142,7 +147,7 @@ namespace DTTool
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info on " + PCName + "\n\n");
 
-                Clipboard.SetText(PCName);
+                System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -161,7 +166,7 @@ namespace DTTool
             if (IsTextInNameBox())
             {
                 var PCName = NameBox.Text.Trim();
-                Clipboard.SetText(PCName);
+                System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -182,7 +187,7 @@ namespace DTTool
                 var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + Username + "\n\n");
 
-                Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -203,7 +208,7 @@ namespace DTTool
                 var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering groups for " + Username + "\n\n");
 
-                Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -224,7 +229,7 @@ namespace DTTool
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering Computer's AD info for " + PCName + "\n\n");
 
-                Clipboard.SetText(PCName);
+                System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -247,7 +252,7 @@ namespace DTTool
                 OutputBox.AppendText("Gathering Group Members for " + Username + "\n\n");
 
                 // Gather usernames
-                Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -290,7 +295,7 @@ namespace DTTool
                 var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering Password information for " + Username + "\n\n");
 
-                Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
@@ -318,7 +323,7 @@ namespace DTTool
                 var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + Username + "\n\n");
 
-                Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
