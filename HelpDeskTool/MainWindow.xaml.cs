@@ -41,9 +41,14 @@ namespace DTTool
                 OutputBox.AppendText("\rConnecting to LDAP server...\n");
                 DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                 DirectorySearcher searcher = new DirectorySearcher(entry);
+                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + Environment.UserName + "))";
+                SearchResult result = searcher.FindOne();
                 OutputBox.AppendText("Connected\n");
             }
-            catch (Exception e) { System.Windows.Forms.MessageBox.Show(e.Message, "Error", (MessageBoxButtons)MessageBoxButton.OK, (MessageBoxIcon)MessageBoxImage.Error); Console.WriteLine(); System.Windows.Forms.Application.Exit(); }
+            catch (Exception e) {
+                System.Windows.Forms.MessageBox.Show(e.Message, "Help Desk Tool Connection Error", (MessageBoxButtons)MessageBoxButton.OK, (MessageBoxIcon)MessageBoxImage.Error);
+                Console.WriteLine();
+                Close(); }
 
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
