@@ -23,6 +23,7 @@ using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.DirectoryServices;
 using System.Windows.Forms;
+using System.Collections.Immutable;
 
 namespace DTTool
 {
@@ -205,11 +206,13 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
+                
                 var Username = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering groups for " + Username + "\n\n");
-
                 System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
+
+                /*
                 System.Diagnostics.Process command = new System.Diagnostics.Process();
                 command.StartInfo.CreateNoWindow = true;
                 command.StartInfo.FileName = "powershell";
@@ -217,6 +220,30 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                */
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + Username + "))";
+                SearchResult result = searcher.FindOne();
+
+                ResultPropertyValueCollection groups = result.Properties["memberOf"];
+                Console.WriteLine($"User is in {groups.Count} groups");
+                string[] memberships = new string[groups.Count];
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    memberships[i] = groups[i].ToString();
+                    memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
+                }
+
+                Array.Sort(memberships);
+
+                foreach (var group in memberships)
+                {
+                    OutputBox.AppendText(group + '\n');
+                }
+
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
