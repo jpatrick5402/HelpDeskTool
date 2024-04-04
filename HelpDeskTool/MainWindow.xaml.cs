@@ -38,7 +38,7 @@ namespace DTTool
             // Credit to Alex McCune for initial LDAP usage and integration
             try
             {
-                OutputBox.AppendText("\rConnected to LDAP server...\n");
+                OutputBox.AppendText("\rConnecting to LDAP server...\n");
                 DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                 DirectorySearcher searcher = new DirectorySearcher(entry);
                 OutputBox.AppendText("Connected\n");
