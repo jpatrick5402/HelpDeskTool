@@ -212,16 +212,6 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(Username);
                 UserTextbox.Clear();
 
-                /*
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADPrincipalGroupMembership " + Username + " | select name | Sort-Object -Property name";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
-                */
-
                 DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                 DirectorySearcher searcher = new DirectorySearcher(entry);
 
@@ -229,7 +219,7 @@ namespace DTTool
                 SearchResult result = searcher.FindOne();
 
                 ResultPropertyValueCollection groups = result.Properties["memberOf"];
-                Console.WriteLine($"User is in {groups.Count} groups");
+
                 string[] memberships = new string[groups.Count];
                 for (int i = 0; i < groups.Count; i++)
                 {
