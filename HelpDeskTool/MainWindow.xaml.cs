@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using Syncfusion.XlsIO;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.DirectoryServices;
 
 namespace DTTool
 {
@@ -32,6 +33,12 @@ namespace DTTool
         public MainWindow()
         {
             InitializeComponent();
+            // Credit to Alex McCune for initial LDAP usage and integration
+            OutputBox.AppendText("\rConnected to LDAP server...\n");
+            DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+            DirectorySearcher searcher = new DirectorySearcher(entry);
+            OutputBox.AppendText("Connected\n");
+
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
