@@ -1,4 +1,5 @@
 ﻿/// Program HDTool written by Joseph Patrick for use in the URMC ISD Help Desk environment
+/// Credit to Alex McCune for initial LDAP usage and integration
 /// Created 9/25/2023
 
 using HelpDeskTool;
@@ -35,7 +36,7 @@ namespace DTTool
         public MainWindow()
         {
             InitializeComponent();
-            // Credit to Alex McCune for initial LDAP usage and integration
+
             try
             {
                 OutputBox.AppendText("\rConnecting to LDAP server...\n");
@@ -47,8 +48,8 @@ namespace DTTool
             }
             catch (Exception e) {
                 System.Windows.Forms.MessageBox.Show(e.Message, "Help Desk Tool Connection Error", (MessageBoxButtons)MessageBoxButton.OK, (MessageBoxIcon)MessageBoxImage.Error);
-                Console.WriteLine();
-                Close(); }
+                Close(); return;
+            }
 
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
