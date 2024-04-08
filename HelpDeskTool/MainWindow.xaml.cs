@@ -214,7 +214,7 @@ namespace DTTool
                     }
                     catch
                     {
-                        OutputBox.AppendText($"{Property} is not listed on account\n");
+                        OutputBox.AppendText($"{Property} is not listed in object properties\n");
                     }
                 }
             }
@@ -352,63 +352,37 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering info for " + Username + "\n\n");
+                var GroupName = UserTextbox.Text.Trim();
+                OutputBox.AppendText("Gathering info for " + GroupName + "\n\n");
 
-                System.Windows.Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(GroupName);
                 UserTextbox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADGroup \'" + Username + "\' -Properties info, description, whenChanged, whenCreated, ManagedBy, CN";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
+                SearchResult GroupResultInfo = searcher.FindOne();
+                DirectoryEntry AGroupInfo = GroupResultInfo.GetDirectoryEntry();
+
+                string[] PropertyList = { "cn", "whenchanged", "whencreated", "description", "info", "distinguishedname" };
+
+                foreach (string Property in PropertyList)
+                {
+                    try
+                    {
+                        OutputBox.AppendText($"{Property}: " + GroupResultInfo.Properties[Property][0] + '\n');
+                    }
+                    catch
+                    {
+                        OutputBox.AppendText($"{Property} is not listed in object properties\n");
+                    }
+                }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-
-        private void ExportButton_Click(object sender, RoutedEventArgs e)
-        {
-            TextRange textRange = new(
-                OutputBox.Document.ContentStart,
-                OutputBox.Document.ContentEnd
-            );
-            var text = textRange.Text;
-            List<string> separatedList = new(text.Split("\n"));
-            using (ExcelEngine excelEngine = new ExcelEngine())
-            {
-                //Instantiate the Excel application object
-                IApplication application = excelEngine.Excel;
-
-                //Assigns default application version
-                application.DefaultVersion = ExcelVersion.Xlsx;
-
-                //A new workbook is created equivalent to creating a new workbook in Excel
-                //Create a workbook with 1 worksheet
-                IWorkbook workbook = application.Workbooks.Create(1);
-
-                //Access first worksheet from the workbook
-                IWorksheet worksheet = workbook.Worksheets[0];
-
-                //Adding text to a cell
-
-                for(int i = 1; i < separatedList.Count; i++)
-                {
-                    worksheet.Range[$"A{i}"].Text = separatedList.ToArray()[i];
-                }
-
-                //Saving the workbook as stream
-                FileStream stream = new FileStream("ExportLog.xlsx", FileMode.Create, FileAccess.ReadWrite);
-                workbook.SaveAs(stream);
-
-                //Dispose stream
-                stream.Dispose();
-            }
-            // System.Diagnostics.Process.Start("ExportLog.xlsx");
-        }
-
+        // Help Button - displays basic instructions for how to use this app
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
             string helpInfo = "HDTool is an AD/computer management tool to improve the efficiency of the Help Desk\n\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
