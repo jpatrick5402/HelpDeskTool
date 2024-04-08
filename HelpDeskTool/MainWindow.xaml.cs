@@ -233,7 +233,16 @@ namespace DTTool
 
                         if (passwordLastSet != null)
                         {
-                            OutputBox.AppendText("Password Last Set: " + passwordLastSet.Value.ToString() + '\n');
+                            OutputBox.AppendText("Password Last Set: " + passwordLastSet.ToString() + '\n');
+                            TimeSpan diff = passwordLastSet.Value - DateTime.Today;
+                            if ((diff).TotalDays < -365)
+                            {
+                                OutputBox.AppendText("Pwd Expired: True\n");
+                            }
+                            else
+                            {
+                                OutputBox.AppendText("Pwd Expired: False\n");
+                            }
                         }
                         else
                         {
@@ -394,31 +403,6 @@ namespace DTTool
         // Pass Last Set Button
         // Runs powershell commands to get AD info which includes the user's Password set date and when it last failed
         // There is a current issue determining the accuracy of the Last Bad Password fucntion because there are more that one DC's to use
-        private void PassButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsTextInUserBox())
-            {
-                OutputBox.AppendText("\nLastBadPasswordAttempt MAY NOT SHOW MOST RECENT FAILED ATTEMPT\n");
-
-                var Username = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering Password information for " + Username + "\n\n");
-
-                System.Windows.Clipboard.SetText(Username);
-                UserTextbox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADUser -Identity " + Username + " -Properties PasswordLastSet, LastBadPasswordAttempt, PasswordExpired | select PasswordLastSet, LastBadPasswordAttempt, PasswordExpired | format-list";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
-
-            }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
-        }
-        // Clear Button
-        // Completely deletes all text from the main text box
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             OutputBox.Document.Blocks.Clear();
