@@ -304,18 +304,43 @@ namespace DTTool
         {
             if (IsTextInNameBox())
             {
-                var PCName = NameBox.Text.Trim();
-                OutputBox.AppendText("Gathering Computer's AD info for " + PCName + "\n\n");
+                var ComputerName = NameBox.Text.Trim();
+                OutputBox.AppendText("Gathering Computer's AD info for " + ComputerName + "\n\n");
+                System.Windows.Clipboard.SetText(ComputerName);
 
-                System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADComputer -identity " + PCName + " -properties CanonicalName, whenChanged, whenCreated, ms-Mcs-AdmPwd, OperatingSystem";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = $"(&(objectClass=computer)(CN={ComputerName}))";
+                SearchResult result = searcher.FindOne();
+
+                if (result != null)
+                {
+                    string[] PropertyList = { "cn", "operatingsystem", "operatingsystemversion", "ms-mcs-admpwd" };
+
+                    foreach (string Property in PropertyList)
+                    {
+                        try
+                        {
+                            OutputBox.AppendText($"{Property}: " + result.Properties[Property][0] + '\n');
+                        }
+                        catch
+                        {
+                            OutputBox.AppendText($"{Property} is not listed on properties\n");
+                        }
+                    }
+                    PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
+                    ComputerPrincipal computer = ComputerPrincipal.FindByIdentity(ctx, ComputerName);
+                    using (DirectoryEntry de = computer.GetUnderlyingObject() as DirectoryEntry)
+                    {
+                        de.RefreshCache(new string[] { "canonicalName" });
+                        string canonicalName = de.Properties["canonicalName"].Value as string;
+                        OutputBox.AppendText("OU: " + canonicalName);
+                    }
+                }
+                else
+                { OutputBox.AppendText($"{ComputerName} not found"); }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
