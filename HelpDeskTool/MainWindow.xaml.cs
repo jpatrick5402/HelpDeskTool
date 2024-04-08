@@ -25,6 +25,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.DirectoryServices;
 using System.Windows.Forms;
 using System.Collections.Immutable;
+using System.Data;
 
 namespace DTTool
 {
@@ -44,6 +45,10 @@ namespace DTTool
                 DirectorySearcher searcher = new DirectorySearcher(entry);
                 searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + Environment.UserName + "))";
                 SearchResult result = searcher.FindOne();
+                if (result == null) 
+                {
+                    throw new InvalidOperationException("error");
+                }
                 OutputBox.AppendText("Connected\n");
             }
             catch (Exception e) {
