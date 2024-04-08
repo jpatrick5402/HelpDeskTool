@@ -19,13 +19,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-using Syncfusion.XlsIO;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.DirectoryServices;
 using System.Windows.Forms;
 using System.Collections.Immutable;
 using System.Data;
+using System.DirectoryServices.AccountManagement;
 
 namespace DTTool
 {
@@ -212,7 +212,7 @@ namespace DTTool
 
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
-                    string[] PropertyList = { "givenname", "sn", "samaccountname", "urid", "department", "mail", "telephoneNumber", "urrolestatus", "badpwdcount", "adspath" };
+                    string[] PropertyList = { "givenname", "sn", "samaccountname", "urid", "department", "mail", "telephoneNumber", "urrolestatus", "badpwdcount" };
 
                     foreach (string Property in PropertyList)
                     {
@@ -223,6 +223,27 @@ namespace DTTool
                         catch
                         {
                             OutputBox.AppendText($"{Property} is not listed in object properties\n");
+                        }
+                    }
+
+                    using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                    {
+                        UserPrincipal user = UserPrincipal.FindByIdentity(context, UserName);
+                        DateTime? passwordLastSet = user.LastPasswordSet;
+
+                        if (passwordLastSet != null)
+                        {
+                            OutputBox.AppendText("Password Last Set: " + passwordLastSet.Value.ToString() + '\n');
+                        }
+                        else
+                        {
+                            OutputBox.AppendText("Password Last Set information is not available.\n");
+                        }
+                        using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
+                        {
+                            de.RefreshCache(new string[] { "canonicalName" });
+                            string canonicalName = de.Properties["canonicalName"].Value as string;
+                            OutputBox.AppendText($"OU: {canonicalName}");
                         }
                     }
                 }
