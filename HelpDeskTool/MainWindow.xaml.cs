@@ -414,11 +414,11 @@ namespace DTTool
 
                 searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
                 SearchResult GroupResultInfo = searcher.FindOne();
-                
+
                 if (GroupResultInfo != null)
                 {
 
-                    string[] PropertyList = { "cn", "whenchanged", "whencreated", "description", "info", "distinguishedname" };
+                    string[] PropertyList = { "cn", "whenchanged", "whencreated", "description", "info", "managedby" };
 
                     foreach (string Property in PropertyList)
                     {
@@ -428,8 +428,16 @@ namespace DTTool
                         }
                         catch
                         {
-                            OutputBox.AppendText($"{Property} is not listed in object properties\n");
+                            OutputBox.AppendText($"\"{Property}\" is not listed in object properties\n");
                         }
+                    }
+                    PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
+                    GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx, GroupName);
+                    using (DirectoryEntry de = group.GetUnderlyingObject() as DirectoryEntry)
+                    {
+                        de.RefreshCache(new string[] { "canonicalName" });
+                        string canonicalName = de.Properties["canonicalName"].Value as string;
+                        OutputBox.AppendText("OU: " + canonicalName);
                     }
                 }
                 else
