@@ -192,7 +192,6 @@ namespace DTTool
             if (IsTextInUserBox())
             {
                 var UserName = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering info for " + UserName + "\n\n");
 
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
@@ -202,21 +201,22 @@ namespace DTTool
 
                 searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
                 SearchResult UserResult = searcher.FindOne();
-                try
+
+                OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
+
+                string[] PropertyList = {"givenname", "sn", "samaccountname", "urid", "department", "mail", "telephoneNumber", "urrolestatus", "badpwdcount", "adspath" };
+
+                foreach (string Property in PropertyList)
                 {
-                    OutputBox.AppendText("User found: " + UserResult.Properties["cn"][0] + '\n');
-                    OutputBox.AppendText("First Name: " + UserResult.Properties["givenName"][0] + '\n');
-                    OutputBox.AppendText("Last Name: " + UserResult.Properties["sn"][0]);
-                    OutputBox.AppendText("URMC AD Username: " + UserResult.Properties["samaccountname"][0] + '\n');
-                    OutputBox.AppendText("URID: " + UserResult.Properties["urid"][0] + '\n');
-                    OutputBox.AppendText("Department: " + UserResult.Properties["department"][0] + '\n');
-                    OutputBox.AppendText("Email: " + UserResult.Properties["mail"][0] + '\n');
-                    OutputBox.AppendText("Phone: " + UserResult.Properties["telephoneNumber"][0] + '\n');
-                    OutputBox.AppendText("UR Role: " + UserResult.Properties["urrolestatus"][0] + '\n');
-                    OutputBox.AppendText("Bad Password Count: " + UserResult.Properties["badpwdcount"][0] + '\n');
-                    OutputBox.AppendText("LDAP Server Path: " + UserResult.Properties["adspath"][0] + '\n');
+                    try
+                    {
+                        OutputBox.AppendText($"{Property}: " + UserResult.Properties[Property][0] + '\n');
+                    }
+                    catch
+                    {
+                        OutputBox.AppendText($"{Property} is not listed on account\n");
+                    }
                 }
-                catch (Exception ex) { OutputBox.AppendText("Properties missing"); }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
