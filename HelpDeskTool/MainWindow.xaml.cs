@@ -213,31 +213,29 @@ namespace DTTool
             if (IsTextInUserBox())
             {
                 
-                var Username = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering groups for " + Username + "\n\n");
-                System.Windows.Clipboard.SetText(Username);
+                var UserName = UserTextbox.Text.Trim();
+                System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
                 DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                 DirectorySearcher searcher = new DirectorySearcher(entry);
 
-                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + Username + "))";
-                SearchResult result = searcher.FindOne();
-
-                ResultPropertyValueCollection groups = result.Properties["memberOf"];
-
-                string[] memberships = new string[groups.Count];
-                for (int i = 0; i < groups.Count; i++)
+                searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
+                SearchResult MemberOfresult = searcher.FindOne();
+                ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
+                OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
+                if (groups.Count > 0)
                 {
-                    memberships[i] = groups[i].ToString();
-                    memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
-                }
-
-                Array.Sort(memberships);
-
-                foreach (var group in memberships)
-                {
-                    OutputBox.AppendText(group + '\n');
+                    string[] memberships = new string[groups.Count];
+                    for (int i = 0; i < groups.Count; i++)
+                    {
+                        memberships[i] = groups[i].ToString();
+                        memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
+                    }
+                    foreach (var group in memberships)
+                    {
+                        OutputBox.AppendText(group + '\n');
+                    }
                 }
 
             }
