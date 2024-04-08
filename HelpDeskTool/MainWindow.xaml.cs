@@ -363,20 +363,27 @@ namespace DTTool
 
                 searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
                 SearchResult GroupResultInfo = searcher.FindOne();
-                DirectoryEntry AGroupInfo = GroupResultInfo.GetDirectoryEntry();
-
-                string[] PropertyList = { "cn", "whenchanged", "whencreated", "description", "info", "distinguishedname" };
-
-                foreach (string Property in PropertyList)
+                
+                if (GroupResultInfo != null)
                 {
-                    try
+
+                    string[] PropertyList = { "cn", "whenchanged", "whencreated", "description", "info", "distinguishedname" };
+
+                    foreach (string Property in PropertyList)
                     {
-                        OutputBox.AppendText($"{Property}: " + GroupResultInfo.Properties[Property][0] + '\n');
+                        try
+                        {
+                            OutputBox.AppendText($"{Property}: " + GroupResultInfo.Properties[Property][0] + '\n');
+                        }
+                        catch
+                        {
+                            OutputBox.AppendText($"{Property} is not listed in object properties\n");
+                        }
                     }
-                    catch
-                    {
-                        OutputBox.AppendText($"{Property} is not listed in object properties\n");
-                    }
+                }
+                else
+                {
+                    OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
