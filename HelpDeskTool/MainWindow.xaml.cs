@@ -269,31 +269,28 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering Group Members for " + Username + "\n\n");
+                var GroupName = UserTextbox.Text.Trim();
+                OutputBox.AppendText("Gathering Group Members for " + GroupName + "\n\n");
 
-                // Gather usernames
-                System.Windows.Clipboard.SetText(Username);
-                UserTextbox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADGroupMember -Identity \'" + Username + "\' | select SamAccountName | Sort-Object -Property SamAccountName";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd().Replace(" ", ""));
-                
-                
-                OutputBox.AppendText("\n\n");
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
 
-                // Gather names
-                System.Diagnostics.Process command2 = new System.Diagnostics.Process();
-                command2.StartInfo.CreateNoWindow = true;
-                command2.StartInfo.FileName = "powershell";
-                command2.StartInfo.Arguments = "Get-ADGroupMember -Identity \'" + Username + "\' | select name | Sort-Object -Property name";
-                command2.StartInfo.RedirectStandardOutput = true;
-                command2.Start();
-                OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
+                searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
+                SearchResult GroupMembersResult = searcher.FindOne();
+
+                string[] SortedGroup = new string[GroupMembersResult.Properties["member"].Count];
+                int i = 0;
+                foreach (var item in GroupMembersResult.Properties["member"])
+                {
+                    SortedGroup[i] = item.ToString().Substring(3, item.ToString().IndexOf(",OU") - 3).Replace("\\", "");
+                    i++;
+                }
+                Array.Sort(SortedGroup);
+                OutputBox.AppendText($"Members of {GroupName}:\n");
+                foreach (var item in SortedGroup)
+                {
+                    OutputBox.AppendText(item + '\n');
+                }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
