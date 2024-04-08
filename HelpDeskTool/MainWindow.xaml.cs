@@ -191,18 +191,28 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var Username = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering info for " + Username + "\n\n");
+                var UserName = UserTextbox.Text.Trim();
+                OutputBox.AppendText("Gathering info for " + UserName + "\n\n");
 
-                System.Windows.Clipboard.SetText(Username);
+                System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Get-ADUser " + Username + " -Properties info, description, whenChanged, whenCreated, ManagedBy, CanonicalName, uidNumber, EmailAddress";
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
+                SearchResult UserResult = searcher.FindOne();
+                OutputBox.AppendText("User found: " + UserResult.Properties["cn"][0] +'\n');
+                OutputBox.AppendText("First Name: " + UserResult.Properties["givenName"][0] + '\n');
+                OutputBox.AppendText("Last Name: " + UserResult.Properties["sn"][0]);
+                OutputBox.AppendText("URMC AD Username: " + UserResult.Properties["samaccountname"][0] + '\n');
+                OutputBox.AppendText("URID: " + UserResult.Properties["urid"][0] + '\n');
+                OutputBox.AppendText("Department: " + UserResult.Properties["department"][0] + '\n');
+                OutputBox.AppendText("Email: " + UserResult.Properties["mail"][0] + '\n');
+                OutputBox.AppendText("Phone: " + UserResult.Properties["telephoneNumber"][0] + '\n');
+                OutputBox.AppendText("UR Role: " + UserResult.Properties["urrolestatus"][0] + '\n');
+                OutputBox.AppendText("Bad Password Count: " + UserResult.Properties["badpwdcount"][0] + '\n');
+                OutputBox.AppendText("LDAP Server Path: " + UserResult.Properties["adspath"][0] + '\n');
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
