@@ -202,20 +202,28 @@ namespace DTTool
                 searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
                 SearchResult UserResult = searcher.FindOne();
 
-                OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
-
-                string[] PropertyList = {"givenname", "sn", "samaccountname", "urid", "department", "mail", "telephoneNumber", "urrolestatus", "badpwdcount", "adspath" };
-
-                foreach (string Property in PropertyList)
+                if (UserResult != null)
                 {
-                    try
+
+                    OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
+
+                    string[] PropertyList = { "givenname", "sn", "samaccountname", "urid", "department", "mail", "telephoneNumber", "urrolestatus", "badpwdcount", "adspath" };
+
+                    foreach (string Property in PropertyList)
                     {
-                        OutputBox.AppendText($"{Property}: " + UserResult.Properties[Property][0] + '\n');
+                        try
+                        {
+                            OutputBox.AppendText($"{Property}: " + UserResult.Properties[Property][0] + '\n');
+                        }
+                        catch
+                        {
+                            OutputBox.AppendText($"{Property} is not listed in object properties\n");
+                        }
                     }
-                    catch
-                    {
-                        OutputBox.AppendText($"{Property} is not listed in object properties\n");
-                    }
+                }
+                else
+                {
+                    OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
@@ -238,6 +246,7 @@ namespace DTTool
 
                 searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
                 SearchResult MemberOfresult = searcher.FindOne();
+
                 if (MemberOfresult != null)
                 {
                     ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
