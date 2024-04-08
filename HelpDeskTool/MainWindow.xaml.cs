@@ -286,6 +286,7 @@ namespace DTTool
                             memberships[i] = groups[i].ToString();
                             memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
                         }
+                        Array.Sort(memberships);
                         foreach (var group in memberships)
                         {
                             OutputBox.AppendText(group + '\n');
