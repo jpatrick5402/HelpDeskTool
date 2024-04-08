@@ -60,7 +60,6 @@ namespace DTTool
             OutputBox.AppendText("\nAwaiting Commands\n");
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
         }
-
         public Boolean IsTextInNameBox()
         {
             if (NameBox.Text != "")
@@ -77,7 +76,6 @@ namespace DTTool
             OutputBox.AppendText("No AD Name Detected");
             return false;
         }
-        //Restart Button
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -109,7 +107,6 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //Ping Button
         private void PingButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -130,7 +127,6 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //nslookup Button
         private void NslookupButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -151,7 +147,6 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //Sys Info Button
         private void SysinfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -172,7 +167,6 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //Remote in Button
         private void RemoteButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -191,8 +185,7 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //AD info button
-        private void ADinfoButton_Click(object sender, RoutedEventArgs e)
+        private void UserInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -264,7 +257,6 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //Member of Button
         private void MemberOfButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
@@ -308,8 +300,7 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //Get Serial Button
-        private void ADPCInfoButton_Click(object sender, RoutedEventArgs e)
+        private void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
             {
@@ -354,9 +345,7 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        // Members Button
-        // This button uses the powershell command "Get-ADGroupMember to list the usernames and names of a group, this allows for easy copy/paste into AD or HDAMU
-        private void MembersButton_Click(object sender, RoutedEventArgs e)
+        private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -394,21 +383,7 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        //Add group button
-        private void AddgroupButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddRemoveWindow win = new AddRemoveWindow();
-            win.Show();
-        }
-        // Pass Last Set Button
-        // Runs powershell commands to get AD info which includes the user's Password set date and when it last failed
-        // There is a current issue determining the accuracy of the Last Bad Password fucntion because there are more that one DC's to use
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            OutputBox.Document.Blocks.Clear();
-        }
-        // AD Group info - outputs a groups information
-        private void ADGroupInfoButton_Click(object sender, RoutedEventArgs e)
+        private void GroupInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
@@ -457,7 +432,15 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        // Help Button - displays basic instructions for how to use this app
+        private void AddgroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddRemoveWindow win = new AddRemoveWindow();
+            win.Show();
+        }
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputBox.Document.Blocks.Clear();
+        }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
             string helpInfo = "HDTool is an AD/computer management tool to improve the efficiency of the Help Desk\n\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
