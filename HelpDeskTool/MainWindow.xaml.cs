@@ -231,27 +231,35 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
+                OutputBox.AppendText("Gathering Memberships for " + UserName + "\n\n");
+
                 DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                 DirectorySearcher searcher = new DirectorySearcher(entry);
 
                 searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
                 SearchResult MemberOfresult = searcher.FindOne();
-                ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
-                if (groups.Count > 0)
+                if (MemberOfresult != null)
                 {
-                    string[] memberships = new string[groups.Count];
-                    for (int i = 0; i < groups.Count; i++)
+                    ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
+                    OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
+                    if (groups.Count > 0)
                     {
-                        memberships[i] = groups[i].ToString();
-                        memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
-                    }
-                    foreach (var group in memberships)
-                    {
-                        OutputBox.AppendText(group + '\n');
+                        string[] memberships = new string[groups.Count];
+                        for (int i = 0; i < groups.Count; i++)
+                        {
+                            memberships[i] = groups[i].ToString();
+                            memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
+                        }
+                        foreach (var group in memberships)
+                        {
+                            OutputBox.AppendText(group + '\n');
+                        }
                     }
                 }
-
+                else
+                {
+                    OutputBox.AppendText($"Unable to find object \"{UserName}\"");
+                }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
@@ -292,18 +300,26 @@ namespace DTTool
                 searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
                 SearchResult GroupMembersResult = searcher.FindOne();
 
-                string[] SortedGroup = new string[GroupMembersResult.Properties["member"].Count];
-                int i = 0;
-                foreach (var item in GroupMembersResult.Properties["member"])
+                if (GroupMembersResult != null)
                 {
-                    SortedGroup[i] = item.ToString().Substring(3, item.ToString().IndexOf(",OU") - 3).Replace("\\", "");
-                    i++;
+
+                    string[] SortedGroup = new string[GroupMembersResult.Properties["member"].Count];
+                    int i = 0;
+                    foreach (var item in GroupMembersResult.Properties["member"])
+                    {
+                        SortedGroup[i] = item.ToString().Substring(3, item.ToString().IndexOf(",OU") - 3).Replace("\\", "");
+                        i++;
+                    }
+                    Array.Sort(SortedGroup);
+                    OutputBox.AppendText($"Members of {GroupName}:\n");
+                    foreach (var item in SortedGroup)
+                    {
+                        OutputBox.AppendText(item + '\n');
+                    }
                 }
-                Array.Sort(SortedGroup);
-                OutputBox.AppendText($"Members of {GroupName}:\n");
-                foreach (var item in SortedGroup)
+                else
                 {
-                    OutputBox.AppendText(item + '\n');
+                    OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
