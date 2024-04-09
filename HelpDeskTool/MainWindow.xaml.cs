@@ -276,7 +276,7 @@ namespace DTTool
             if (IsTextInUserBox())
             {
                 var UserName = UserTextbox.Text.Trim();
-
+                OutputBox.AppendText("Gathering info for " + UserName + "\n\n");
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
@@ -291,17 +291,17 @@ namespace DTTool
 
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
-                    string[] PropertyList = { "givenname", "sn", "samaccountname", "urid", "department", "mail", "telephoneNumber", "urrolestatus", "badpwdcount" };
+                    string[,] PropertyList = { { "Name", "givenname" }, { "Last Name", "sn" }, { "Username", "samaccountname" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
-                    foreach (string Property in PropertyList)
+                    for (int i = 0; i < PropertyList.Length / 2 ; i++)
                     {
                         try
                         {
-                            OutputBox.AppendText($"{Property}: " + UserResult.Properties[Property][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i,0]}: " + UserResult.Properties[PropertyList[i,1]][0] + '\n');
                         }
                         catch
                         {
-                            OutputBox.AppendText($"{Property} is not listed in object properties\n");
+                            OutputBox.AppendText($"{PropertyList[i,0]} is not listed in object properties\n");
                         }
                     }
 
@@ -348,7 +348,7 @@ namespace DTTool
             if (IsTextInNameBox())
             {
                 var ComputerName = NameBox.Text.Trim();
-                OutputBox.AppendText("Gathering Computer's AD info for " + ComputerName + "\n\n");
+                OutputBox.AppendText("Gathering info for " + ComputerName + "\n\n");
                 System.Windows.Clipboard.SetText(ComputerName);
 
                 NameBox.Clear();
@@ -360,17 +360,17 @@ namespace DTTool
 
                 if (result != null)
                 {
-                    string[] PropertyList = { "cn", "operatingsystem", "operatingsystemversion", "ms-mcs-admpwd" };
+                    string[,] PropertyList = { { "Name", "cn" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" } };
 
-                    foreach (string Property in PropertyList)
+                    for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
                         try
                         {
-                            OutputBox.AppendText($"{Property}: " + result.Properties[Property][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i,0]}: " + result.Properties[PropertyList[i,1]][0] + '\n');
                         }
                         catch
                         {
-                            OutputBox.AppendText($"{Property} is not listed on properties\n");
+                            OutputBox.AppendText($"{PropertyList[i,0]} is not listed on properties\n");
                         }
                     }
                     PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
@@ -407,17 +407,17 @@ namespace DTTool
                 if (GroupResultInfo != null)
                 {
 
-                    string[] PropertyList = { "cn", "whenchanged", "whencreated", "description", "info", "managedby" };
+                    string[,] PropertyList = { { "Name", "cn" }, { "Name", "whenchanged" }, { "Name", "whencreated" }, { "Name", "description" }, { "Name", "info" }, { "Name", "managedby" } };
 
-                    foreach (string Property in PropertyList)
+                    for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
                         try
                         {
-                            OutputBox.AppendText($"{Property}: " + GroupResultInfo.Properties[Property][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i, 0]}: " + GroupResultInfo.Properties[PropertyList[i, 1]][0] + '\n');
                         }
                         catch
                         {
-                            OutputBox.AppendText($"\"{Property}\" is not listed in object properties\n");
+                            OutputBox.AppendText($"\"{PropertyList[i, 0]}\" is not listed in object properties\n");
                         }
                     }
                     PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
