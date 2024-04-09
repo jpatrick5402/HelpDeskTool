@@ -109,17 +109,15 @@ namespace DTTool
             }
         }
 
-        private void AddGroup(string group)
+        private void AddGroup(string[] users, string group)
         {
             if (RTPHasText(ARusernameBox))
             {
                 LoadingWindow Window = ShowLoadingWindow();
-                string usertext = StringFromRTB(ARusernameBox);
-                string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
 
                 using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                 {
-                    foreach (string user in myUserList)
+                    foreach (string user in users)
                     {
                         try
                         {
@@ -162,22 +160,30 @@ namespace DTTool
 
         private void AddGP_Click(object sender, RoutedEventArgs e)
         {
-            AddGroup("ISDU_VPN_GP_FullAccess");
+            string usertext = StringFromRTB(ARusernameBox);
+            string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
+            AddGroup(myUserList,"ISDU_VPN_GP_FullAccess");
         }
 
         private void AddCisco_Click(object sender, RoutedEventArgs e)
         {
-            AddGroup("ISDG_VPN_FullAccess");
+            string usertext = StringFromRTB(ARusernameBox);
+            string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
+            AddGroup(myUserList, "ISDG_VPN_FullAccess");
         }
 
         private void AddMyApps_Click(object sender, RoutedEventArgs e)
         {
-            AddGroup("ISDU_CitrixAccessGateway");
+            string usertext = StringFromRTB(ARusernameBox);
+            string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
+            AddGroup(myUserList, "ISDU_CitrixAccessGateway");
         }
 
         private void AddeRecord_Click(object sender, RoutedEventArgs e)
         {
-            AddGroup("ISDG_CTX_eRecord2");
+            string usertext = StringFromRTB(ARusernameBox);
+            string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
+            AddGroup(myUserList, "ISDG_CTX_eRecord2");
         }
     }
 }
