@@ -60,6 +60,7 @@ namespace DTTool
             OutputBox.AppendText("\nAwaiting Commands\n");
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
         }
+
         public Boolean IsTextInNameBox()
         {
             if (NameBox.Text != "")
@@ -76,6 +77,7 @@ namespace DTTool
             OutputBox.AppendText("No AD Name Detected");
             return false;
         }
+
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -185,6 +187,90 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
+
+        private void MemberOfButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsTextInUserBox())
+            {
+                
+                var UserName = UserTextbox.Text.Trim();
+                System.Windows.Clipboard.SetText(UserName);
+                UserTextbox.Clear();
+
+                OutputBox.AppendText("Gathering Memberships for " + UserName + "\n\n");
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
+                SearchResult MemberOfresult = searcher.FindOne();
+
+                if (MemberOfresult != null)
+                {
+                    ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
+                    OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
+                    if (groups.Count > 0)
+                    {
+                        string[] memberships = new string[groups.Count];
+                        for (int i = 0; i < groups.Count; i++)
+                        {
+                            memberships[i] = groups[i].ToString();
+                            memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
+                        }
+                        Array.Sort(memberships);
+                        foreach (var group in memberships)
+                        {
+                            OutputBox.AppendText(group + '\n');
+                        }
+                    }
+                }
+                else
+                {
+                    OutputBox.AppendText($"Unable to find object \"{UserName}\"");
+                }
+            }
+            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
+        }
+        private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsTextInUserBox())
+            {
+                var GroupName = UserTextbox.Text.Trim();
+                OutputBox.AppendText("Gathering Group Members for " + GroupName + "\n\n");
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
+                SearchResult GroupMembersResult = searcher.FindOne();
+
+                if (GroupMembersResult != null)
+                {
+
+                    string[] SortedGroup = new string[GroupMembersResult.Properties["member"].Count];
+                    int i = 0;
+                    foreach (var item in GroupMembersResult.Properties["member"])
+                    {
+                        SortedGroup[i] = item.ToString().Substring(3, item.ToString().IndexOf(",OU") - 3).Replace("\\", "");
+                        i++;
+                    }
+                    Array.Sort(SortedGroup);
+                    OutputBox.AppendText($"Members of {GroupName}:\n");
+                    foreach (var item in SortedGroup)
+                    {
+                        OutputBox.AppendText(item + '\n');
+                    }
+                }
+                else
+                {
+                    OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
+                }
+            }
+            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
+        }
+
         private void UserInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
@@ -257,50 +343,6 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        private void MemberOfButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsTextInUserBox())
-            {
-                
-                var UserName = UserTextbox.Text.Trim();
-                System.Windows.Clipboard.SetText(UserName);
-                UserTextbox.Clear();
-
-                OutputBox.AppendText("Gathering Memberships for " + UserName + "\n\n");
-
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
-                SearchResult MemberOfresult = searcher.FindOne();
-
-                if (MemberOfresult != null)
-                {
-                    ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                    OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
-                    if (groups.Count > 0)
-                    {
-                        string[] memberships = new string[groups.Count];
-                        for (int i = 0; i < groups.Count; i++)
-                        {
-                            memberships[i] = groups[i].ToString();
-                            memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
-                        }
-                        Array.Sort(memberships);
-                        foreach (var group in memberships)
-                        {
-                            OutputBox.AppendText(group + '\n');
-                        }
-                    }
-                }
-                else
-                {
-                    OutputBox.AppendText($"Unable to find object \"{UserName}\"");
-                }
-            }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
-        }
         private void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -342,44 +384,6 @@ namespace DTTool
                 }
                 else
                 { OutputBox.AppendText($"{ComputerName} not found"); }
-            }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
-        }
-        private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsTextInUserBox())
-            {
-                var GroupName = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering Group Members for " + GroupName + "\n\n");
-
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                searcher.Filter = "(&(objectClass=group)(CN=" + GroupName + "))";
-                SearchResult GroupMembersResult = searcher.FindOne();
-
-                if (GroupMembersResult != null)
-                {
-
-                    string[] SortedGroup = new string[GroupMembersResult.Properties["member"].Count];
-                    int i = 0;
-                    foreach (var item in GroupMembersResult.Properties["member"])
-                    {
-                        SortedGroup[i] = item.ToString().Substring(3, item.ToString().IndexOf(",OU") - 3).Replace("\\", "");
-                        i++;
-                    }
-                    Array.Sort(SortedGroup);
-                    OutputBox.AppendText($"Members of {GroupName}:\n");
-                    foreach (var item in SortedGroup)
-                    {
-                        OutputBox.AppendText(item + '\n');
-                    }
-                }
-                else
-                {
-                    OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
-                }
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
@@ -433,6 +437,7 @@ namespace DTTool
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
+
         private void AddgroupButton_Click(object sender, RoutedEventArgs e)
         {
             AddRemoveWindow win = new AddRemoveWindow();
