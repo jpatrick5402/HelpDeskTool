@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Linq;
@@ -37,24 +38,22 @@ namespace DTTool
 
         public static bool RTPHasText(RichTextBox rtb)
         {
-            if (rtb.Document.Blocks.Count == 0) return true;
+            if (rtb.Document.Blocks.Count == 0)
+            {
+                return true;
+            }
             TextPointer startPointer = rtb.Document.ContentStart.GetNextInsertionPosition(LogicalDirection.Forward);
             TextPointer endPointer = rtb.Document.ContentEnd.GetNextInsertionPosition(LogicalDirection.Backward);
             if (startPointer.CompareTo(endPointer) == 0)
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
+
         public static string StringFromRTB(RichTextBox rtb)
         {
-            TextRange textRange = new(
-                rtb.Document.ContentStart,
-                rtb.Document.ContentEnd
-            );
+            TextRange textRange = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
             return textRange.Text;
         }
 
@@ -72,178 +71,93 @@ namespace DTTool
             win.Close();
         }
 
-        public void AddOrRemoveBulk(string AddorRemove)
+        public void AddOrRemoveBulk(string[] users, string[] groups, string AddorRemove)
         {
             if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox))
             {
-                string usertext = StringFromRTB(ARusernameBox);
-                string grouptext = StringFromRTB(ARgroupBox);
-                string errString = "";
-                string userStringFormatted = "";
-
-                List<string> myUserList = new(usertext.Split("\r\n"));
-                List<string> myGroupList = new(grouptext.Split("\r\n"));
-
-                myUserList.Remove(" ");
-                myUserList.Remove("");
-
-                string last = myUserList.Last();
-                foreach (string user in myUserList)
-                {
-                    string userClean = user.Trim();
-                    if (user != last)
-                    {
-                        userStringFormatted += userClean + ",";
-                    }
-                    else 
-                    {
-                        userStringFormatted += userClean; 
-                    }
-                }
-
                 LoadingWindow Window = ShowLoadingWindow();
-
-                if (AddorRemove == "Remove")
+                using PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
+                foreach (string group in groups)
                 {
-                    foreach (var group in myGroupList)
+                    GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
+                    foreach (string user in users)
                     {
-                        if (group == "")
-                            break;
-
-                        string groupClean = group.Trim();
-
-                        var command = new System.Diagnostics.Process();
-                        command.StartInfo.CreateNoWindow = true;
-                        command.StartInfo.FileName = "powershell";
-                        command.StartInfo.Arguments = "Remove-ADGroupMember \'" + groupClean + "\' " + userStringFormatted + " -Confirm:$false";
-                        command.StartInfo.RedirectStandardOutput = true;
-                        command.Start();
-                        var console_output = command.StandardOutput.ReadToEnd();
-                        if (command.ExitCode != 0)
+                        try
                         {
-                            using var reader = new StringReader(console_output);
-                            string? first = reader.ReadLine();
-                            errString += first + "\n";
+                            if (AddorRemove.ToLower() == "add")
+                            {
+                                agroup.Members.Add(UserPrincipal.FindByIdentity(context, user));
+                            }
+                            else if (AddorRemove.ToLower() == "remove")
+                            {
+                                agroup.Members.Remove(UserPrincipal.FindByIdentity(context, user));
+                            }
                         }
-
-                    }
-                }
-                else if (AddorRemove == "Add")
-                {
-                    foreach (var group in myGroupList)
-                    {
-                        if (group == "")
-                            break;
-
-                        string groupClean = group.Trim();
-
-                        var command = new System.Diagnostics.Process();
-                        command.StartInfo.CreateNoWindow = true;
-                        command.StartInfo.FileName = "powershell";
-                        command.StartInfo.Arguments = "Add-ADGroupMember \'" + groupClean + "\' " + userStringFormatted;
-                        command.StartInfo.RedirectStandardOutput = true;
-                        command.Start();
-                        var console_output = command.StandardOutput.ReadToEnd();
-                        if (command.ExitCode != 0)
+                        catch (Exception e)
                         {
-                            using var reader = new StringReader(console_output);
-                            string? first = reader.ReadLine();
-                            errString += first + "\n";
+                            MessageBox.Show(e.Message + $" User: \"{user}\" for {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                         }
-
                     }
+                    agroup.Save();
                 }
                 CloseLoadingWinodw(Window);
-                if (errString == "")
-                {
-                    MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    ARusernameBox.Document.Blocks.Clear();
-                    ARgroupBox.Document.Blocks.Clear();
-                }
-                else
-                {
-                    MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                MessageBox.Show("All user(s)/group(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                MessageBox.Show("Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
         }
 
-        // add group to speed up process to and a singular group to users
         private void AddGroup(string group)
         {
             if (RTPHasText(ARusernameBox))
             {
-                var usertext = StringFromRTB(ARusernameBox);
-                var errString = "";
-                var userStringFormatted = "";
-
-                List<string> myUserList = new(usertext.Split("\r\n"));
-
-                myUserList.Remove(" ");
-                myUserList.Remove("");
-
                 LoadingWindow Window = ShowLoadingWindow();
+                string usertext = StringFromRTB(ARusernameBox);
+                string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
 
-                var last = myUserList.Last();
-                foreach (string user in myUserList)
+                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                 {
-                    var userClean = user.Trim();
-                    if (user != last)
+                    foreach (string user in myUserList)
                     {
-                        userStringFormatted += userClean + ",";
+                        try
+                        {
+                            GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
+                            agroup.Members.Add(UserPrincipal.FindByIdentity(context, user));
+                            agroup.Save();
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message + $" User: \"{user}\" for {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        }
                     }
-                    else
-                    {
-                        userStringFormatted += userClean;
-                    }
-                }
-
-                var command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "powershell";
-                command.StartInfo.Arguments = "Add-ADGroupMember \'" + group + "\' " + userStringFormatted;
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                var console_output = command.StandardOutput.ReadToEnd();
-
-                CloseLoadingWinodw(Window);
-
-                if (command.ExitCode != 0)
-                {
-                    using var reader = new StringReader(console_output);
-                    string? first = reader.ReadLine();
-                    errString += first + "\n";
-                }
-                if (errString == "")
-                {
-                    MessageBox.Show("All users processed successfully\nMay take up to 30 seconds to reflect in AD", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Clipboard.SetText(group);
-                    ARusernameBox.Document.Blocks.Clear();
-                }
-                else
-                {
-                    MessageBox.Show(errString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CloseLoadingWinodw(Window);
+                    MessageBox.Show("All user(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
             }
             else
             {
-                MessageBox.Show("User Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("User Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
         }
 
-        // Remove Button
         private void RemoveUGButton_Click(object sender, RoutedEventArgs e)
         {
-            AddOrRemoveBulk("Remove");
+            string usertext = StringFromRTB(ARusernameBox);
+            string grouptext = StringFromRTB(ARgroupBox);
+            string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
+            string[] myGroupList = grouptext.Split("\r\n").SkipLast(1).ToArray();
+            AddOrRemoveBulk(myUserList, myGroupList, "remove");
         }
 
-        // Add Button
         private void AddUGButton_Click(object sender, RoutedEventArgs e)
         {
-            AddOrRemoveBulk("Add");
+            string usertext = StringFromRTB(ARusernameBox);
+            string grouptext = StringFromRTB(ARgroupBox);
+            string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
+            string[] myGroupList = grouptext.Split("\r\n").SkipLast(1).ToArray();
+            AddOrRemoveBulk(myUserList, myGroupList, "add");
         }
 
         private void AddGP_Click(object sender, RoutedEventArgs e)
