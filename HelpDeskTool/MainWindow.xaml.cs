@@ -1,8 +1,4 @@
-﻿/// Program HDTool written by Joseph Patrick for use in the URMC ISD Help Desk environment
-/// Credit to Alex McCune for initial LDAP usage and integration
-/// Created 9/25/2023
-
-using HelpDeskTool;
+﻿using HelpDeskTool;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,6 +27,10 @@ namespace DTTool
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Created 9/25/2023
+    /// Program HDTool written by Joseph Patrick for use in the URMC ISD Help Desk environment
+    /// Credit to Alex McCune for initial LDAP usage and integration
+    /// Contact: jpatrick5402@gmail.com
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -444,7 +444,10 @@ namespace DTTool
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            string helpInfo = "HDTool is an AD/computer management tool to improve the efficiency of the Help Desk\n\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input to perform action on that item\n";
+            string helpInfo = "HDTool is an AD/computer management tool to improve the efficiency of the Help Desk" +
+                "\n" +
+                "\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input box to perform action on that item" +
+                "\nPlease reach out to Joseph Patrick on Teams or joseph_patrick@urmc.rochester.edu / jpatrick5402@gmail.com for any questions comments or concerns";
             OutputBox.AppendText(helpInfo);
             OutputBox.AppendText("---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
