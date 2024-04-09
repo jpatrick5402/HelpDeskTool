@@ -350,8 +350,8 @@ namespace DTTool
                 var ComputerName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + ComputerName + "\n\n");
                 System.Windows.Clipboard.SetText(ComputerName);
-
                 NameBox.Clear();
+
                 DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                 DirectorySearcher searcher = new DirectorySearcher(entry);
 
@@ -394,7 +394,6 @@ namespace DTTool
             {
                 var GroupName = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + GroupName + "\n\n");
-
                 System.Windows.Clipboard.SetText(GroupName);
                 UserTextbox.Clear();
 
