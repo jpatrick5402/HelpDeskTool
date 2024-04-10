@@ -292,17 +292,45 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD Username", "samaccountname" }, { "NetID", "uid" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD Username", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
-                        try
+                        if (PropertyList[i, 0] == "UR AD")
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                            // Grab UR AD username
+                            try
+                            {
+                                DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                                DirectorySearcher URsearcher = new DirectorySearcher(entry);
+
+                                searcher.Filter = $"(&(objectClass=user)(uidnumber={UserResult.Properties["uidnumber"]}))";
+                                SearchResult URUserResult = searcher.FindOne();
+
+                                if (URUserResult != null)
+                                {
+                                    OutputBox.AppendText("UR AD Username: " + URUserResult.Properties["uid"][0].ToString() + "\n");
+                                }
+                                else
+                                {
+                                    OutputBox.AppendText("UR AD account listed for this acount\n");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                OutputBox.AppendText(ex.Message + "\n");
+                            }
                         }
-                        catch
+                        else
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                            try
+                            {
+                                OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                            }
+                            catch
+                            {
+                                OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                            }
                         }
                     }
 
@@ -329,6 +357,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText("Password Last Set information is not available.\n");
                         }
+
                         // Grabbing OU
                         using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
                         {
