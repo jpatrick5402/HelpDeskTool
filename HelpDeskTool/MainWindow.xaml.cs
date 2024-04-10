@@ -292,7 +292,7 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD Username", "samaccountname" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD Username", "samaccountname" }, { "NetID", "uid" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
