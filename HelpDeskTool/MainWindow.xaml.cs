@@ -321,6 +321,13 @@ namespace DTTool
                                 OutputBox.AppendText(ex.Message + "\n");
                             }
                         }
+                        else if (PropertyList[i,1] == "urrolestatus")
+                        {
+                            foreach(var item in UserResult.Properties[PropertyList[i,1]])
+                            {
+                                OutputBox.AppendText("HR relationship: " + item.ToString() + "\n");
+                            }
+                        }
                         else
                         {
                             try
