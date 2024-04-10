@@ -353,7 +353,7 @@ namespace DTTool
                         {
                             if (MailboxOwners[i].Contains(UserName))
                             {
-                                OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0,20) + "\n");
+                                OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
                             }
                         }
                     }
@@ -365,9 +365,9 @@ namespace DTTool
 
                         for (int i = 0; i < DLOwners.Length; i++)
                         {
-                            if (DLOwners[i].Contains(UserResult.Properties["email"][0].ToString()))
+                            if (DLOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                             {
-                                OutputBox.AppendText("Owned DL:" + DLOwners[i].ToString().Substring(0,20) + "\n");
+                                OutputBox.AppendText("Owned DL:" + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
                             }
                         }
                     }
