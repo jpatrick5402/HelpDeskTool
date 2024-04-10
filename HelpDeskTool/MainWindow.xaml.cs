@@ -291,22 +291,24 @@ namespace DTTool
 
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
-                    string[,] PropertyList = { { "Name", "givenname" }, { "Last Name", "sn" }, { "Username", "samaccountname" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    // Grabbing common items
+                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD Username", "samaccountname" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
-                    for (int i = 0; i < PropertyList.Length / 2 ; i++)
+                    for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
                         try
                         {
-                            OutputBox.AppendText($"{PropertyList[i,0]}: " + UserResult.Properties[PropertyList[i,1]][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
                         }
                         catch
                         {
-                            OutputBox.AppendText($"{PropertyList[i,0]} is not listed in object properties\n");
+                            OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
                         }
                     }
 
                     using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                     {
+                        // Grabbing Pwd Last set
                         UserPrincipal user = UserPrincipal.FindByIdentity(context, UserName);
                         DateTime? passwordLastSet = user.LastPasswordSet;
 
@@ -327,6 +329,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText("Password Last Set information is not available.\n");
                         }
+                        // Grabbing OU
                         using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
                         {
                             de.RefreshCache(new string[] { "canonicalName" });
@@ -334,13 +337,6 @@ namespace DTTool
                             OutputBox.AppendText($"OU: {canonicalName}\n");
                         }
                     }
-                }
-                else
-                {
-                    OutputBox.AppendText($"Unable to find username \"{UserName}\"\n");
-                }
-                try
-                {
                     // Open the text file using a stream reader.
                     using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
                     {
@@ -357,7 +353,22 @@ namespace DTTool
                             }
                         }
                     }
-                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\DL-Owners-Managers.csv"))
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
+                    {
+
+                        // Read the stream as a string, and write the string to the console.
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+
+
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
+                            {
+                                OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                            }
+                        }
+                    }
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
                     {
 
                         // Read the stream as a string, and write the string to the console.
@@ -365,17 +376,18 @@ namespace DTTool
 
                         for (int i = 0; i < DLOwners.Length; i++)
                         {
-                            if (DLOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
+                            if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
                             {
                                 OutputBox.AppendText("Owned DL:" + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
                             }
                         }
                     }
                 }
-                catch
+                else
                 {
-                    Console.WriteLine("Unable to find DL/Shared Mailbox:");
+                    OutputBox.AppendText($"Unable to find username \"{UserName}\"\n");
                 }
+
             }
             OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
