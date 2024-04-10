@@ -337,7 +337,7 @@ namespace DTTool
                 }
                 else
                 {
-                    OutputBox.AppendText($"Unable to find username \"{UserName}\"");
+                    OutputBox.AppendText($"Unable to find username \"{UserName}\"\n");
                 }
                 try
                 {
