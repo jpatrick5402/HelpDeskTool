@@ -337,47 +337,54 @@ namespace DTTool
                             OutputBox.AppendText($"OU: {canonicalName}\n");
                         }
                     }
-
-                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
+                    try
                     {
-                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
-
-                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        var test = UserResult.Properties["mail"];
+                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
                         {
-                            if (MailboxOwners[i].Contains(UserName))
+                            string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+
+                            for (int i = 0; i < MailboxOwners.Length; i++)
                             {
-                                OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                if (MailboxOwners[i].Contains(UserName))
+                                {
+                                    OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                }
+                            }
+                        }
+                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
+                        {
+
+                            // Read the stream as a string, and write the string to the console.
+                            string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+
+
+                            for (int i = 0; i < MailboxOwners.Length; i++)
+                            {
+                                if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
+                                {
+                                    OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                }
+                            }
+                        }
+                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
+                        {
+
+                            // Read the stream as a string, and write the string to the console.
+                            string[] DLOwners = sr.ReadToEnd().Split('\n');
+
+                            for (int i = 0; i < DLOwners.Length; i++)
+                            {
+                                if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
+                                {
+                                    OutputBox.AppendText("Owned DL:" + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
+                                }
                             }
                         }
                     }
-                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
+                    catch
                     {
-
-                        // Read the stream as a string, and write the string to the console.
-                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
-
-
-                        for (int i = 0; i < MailboxOwners.Length; i++)
-                        {
-                            if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
-                            {
-                                OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
-                            }
-                        }
-                    }
-                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
-                    {
-
-                        // Read the stream as a string, and write the string to the console.
-                        string[] DLOwners = sr.ReadToEnd().Split('\n');
-
-                        for (int i = 0; i < DLOwners.Length; i++)
-                        {
-                            if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
-                            {
-                                OutputBox.AppendText("Owned DL:" + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
-                            }
-                        }
+                        OutputBox.AppendText("Unable to fetch Shared Mailboxes/DLs\n");
                     }
                 }
                 else
