@@ -542,7 +542,7 @@ namespace DTTool
                 "\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input box to perform action on that item" +
                 "\nPlease reach out to Joseph Patrick on Teams or joseph_patrick@urmc.rochester.edu / jpatrick5402@gmail.com for any questions comments or concerns";
             OutputBox.AppendText(helpInfo);
-            OutputBox.AppendText("---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
     }
