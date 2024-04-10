@@ -384,7 +384,7 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserName))
                                 {
-                                    OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Owned Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
                                 }
                             }
                         }
@@ -399,7 +399,7 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Owned Mailbox:" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Owned Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
                                 }
                             }
                         }
@@ -413,7 +413,7 @@ namespace DTTool
                             {
                                 if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Owned DL:" + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Owned DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
                                 }
                             }
                         }
