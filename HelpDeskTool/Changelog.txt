@@ -7,6 +7,7 @@
 - The User Info button is now able to list the user's shared mailboxes and distribution lists at the bottom
 - The AD PC Info button is now steamlined for readability
 - The Add/Remove User window will now display a notification if the user is already in the group
+- You can now search using URMC AD username, URID, and Email Address when using the User Info Button
 
 *Note: To update the app to the newest verion, you will need to:
 1. Uninstall HelpDeskTool from Control Panel on the computer

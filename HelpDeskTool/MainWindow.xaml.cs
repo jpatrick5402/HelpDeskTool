@@ -286,10 +286,25 @@ namespace DTTool
                 searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
                 SearchResult UserResult = searcher.FindOne();
 
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
                 if (UserResult != null)
                 {
 
-                    OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
+                    OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
                     string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
@@ -344,7 +359,7 @@ namespace DTTool
                     using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                     {
                         // Grabbing Pwd Last set
-                        UserPrincipal user = UserPrincipal.FindByIdentity(context, UserName);
+                        UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
                         DateTime? passwordLastSet = user.LastPasswordSet;
 
                         if (passwordLastSet != null)
@@ -382,7 +397,7 @@ namespace DTTool
 
                             for (int i = 0; i < MailboxOwners.Length; i++)
                             {
-                                if (MailboxOwners[i].Contains(UserName))
+                                if (MailboxOwners[i].Contains(UserResult.Properties["samaccountname"][0].ToString()))
                                 {
                                     OutputBox.AppendText("Owned Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
                                 }
