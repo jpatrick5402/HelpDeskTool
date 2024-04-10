@@ -292,7 +292,7 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD Username", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
@@ -313,7 +313,7 @@ namespace DTTool
                                 }
                                 else
                                 {
-                                    OutputBox.AppendText("UR AD account listed for this acount\n");
+                                    OutputBox.AppendText("UR AD: No active UR Active Directory account\n");
                                 }
                             }
                             catch (Exception ex)
