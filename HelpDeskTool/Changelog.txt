@@ -1,0 +1,9 @@
+﻿Changes as of 4/10/24
+
+- HelpDeskTool has been migrated to employ the modules System.DirectoryServices and System.DirectoryServices.AccountManagement as apposed to powershell commands. This increases the speed that the application can run and provides more operatunity for bulkier features
+- The Pass Last Set button has been added into the User Info Button
+- The User Info button is now able to list all active and inactive relationsips, including River campus relationships
+- The User Info button is now able to pull the NetID username and the UR Active Directory username if available
+- The User Info button is now able to list the user's shared mailboxes and distribution lists at the bottom
+- The AD PC Info button is now steamlined for readability
+- The Add/Remove User window will now display a notification if the user is already in the group
