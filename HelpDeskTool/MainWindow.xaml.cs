@@ -58,7 +58,7 @@ namespace DTTool
 
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
         }
 
         public Boolean IsTextInNameBox()
@@ -106,7 +106,7 @@ namespace DTTool
                     OutputBox.AppendText("PC not restarted\n");
                 }
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void PingButton_Click(object sender, RoutedEventArgs e)
@@ -126,7 +126,7 @@ namespace DTTool
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void NslookupButton_Click(object sender, RoutedEventArgs e)
@@ -146,7 +146,7 @@ namespace DTTool
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void SysinfoButton_Click(object sender, RoutedEventArgs e)
@@ -166,7 +166,7 @@ namespace DTTool
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void RemoteButton_Click(object sender, RoutedEventArgs e)
@@ -184,7 +184,7 @@ namespace DTTool
                 command.Start();
                 OutputBox.AppendText("Remote Session Initiated with " + PCName);
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
 
@@ -229,7 +229,7 @@ namespace DTTool
                     OutputBox.AppendText($"Unable to find object \"{UserName}\"");
                 }
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
@@ -267,7 +267,7 @@ namespace DTTool
                     OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
 
@@ -444,7 +444,7 @@ namespace DTTool
                 }
 
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
@@ -489,7 +489,7 @@ namespace DTTool
                 else
                 { OutputBox.AppendText($"{ComputerName} not found"); }
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void GroupInfoButton_Click(object sender, RoutedEventArgs e)
@@ -537,7 +537,7 @@ namespace DTTool
                     OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
             }
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
 
@@ -557,7 +557,7 @@ namespace DTTool
                 "\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input box to perform action on that item" +
                 "\nPlease reach out to Joseph Patrick on Teams or joseph_patrick@urmc.rochester.edu / jpatrick5402@gmail.com for any questions comments or concerns";
             OutputBox.AppendText(helpInfo);
-            OutputBox.AppendText("\n---------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
     }
