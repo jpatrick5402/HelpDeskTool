@@ -7,3 +7,9 @@
 - The User Info button is now able to list the user's shared mailboxes and distribution lists at the bottom
 - The AD PC Info button is now steamlined for readability
 - The Add/Remove User window will now display a notification if the user is already in the group
+
+*Note: To update the app to the newest verion, you will need to:
+1. Uninstall HelpDeskTool from Control Panel on the computer
+2. Double click "\\NTSDRIVE05\ISD_share\Cust_Serv\Help Desk Info\Help Desk PC Setup Docs\Home Grown Tools\Help Desk Tool\setup.exe"
+
+Please direct all questions and concerns to Joseph Patrick (URMC: Joseph_Patrick@URMC.rochester.edu) (Personal: jpatrick5402@gmail.com)
