@@ -425,7 +425,7 @@ namespace DTTool
                 }
                 else
                 {
-                    OutputBox.AppendText($"Unable to find username \"{UserName}\"\n");
+                    OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
 
             }
@@ -449,7 +449,7 @@ namespace DTTool
 
                 if (result != null)
                 {
-                    string[,] PropertyList = { { "Name", "cn" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" } };
+                    string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
