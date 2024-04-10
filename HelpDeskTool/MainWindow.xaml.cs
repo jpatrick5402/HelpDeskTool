@@ -292,7 +292,7 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserName + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "Name", "name" }, { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
@@ -495,7 +495,7 @@ namespace DTTool
                 if (GroupResultInfo != null)
                 {
 
-                    string[,] PropertyList = { { "Name", "cn" }, { "Name", "whenchanged" }, { "Name", "whencreated" }, { "Name", "description" }, { "Name", "info" }, { "Name", "managedby" } };
+                    string[,] PropertyList = { { "Name", "cn" }, { "Last Change Date", "whenchanged" }, { "Creation Date", "whencreated" }, { "Description", "description" }, { "Additional Info", "info" }, { "Manager", "managedby" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
