@@ -256,7 +256,7 @@ namespace DTTool
                         i++;
                     }
                     Array.Sort(SortedGroup);
-                    OutputBox.AppendText($"Members of {GroupName}:\n");
+                    OutputBox.AppendText($"Members of {GroupName}:\n\n");
                     foreach (var item in SortedGroup)
                     {
                         OutputBox.AppendText(item + '\n');
