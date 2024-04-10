@@ -337,13 +337,10 @@ namespace DTTool
                             OutputBox.AppendText($"OU: {canonicalName}\n");
                         }
                     }
-                    // Open the text file using a stream reader.
+
                     using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
                     {
-
-                        // Read the stream as a string, and write the string to the console.
                         string[] MailboxOwners = sr.ReadToEnd().Split('\n');
-
 
                         for (int i = 0; i < MailboxOwners.Length; i++)
                         {
