@@ -15,3 +15,5 @@
 2. Double click "\\NTSDRIVE05\ISD_share\Cust_Serv\Help Desk Info\Help Desk PC Setup Docs\Home Grown Tools\Help Desk Tool\setup.exe"
 
 Please direct all questions and concerns to Joseph Patrick (URMC: Joseph_Patrick@URMC.rochester.edu) (Personal: jpatrick5402@gmail.com)
+
+Link to code repository: https://github.com/jpatrick5402/HelpDeskTool
