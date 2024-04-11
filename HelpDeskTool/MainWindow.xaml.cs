@@ -256,7 +256,13 @@ namespace DTTool
                     {
                         for (int i = 0; i < GroupMembersResult.Properties["member"].Count; i++)
                         {
-                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "");
+                            entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                            searcher = new DirectorySearcher(entry);
+
+                            searcher.Filter = "(&(objectClass=user)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
+                            SearchResult GroupUserResult = searcher.FindOne();
+
+                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t\t\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
                         }
                         Array.Sort(SortedGroup);
                         OutputBox.AppendText($"Members of {GroupMembersResult.Properties["name"][0]}:\n\n");
