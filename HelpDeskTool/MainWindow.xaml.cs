@@ -403,7 +403,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText("Password Last Set: " + passwordLastSet.ToString() + '\n');
                             TimeSpan diff = passwordLastSet.Value - DateTime.Today;
-                            if ((diff).TotalDays < -365)
+                            if ((diff).TotalDays <= -365)
                             {
                                 OutputBox.AppendText("Pwd Expired: True\n");
                             }
