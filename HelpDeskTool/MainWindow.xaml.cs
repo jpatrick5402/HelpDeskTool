@@ -520,7 +520,7 @@ namespace DTTool
                         }
                         catch
                         {
-                            OutputBox.AppendText($"\"{PropertyList[i, 0]}\" is not listed in object properties\n");
+                            OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
                         }
                     }
                     PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
