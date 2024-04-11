@@ -45,5 +45,6 @@
         <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Left" Height="30" Margin="569,125,0,0" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2"/>
         <Button x:Name="GroupInfoButton" Content="Group info" HorizontalAlignment="Left" Height="30" Margin="361,54,0,0" VerticalAlignment="Top" Width="60" Click="GroupInfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
         <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" Margin="569,155,0,0" VerticalAlignment="Top" Width="60" Click="HelpButton_Click" FontSize="11"/>
+        <Button x:Name="MasterSearchButton" Content="Master Search" HorizontalAlignment="Left" Height="30" Margin="556,54,0,0" VerticalAlignment="Top" Width="60" Click="MasterSearchButton_Click" FontSize="9"/>
     </Grid>
 </Window>

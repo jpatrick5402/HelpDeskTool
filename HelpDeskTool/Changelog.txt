@@ -3,12 +3,13 @@
 - HelpDeskTool has been migrated to employ the modules System.DirectoryServices and System.DirectoryServices.AccountManagement as apposed to powershell commands. This increases the speed that the application can run and provides more operatunity for bulkier features
 - The Pass Last Set button has been added into the User Info Button
 - The User Info button is now able to list all active and inactive relationsips, including River campus relationships
-- The User Info button is now able to pull the NetID username and the UR Active Directory username if available
+- The User Info button is now able to pull the NetID username and the UR Active Directory username if available (jwells2)
 - The User Info button is now able to list the user's shared mailboxes and distribution lists at the bottom
 - The AD PC Info button is now steamlined for readability
 - The Add/Remove User window will now display a notification if the user is already in the group
 - You can now search using URMC AD username, URID, and Email Address when using the User Info Button
 - The application now will check automatically for updates prior to startup instead of having to manually uninstall and re-install for each release. You do need to uninstall and re-install one more time for this to take effect
+- The Pass Last Set button is replaced with a Master Search feature that searches both servers for whatever it typed into the box (Example: ISD Decision Support Services, jpatric5, jwells2)
 
 *Note: To update the app to the newest verion, you will need to:
 1. Uninstall HelpDeskTool from Control Panel on the computer
