@@ -324,7 +324,7 @@ namespace DTTool
 
                                 if (URUserResult != null)
                                 {
-                                    OutputBox.AppendText("UR AD Username: " + URUserResult.Properties["uid"][0].ToString() + "\n");
+                                    OutputBox.AppendText("UR AD: " + URUserResult.Properties["uid"][0].ToString() + "\n");
                                 }
                                 else
                                 {
