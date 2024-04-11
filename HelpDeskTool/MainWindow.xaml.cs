@@ -327,6 +327,11 @@ namespace DTTool
                     searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
                     UserResult = searcher.FindOne();
                 }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
                 if (UserResult != null)
                 {
 
