@@ -8,6 +8,7 @@
 - The AD PC Info button is now steamlined for readability
 - The Add/Remove User window will now display a notification if the user is already in the group
 - You can now search using URMC AD username, URID, and Email Address when using the User Info Button
+- The application now will check automatically for updates instead of having to manually uninstall and re-install for each feature
 
 *Note: To update the app to the newest verion, you will need to:
 1. Uninstall HelpDeskTool from Control Panel on the computer
