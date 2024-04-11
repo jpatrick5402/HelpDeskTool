@@ -9,7 +9,7 @@
 - The Add/Remove User window will now display a notification if the user is already in the group
 - You can now search using URMC AD username, URID, and Email Address when using the User Info Button
 - The application now will check automatically for updates prior to startup instead of having to manually uninstall and re-install for each release. You do need to uninstall and re-install one more time for this to take effect
-- The Pass Last Set button is replaced with a Master Search feature that searches both servers for whatever it typed into the box (Example: ISD Decision Support Services, jpatric5, jwells2)
+- The Pass Last Set button is replaced with a Master Search feature that searches both servers for whatever it typed into the box (Example: ISD Decision Support Services, jpatric5, ISDCWLT17)
 
 *Note: To update the app to the newest verion, you will need to:
 1. Uninstall HelpDeskTool from Control Panel on the computer
