@@ -76,28 +76,36 @@ namespace DTTool
             if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox))
             {
                 LoadingWindow Window = ShowLoadingWindow();
+                string ErrorList = "";
+
                 using PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
                 foreach (string group in groups)
                 {
-                    GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
+                    GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group.Trim());
                     foreach (string user in users)
                     {
                         try
                         {
+                            if (user == null)
+                                throw new Exception($"User {user} not found");
+                            if (group == null)
+                                throw new Exception($"Group {group} not found");
                             if (AddorRemove.ToLower() == "add")
                             {
-                                agroup.Members.Add(UserPrincipal.FindByIdentity(context, user));
+                                agroup.Members.Add(UserPrincipal.FindByIdentity(context, user.Trim()));
                             }
                             else if (AddorRemove.ToLower() == "remove")
                             {
-                                agroup.Members.Remove(UserPrincipal.FindByIdentity(context, user));
+                                agroup.Members.Remove(UserPrincipal.FindByIdentity(context, user.Trim()));
                             }
                         }
                         catch (Exception e)
                         {
-                            MessageBox.Show(e.Message + $" User: \"{user}\" for {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+                            ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
                         }
                     }
+                    if (ErrorList != "")
+                        MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                     agroup.Save();
                 }
                 CloseLoadingWinodw(Window);
@@ -114,6 +122,7 @@ namespace DTTool
             if (RTPHasText(ARusernameBox))
             {
                 LoadingWindow Window = ShowLoadingWindow();
+                string ErrorList = "";
 
                 using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                 {
@@ -121,16 +130,20 @@ namespace DTTool
                     {
                         try
                         {
+                            if (user == null)
+                                throw new Exception($"User {user} not found");
                             GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
-                            agroup.Members.Add(UserPrincipal.FindByIdentity(context, user));
+                            agroup.Members.Add(UserPrincipal.FindByIdentity(context, user.Trim()));
                             agroup.Save();
                         }
                         catch (Exception e)
                         {
-                            MessageBox.Show(e.Message + $" User: \"{user}\" for {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+                            ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
                         }
                     }
                     CloseLoadingWinodw(Window);
+                    if (ErrorList != "")
+                        MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                     MessageBox.Show("All user(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
             }
