@@ -104,11 +104,11 @@ namespace DTTool
                             ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
                         }
                     }
+                    CloseLoadingWinodw(Window);
                     if (ErrorList != "")
                         MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                     agroup.Save();
                 }
-                CloseLoadingWinodw(Window);
                 MessageBox.Show("All user(s)/group(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
