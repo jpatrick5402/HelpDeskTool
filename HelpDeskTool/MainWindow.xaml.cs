@@ -402,8 +402,8 @@ namespace DTTool
                         if (passwordLastSet != null)
                         {
                             OutputBox.AppendText("Password Last Set: " + passwordLastSet.ToString() + '\n');
-                            TimeSpan diff = passwordLastSet.Value - DateTime.Today;
-                            if ((diff).TotalDays <= -365)
+                            TimeSpan diff = DateTime.Today - passwordLastSet.Value;
+                            if (diff.TotalDays >= 365)
                             {
                                 OutputBox.AppendText("Pwd Expired: True\n");
                             }
@@ -417,8 +417,8 @@ namespace DTTool
                             OutputBox.AppendText("Password Last Set information is not available.\n");
                         }
 
-                        // Grabbing OU
-                        using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
+                    // Grabbing OU
+                    using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
                         {
                             de.RefreshCache(new string[] { "canonicalName" });
                             string canonicalName = de.Properties["canonicalName"].Value as string;
