@@ -428,7 +428,7 @@ namespace DTTool
                     }
                     try
                     {
-                        var test = UserResult.Properties["mail"];
+                        OutputBox.AppendText("\n");
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
                         {
                             string[] MailboxOwners = sr.ReadToEnd().Split('\n');
@@ -474,6 +474,41 @@ namespace DTTool
                     catch
                     {
                         OutputBox.AppendText("Unable to fetch Shared Mailboxes/DLs\n");
+                    }
+                    try
+                    {
+                        OutputBox.AppendText("\nShared Drive Access List: \n");
+                        entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                        searcher = new DirectorySearcher(entry);
+
+                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
+                        SearchResult MemberOfresult = searcher.FindOne();
+
+                        if (MemberOfresult != null)
+                        {
+                            ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
+                            string PriorResult = "";
+                            using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
+                            {
+                                string[] ShareList = sr.ReadToEnd().Split('\n');
+                                foreach (var item in groups)
+                                {
+                                    for (int i = 0; i < ShareList.Length; i++)
+                                    {
+                                        if (ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1) != PriorResult & ShareList[i].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
+                                        {
+                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1) + "\n");
+                                            PriorResult = ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText(ex.Message);
+                        OutputBox.AppendText($"Unable to find Shared Drives for {UserName}");
                     }
                 }
                 else
