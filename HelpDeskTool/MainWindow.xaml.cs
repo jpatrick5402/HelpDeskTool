@@ -691,5 +691,15 @@ namespace DTTool
             OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
+
+        private void DarkButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow1.Background = new LinearGradientBrush(Colors.Navy, Colors.Black, 90.00);
+            OutputBox.Background = Brushes.DarkGray;
+            PCNameBox.Foreground = Brushes.White;
+            ADNameBox.Foreground = Brushes.White;
+            NameBox.Background = Brushes.DarkGray;
+            UserTextbox.Background = Brushes.DarkGray;
+        }
     }
 }
