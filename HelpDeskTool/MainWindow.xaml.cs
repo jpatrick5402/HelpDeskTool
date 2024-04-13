@@ -396,7 +396,8 @@ namespace DTTool
 
                     using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                     {
-                        // Grabbing Pwd Last set
+                        /// Grabbing Pwd Last set. This has to use the PrincipalSearch module as DirectorySearch displays a value in "INTER8" format
+                        /// which doesn't seem to have a 1:1 conversion to DateTime
                         UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
                         DateTime? passwordLastSet = user.LastPasswordSet;
 
@@ -426,6 +427,9 @@ namespace DTTool
                             OutputBox.AppendText($"OU: {canonicalName}\n");
                         }
                     }
+
+                    /// This section is where we search for any shared mailboxes, this is done by searching each line of the files used for this task
+                    /// and checking to see if the value of 'samaccountname' for our user is valid
                     try
                     {
                         OutputBox.AppendText("\n");
@@ -471,10 +475,14 @@ namespace DTTool
                             }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        OutputBox.AppendText(ex.Message);
                         OutputBox.AppendText("Unable to fetch Shared Mailboxes/DLs\n");
                     }
+
+                    /// In this section, we take a look at the shared drive files pulled directly from the source DMD files and check to see if our user has
+                    /// access to any of them. We have the potential to also add the AD group that grants access, but that may cause bloat to the output.
                     try
                     {
                         OutputBox.AppendText("\nShared Drive Access List: \n");
