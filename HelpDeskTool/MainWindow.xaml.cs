@@ -497,14 +497,14 @@ namespace DTTool
                             ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
                             using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                             {
-                                string[] ShareList = sr.ReadToEnd().Split('\n');
+                                string[] ShareList = sr.ReadToEnd().Split("\n");
                                 foreach (var item in groups)
                                 {
                                     for (int i = 0; i < ShareList.Length; i++)
                                     {
                                         if (ShareList[i].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
                                         {
-                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1) + " - " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + "\n");
+                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " - " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
                                         }
                                     }
                                 }
