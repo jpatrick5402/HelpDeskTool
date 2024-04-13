@@ -495,7 +495,6 @@ namespace DTTool
                         if (MemberOfresult != null)
                         {
                             ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                            string PriorResult = "";
                             using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                             {
                                 string[] ShareList = sr.ReadToEnd().Split('\n');
@@ -503,10 +502,9 @@ namespace DTTool
                                 {
                                     for (int i = 0; i < ShareList.Length; i++)
                                     {
-                                        if (ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1) != PriorResult & ShareList[i].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
+                                        if (ShareList[i].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
                                         {
-                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1) + "\n");
-                                            PriorResult = ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1);
+                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1) + " - " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + "\n");
                                         }
                                     }
                                 }
