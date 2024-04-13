@@ -447,8 +447,7 @@ namespace DTTool
                         }
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
                         {
-
-                            // Read the stream as a string, and write the string to the console.
+                            // Information from here may not be the most accurate as it's not the exact same as HDAMU
                             string[] MailboxOwners = sr.ReadToEnd().Split('\n');
 
 
@@ -456,14 +455,12 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Owned Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Owned Mailbox (Mailbox may not be active): " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
                                 }
                             }
                         }
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
                         {
-
-                            // Read the stream as a string, and write the string to the console.
                             string[] DLOwners = sr.ReadToEnd().Split('\n');
 
                             for (int i = 0; i < DLOwners.Length; i++)
