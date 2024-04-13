@@ -684,7 +684,7 @@ namespace DTTool
 
                     foreach (SearchResult result in Result)
                     {
-                        OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][1] + '\n');
+                        OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
                     }
                 }
 
@@ -695,8 +695,6 @@ namespace DTTool
                 searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}))";
                 Result = searcher.FindAll();
 
-                searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
-                Result = searcher.FindAll();
                 if (Result.Count == 0)
                 {
                     searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
@@ -726,7 +724,7 @@ namespace DTTool
 
                     foreach (SearchResult result in Result)
                     {
-                        OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][1] + '\n');
+                        OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
                     }
                 }
             }
