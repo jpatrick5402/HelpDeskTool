@@ -334,11 +334,6 @@ namespace DTTool
                     searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
                     UserResult = searcher.FindOne();
                 }
-                if (UserResult == null)
-                {
-                    searcher.Filter = "(&(objectClass=user)(uid=" + UserName + "))";
-                    UserResult = searcher.FindOne();
-                }
                 if (UserResult != null)
                 {
 
@@ -433,6 +428,7 @@ namespace DTTool
                     try
                     {
                         OutputBox.AppendText("\n");
+                        bool HasMailboxOrDL = false;
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
                         {
                             string[] MailboxOwners = sr.ReadToEnd().Split('\n');
@@ -442,6 +438,7 @@ namespace DTTool
                                 if (MailboxOwners[i].Contains(UserResult.Properties["samaccountname"][0].ToString()))
                                 {
                                     OutputBox.AppendText("Owned Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    HasMailboxOrDL = true;
                                 }
                             }
                         }
@@ -454,6 +451,7 @@ namespace DTTool
                                 if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
                                 {
                                     OutputBox.AppendText("Owned DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
+                                    HasMailboxOrDL = true;
                                 }
                             }
                         }
@@ -468,8 +466,13 @@ namespace DTTool
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
                                     OutputBox.AppendText("Owned Mailbox (Mailbox may not be active): " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    HasMailboxOrDL = true;
                                 }
                             }
+                        }
+                        if (!HasMailboxOrDL)
+                        {
+                            OutputBox.AppendText(UserResult.Properties["name"][0].ToString() + " owns no DLs or Shared Mailboxes\n");
                         }
                     }
                     catch (Exception ex)
