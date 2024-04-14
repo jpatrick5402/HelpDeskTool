@@ -350,36 +350,33 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "space", "" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
-                        if (PropertyList[i, 0] == "UR AD")
+                        if (PropertyList[i,0] == "space")
+                        {
+                            OutputBox.AppendText("\n");
+                        }
+                        else if (PropertyList[i, 0] == "UR AD")
                         {
                             // Grab UR AD username
-                            try
+                            DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                            DirectorySearcher URsearcher = new DirectorySearcher(entry);
+
+                            searcher.Filter = $"(&(objectClass=user)(uidnumber={UserResult.Properties["uidnumber"]}))";
+                            SearchResult URUserResult = searcher.FindOne();
+
+                            if (URUserResult != null)
                             {
-                                DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                                DirectorySearcher URsearcher = new DirectorySearcher(entry);
-
-                                searcher.Filter = $"(&(objectClass=user)(uidnumber={UserResult.Properties["uidnumber"]}))";
-                                SearchResult URUserResult = searcher.FindOne();
-
-                                if (URUserResult != null)
-                                {
-                                    OutputBox.AppendText("UR AD: " + URUserResult.Properties["uid"][0].ToString() + "\n");
-                                }
-                                else
-                                {
-                                    OutputBox.AppendText("UR AD: No active UR Active Directory account\n");
-                                }
+                                OutputBox.AppendText("UR AD: " + URUserResult.Properties["uid"][0].ToString() + "\n");
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                OutputBox.AppendText(ex.Message + "\n");
+                                OutputBox.AppendText("UR AD: No active UR Active Directory account\n");
                             }
                         }
-                        else if (PropertyList[i, 1] == "urrolestatus")
+                        else if (PropertyList[i, 0] == "Most Recent HR Role")
                         {
                             foreach (var item in UserResult.Properties[PropertyList[i, 1]])
                             {
@@ -485,26 +482,34 @@ namespace DTTool
                             OutputBox.AppendText(UserResult.Properties["name"][0].ToString() + " owns no DLs or Shared Mailboxes\n");
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        OutputBox.AppendText(ex.Message);
                         OutputBox.AppendText("Unable to fetch Shared Mailboxes/DLs\n");
                     }
 
                     /// In this section, we take a look at the shared drive files pulled directly from the source DMD files and check to see if our user has
                     /// access to any of them. We have the potential to also add the AD group that grants access, but that may cause bloat to the output.
+                    OutputBox.AppendText("\nShared/Home Drive Access List: \n");
                     try
                     {
-                        OutputBox.AppendText("\nShared/Home Drive Access List: \n");
                         entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                         searcher = new DirectorySearcher(entry);
+                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
+                        SearchResult MemberOfresult = searcher.FindOne();
 
+                        OutputBox.AppendText(MemberOfresult.Properties["homedirectory"][0].ToString() + "\n");
+                    }
+                    catch
+                    {
+                        OutputBox.AppendText($"{UserResult.Properties["name"][0]} has no H: Drive");
+                    }
+                    try
+                    {
                         searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
                         SearchResult MemberOfresult = searcher.FindOne();
 
                         if (MemberOfresult != null)
                         {
-                            OutputBox.AppendText(MemberOfresult.Properties["homedirectory"][0].ToString() + "\n");
 
                             ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
                             using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
@@ -523,9 +528,8 @@ namespace DTTool
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        OutputBox.AppendText(ex.Message);
                         OutputBox.AppendText($"Unable to find Shared Drives for {UserName}");
                     }
                 }
