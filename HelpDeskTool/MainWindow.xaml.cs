@@ -319,7 +319,7 @@ namespace DTTool
             if (IsTextInUserBox())
             {
                 var UserName = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Gathering info for " + UserName + "\n\n");
+                OutputBox.AppendText("Searching for " + UserName + "...\n");
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
@@ -660,90 +660,97 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                var SearchObject = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Searching for " + SearchObject + "...\n\n");
-                System.Windows.Clipboard.SetText(SearchObject);
-                UserTextbox.Clear();
+                try
+                {
+                    var SearchObject = UserTextbox.Text.Trim();
+                    OutputBox.AppendText("Searching for " + SearchObject + "* ...\n\n");
+                    System.Windows.Clipboard.SetText(SearchObject);
+                    UserTextbox.Clear();
 
-                // Search under URMC umbrella
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
+                    // Search under URMC umbrella
+                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
+                    DirectorySearcher searcher = new DirectorySearcher(entry);
 
-                searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
-                SearchResultCollection Result = searcher.FindAll();
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    OutputBox.AppendText("URMC: No object found\n");
-                }
-                else
-                {
-
-                    foreach (SearchResult result in Result)
+                    searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
+                    SearchResultCollection Result = searcher.FindAll();
+                    if (Result.Count == 0)
                     {
-                        OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                        searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        OutputBox.AppendText("URMC: No object found\n");
+                    }
+                    else
+                    {
+
+                        foreach (SearchResult result in Result)
+                        {
+                            OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                        }
+                    }
+
+                    OutputBox.AppendText("\n");
+
+                    // Search under UR umbrella
+                    entry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                    searcher = new DirectorySearcher(entry);
+
+                    searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}))";
+                    Result = searcher.FindAll();
+
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
+                        Result = searcher.FindAll();
+                    }
+                    if (Result.Count == 0)
+                    {
+                        OutputBox.AppendText("UR: No object found\n");
+                    }
+                    else
+                    {
+
+                        foreach (SearchResult result in Result)
+                        {
+                            OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                        }
                     }
                 }
-
-                OutputBox.AppendText("\n");
-
-                // Search under UR umbrella
-                entry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                searcher = new DirectorySearcher(entry);
-
-                searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}))";
-                Result = searcher.FindAll();
-
-                if (Result.Count == 0)
+                catch
                 {
-                    searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
-                    Result = searcher.FindAll();
-                }
-                if (Result.Count == 0)
-                {
-                    OutputBox.AppendText("UR: No object found\n");
-                }
-                else
-                {
-
-                    foreach (SearchResult result in Result)
-                    {
-                        OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                    }
+                    OutputBox.AppendText("An error has occurred, try refining your search");
                 }
             }
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
