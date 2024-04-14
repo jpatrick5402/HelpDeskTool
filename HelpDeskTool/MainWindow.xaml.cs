@@ -445,6 +445,18 @@ namespace DTTool
                                 }
                             }
                         }
+                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
+                        {
+                            string[] DLOwners = sr.ReadToEnd().Split('\n');
+
+                            for (int i = 0; i < DLOwners.Length; i++)
+                            {
+                                if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
+                                {
+                                    OutputBox.AppendText("Owned DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
+                                }
+                            }
+                        }
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
                         {
                             // Information from here may not be the most accurate as it's not the exact same as HDAMU
@@ -459,18 +471,6 @@ namespace DTTool
                                 }
                             }
                         }
-                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
-                        {
-                            string[] DLOwners = sr.ReadToEnd().Split('\n');
-
-                            for (int i = 0; i < DLOwners.Length; i++)
-                            {
-                                if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
-                                {
-                                    OutputBox.AppendText("Owned DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
-                                }
-                            }
-                        }
                     }
                     catch (Exception ex)
                     {
@@ -482,26 +482,28 @@ namespace DTTool
                     /// access to any of them. We have the potential to also add the AD group that grants access, but that may cause bloat to the output.
                     try
                     {
-                        OutputBox.AppendText("\nShared Drive Access List: \n");
+                        OutputBox.AppendText("\nShared/Home Drive Access List: \n");
                         entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                         searcher = new DirectorySearcher(entry);
 
-                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
+                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
                         SearchResult MemberOfresult = searcher.FindOne();
 
                         if (MemberOfresult != null)
                         {
+                            OutputBox.AppendText(MemberOfresult.Properties["homedirectory"][0].ToString() + "\n");
+
                             ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
                             using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                             {
                                 string[] ShareList = sr.ReadToEnd().Split("\n");
-                                foreach (var item in groups)
+                                foreach (var group in groups)
                                 {
                                     for (int i = 0; i < ShareList.Length; i++)
                                     {
-                                        if (ShareList[i].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
+                                        if (ShareList[i].Contains(group.ToString().Substring(3, group.ToString().IndexOf(",") - 3) + "|"))
                                         {
-                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " - " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
+                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
                                         }
                                     }
                                 }
