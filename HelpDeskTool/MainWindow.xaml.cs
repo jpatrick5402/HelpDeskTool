@@ -657,7 +657,7 @@ namespace DTTool
             if (IsTextInUserBox())
             {
                 var SearchObject = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Searching for " + SearchObject + "\n\n");
+                OutputBox.AppendText("Searching for " + SearchObject + "...\n\n");
                 System.Windows.Clipboard.SetText(SearchObject);
                 UserTextbox.Clear();
 
@@ -699,6 +699,8 @@ namespace DTTool
                         OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
                     }
                 }
+
+                OutputBox.AppendText("\n");
 
                 // Search under UR umbrella
                 entry = new DirectoryEntry("LDAP://ur.rochester.edu");
