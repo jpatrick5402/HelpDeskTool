@@ -206,6 +206,16 @@ namespace DTTool
                 searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
                 SearchResult MemberOfresult = searcher.FindOne();
 
+                if (MemberOfresult == null)
+                {
+                    searcher.Filter = "(&(objectClass=*)(urid=" + UserName + "))";
+                    MemberOfresult = searcher.FindOne();
+                }
+                if (MemberOfresult == null)
+                {
+                    searcher.Filter = "(&(objectClass=*)(name=" + UserName + "))";
+                    MemberOfresult = searcher.FindOne();
+                }
                 if (MemberOfresult != null)
                 {
                     ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
