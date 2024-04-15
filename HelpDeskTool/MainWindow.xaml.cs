@@ -273,7 +273,7 @@ namespace DTTool
                             searcher.Filter = "(&(objectClass=user)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
                             SearchResult GroupUserResult = searcher.FindOne();
 
-                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t\t\t" + GroupUserResult.Properties["samaccountname"][0].ToString() + '\n';
+                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t\t\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
                         }
                         Array.Sort(SortedGroup);
                         OutputBox.AppendText($"Members of {GroupMembersResult.Properties["name"][0]}:\n\n");
