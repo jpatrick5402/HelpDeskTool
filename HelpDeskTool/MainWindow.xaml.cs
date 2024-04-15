@@ -663,7 +663,7 @@ namespace DTTool
                 try
                 {
                     var SearchObject = UserTextbox.Text.Trim();
-                    OutputBox.AppendText("Searching for " + SearchObject + "* ...\n\n");
+                    OutputBox.AppendText("Searching for \"" + SearchObject + "*\" ...\n\n");
                     System.Windows.Clipboard.SetText(SearchObject);
                     UserTextbox.Clear();
 
@@ -671,8 +671,9 @@ namespace DTTool
                     DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
                     DirectorySearcher searcher = new DirectorySearcher(entry);
 
-                    searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
+                    searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}))";
                     SearchResultCollection Result = searcher.FindAll();
+
                     if (Result.Count == 0)
                     {
                         searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
@@ -685,7 +686,7 @@ namespace DTTool
                     }
                     if (Result.Count == 0)
                     {
-                        searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
+                        searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
                         Result = searcher.FindAll();
                     }
                     if (Result.Count == 0)
@@ -712,7 +713,7 @@ namespace DTTool
                     entry = new DirectoryEntry("LDAP://ur.rochester.edu");
                     searcher = new DirectorySearcher(entry);
 
-                    searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}))";
+                    searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}))";
                     Result = searcher.FindAll();
 
                     if (Result.Count == 0)
@@ -727,7 +728,7 @@ namespace DTTool
                     }
                     if (Result.Count == 0)
                     {
-                        searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
+                        searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
                         Result = searcher.FindAll();
                     }
                     if (Result.Count == 0)
