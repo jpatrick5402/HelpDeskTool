@@ -66,7 +66,7 @@ namespace DTTool
             return win;
         }
 
-        public void CloseLoadingWinodw(LoadingWindow win)
+        public void CloseLoadingWindow(LoadingWindow win)
         {
             win.Close();
         }
@@ -104,7 +104,7 @@ namespace DTTool
                             ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
                         }
                     }
-                    CloseLoadingWinodw(Window);
+                    CloseLoadingWindow(Window);
                     if (ErrorList != "")
                         MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                     agroup.Save();
@@ -141,7 +141,7 @@ namespace DTTool
                             ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
                         }
                     }
-                    CloseLoadingWinodw(Window);
+                    CloseLoadingWindow(Window);
                     if (ErrorList != "")
                         MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                     MessageBox.Show("All user(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
