@@ -444,7 +444,28 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["samaccountname"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Owned Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    string[] LineArray = MailboxOwners[i].Split(',');
+
+                                    for (int j = 0; j < LineArray.Count(); j++)
+                                    {
+                                        if (LineArray[j].Contains(UserResult.Properties["samaccountname"][0].ToString()));
+                                        {
+                                            if (j == 4)
+                                            {
+                                                OutputBox.AppendText("\tFull Access");
+                                            }
+                                            else if (j == 5)
+                                            {
+                                                OutputBox.AppendText("\tSend As Access");
+                                            }
+                                            else if (j == 6)
+                                            {
+                                                OutputBox.AppendText("\tSend On Behalf Access");
+                                            }
+                                        }
+                                    }
+                                    OutputBox.AppendText("\n");
                                     HasMailboxOrDL = true;
                                 }
                             }
@@ -457,7 +478,7 @@ namespace DTTool
                             {
                                 if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Owned DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Managed DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
                                     HasMailboxOrDL = true;
                                 }
                             }
@@ -472,7 +493,28 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Owned Mailbox (Mailbox may not be active): " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Accessible Mailbox (May not be active): " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    string[] LineArray = MailboxOwners[i].Split(',');
+
+                                    for (int j = 0; j < LineArray.Count(); j++)
+                                    {
+                                        if (LineArray[j].Contains(UserResult.Properties["samaccountname"][0].ToString())) ;
+                                        {
+                                            if (j == 4)
+                                            {
+                                                OutputBox.AppendText("\tFull Access");
+                                            }
+                                            else if (j == 5)
+                                            {
+                                                OutputBox.AppendText("\tSend As Access");
+                                            }
+                                            else if (j == 6)
+                                            {
+                                                OutputBox.AppendText("\tSend On Behalf Access");
+                                            }
+                                        }
+                                    }
+                                    OutputBox.AppendText("\n");
                                     HasMailboxOrDL = true;
                                 }
                             }
@@ -482,8 +524,9 @@ namespace DTTool
                             OutputBox.AppendText(UserResult.Properties["name"][0].ToString() + " owns no DLs or Shared Mailboxes\n");
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        OutputBox.AppendText(ex.Message);
                         OutputBox.AppendText("Unable to fetch Shared Mailboxes/DLs\n");
                     }
 
