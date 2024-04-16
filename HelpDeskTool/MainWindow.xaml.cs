@@ -450,7 +450,7 @@ namespace DTTool
 
                                     for (int j = 0; j < LineArray.Count(); j++)
                                     {
-                                        if (LineArray[j].Contains(UserResult.Properties["samaccountname"][0].ToString()));
+                                        if (LineArray[j].Contains(UserResult.Properties["samaccountname"][0].ToString()))
                                         {
                                             if (j == 4)
                                             {
@@ -499,7 +499,7 @@ namespace DTTool
 
                                     for (int j = 0; j < LineArray.Count(); j++)
                                     {
-                                        if (LineArray[j].Contains(UserResult.Properties["samaccountname"][0].ToString())) ;
+                                        if (LineArray[j].Contains(UserResult.Properties["mail"][0].ToString()))
                                         {
                                             if (j == 4)
                                             {
@@ -724,6 +724,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
@@ -733,6 +734,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
@@ -742,6 +744,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
@@ -751,6 +754,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
@@ -760,10 +764,11 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     
-                    if (ResultIsFound)
+                    if (!ResultIsFound)
                     {
                         OutputBox.AppendText("URMC: No object found\n");
                     }
@@ -783,6 +788,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
@@ -792,6 +798,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
@@ -801,6 +808,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
@@ -810,6 +818,7 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
                     searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
@@ -819,10 +828,11 @@ namespace DTTool
                         foreach (SearchResult result in Result)
                         {
                             OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
+                            ResultIsFound = true;
                         }
                     }
 
-                    if (ResultIsFound)
+                    if (!ResultIsFound)
                     {
                         OutputBox.AppendText("UR: No object found\n");
                     }
