@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using System.Collections.Immutable;
 using System.Data;
 using System.DirectoryServices.AccountManagement;
+using System.Net.Http;
 
 namespace DTTool
 {
@@ -699,13 +700,13 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
 
-        private void MasterSearchButton_Click(object sender, RoutedEventArgs e)
+        private async void MasterSearchButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInUserBox())
             {
+                var SearchObject = UserTextbox.Text.Trim();
                 try
                 {
-                    var SearchObject = UserTextbox.Text.Trim();
                     OutputBox.AppendText("Searching for \"" + SearchObject + "*\" ...\n\n");
                     System.Windows.Clipboard.SetText(SearchObject);
                     UserTextbox.Clear();
@@ -829,6 +830,29 @@ namespace DTTool
                 catch
                 {
                     OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria");
+                }
+
+                string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string csvContent = await response.Content.ReadAsStringAsync();
+                        string[] StringArray = csvContent.Split('\n');
+
+                        for (int i = 0; i < StringArray.Length; i++)
+                        {
+                            if (StringArray[i].Contains($"{SearchObject}"))
+                            {
+                                OutputBox.AppendText(StringArray[i]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
+                    }
                 }
             }
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
