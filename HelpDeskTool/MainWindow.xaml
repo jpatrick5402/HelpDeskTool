@@ -47,5 +47,6 @@
         <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Right" Height="30" Margin="0,155,21,0" VerticalAlignment="Top" Width="60" Click="HelpButton_Click" FontSize="11"/>
         <Button x:Name="MasterSearchButton" Content="Master Search" HorizontalAlignment="Left" Height="30" Margin="556,54,0,0" VerticalAlignment="Top" Width="60" Click="MasterSearchButton_Click" FontSize="9"/>
         <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Right" Height="30" Margin="0,185,21,0" VerticalAlignment="Top" Width="60" Click="DarkButton_Click" FontSize="11"/>
+        <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Right" Height="30" Margin="0,215,21,0" VerticalAlignment="Top" Width="60" Click="ExportButton_Click" FontSize="11"/>
     </Grid>
 </Window>

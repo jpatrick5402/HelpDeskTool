@@ -273,7 +273,7 @@ namespace DTTool
                             searcher.Filter = "(&(objectClass=user)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
                             SearchResult GroupUserResult = searcher.FindOne();
 
-                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t\t\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
+                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
                         }
                         Array.Sort(SortedGroup);
                         OutputBox.AppendText($"Members of {GroupMembersResult.Properties["name"][0]}:\n\n");
@@ -766,6 +766,26 @@ namespace DTTool
             ADNameBox.Foreground = Brushes.White;
             NameBox.Background = Brushes.DarkGray;
             UserTextbox.Background = Brushes.DarkGray;
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange textRange = new TextRange(OutputBox.Document.ContentStart, OutputBox.Document.ContentEnd);
+            string[] OutputArray = textRange.Text.Split('\n');
+            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDT_Export_{DateTime.Now.ToString("M-d-yyyy HH-mm-ss")}.csv";
+
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                foreach (var line in OutputArray)
+                {
+                    sw.WriteLine(line.Replace("\t", ","));
+                }
+            }
+
+            OutputBox.AppendText($"Export completed to {path}");
+
+            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
         }
     }
 }
