@@ -471,19 +471,6 @@ namespace DTTool
                                 }
                             }
                         }
-                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
-                        {
-                            string[] DLOwners = sr.ReadToEnd().Split('\n');
-
-                            for (int i = 0; i < DLOwners.Length; i++)
-                            {
-                                if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
-                                {
-                                    OutputBox.AppendText("Managed DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
-                                    HasMailboxOrDL = true;
-                                }
-                            }
-                        }
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
                         {
                             // Information from here may not be the most accurate as it's not the exact same as HDAMU
@@ -494,7 +481,7 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Accessible Mailbox (May not be active): " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                     string[] LineArray = MailboxOwners[i].Split(',');
 
                                     for (int j = 0; j < LineArray.Count(); j++)
@@ -516,6 +503,19 @@ namespace DTTool
                                         }
                                     }
                                     OutputBox.AppendText("\n");
+                                    HasMailboxOrDL = true;
+                                }
+                            }
+                        }
+                        using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
+                        {
+                            string[] DLOwners = sr.ReadToEnd().Split('\n');
+
+                            for (int i = 0; i < DLOwners.Length; i++)
+                            {
+                                if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
+                                {
+                                    OutputBox.AppendText("Managed DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
                                     HasMailboxOrDL = true;
                                 }
                             }
