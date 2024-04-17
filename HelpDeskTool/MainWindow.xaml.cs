@@ -807,12 +807,24 @@ namespace DTTool
 
         private void DarkButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow1.Background = new LinearGradientBrush(Colors.Navy, Colors.Black, 90.00);
-            OutputBox.Background = Brushes.DarkGray;
-            PCNameBox.Foreground = Brushes.White;
-            ADNameBox.Foreground = Brushes.White;
-            NameBox.Background = Brushes.DarkGray;
-            UserTextbox.Background = Brushes.DarkGray;
+            if (OutputBox.Background != Brushes.DarkGray)
+            {
+                MainWindow1.Background = new LinearGradientBrush(Colors.Navy, Colors.Black, 90.00);
+                OutputBox.Background = Brushes.DarkGray;
+                PCNameBox.Foreground = Brushes.White;
+                ADNameBox.Foreground = Brushes.White;
+                NameBox.Background = Brushes.DarkGray;
+                UserTextbox.Background = Brushes.DarkGray;
+            }
+            else
+            {
+                MainWindow1.Background = new LinearGradientBrush(Colors.White, Colors.Green, 90.00);
+                OutputBox.Background = Brushes.White;
+                PCNameBox.Foreground = Brushes.Black;
+                ADNameBox.Foreground = Brushes.Black;
+                NameBox.Background = Brushes.White;
+                UserTextbox.Background = Brushes.White;
+            }
         }
 
         private void ExportButton_Click(object sender, RoutedEventArgs e)
