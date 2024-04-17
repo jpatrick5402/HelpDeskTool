@@ -365,7 +365,7 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "space", "" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" } };
+                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "space", "" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }, { "Description", "description" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
@@ -377,9 +377,9 @@ namespace DTTool
                         {
                             // Grab UR AD username
                             DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                            DirectorySearcher URsearcher = new DirectorySearcher(entry);
+                            DirectorySearcher URsearcher = new DirectorySearcher(URentry);
 
-                            searcher.Filter = $"(&(objectClass=user)(uidnumber={UserResult.Properties["uidnumber"]}))";
+                            URsearcher.Filter = $"(&(objectClass=user)(uidnumber={UserResult.Properties["uidnumber"]}))";
                             SearchResult URUserResult = searcher.FindOne();
 
                             if (URUserResult != null)
@@ -398,32 +398,15 @@ namespace DTTool
                                 OutputBox.AppendText("HR relationship: " + item.ToString() + "\n");
                             }
                         }
-                        else
+                        else if (PropertyList[i, 0] == "Password Last Set")
                         {
-                            try
-                            {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
-                            }
-                            catch
-                            {
-                                OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
-                            }
-                        }
-                    }
-                    using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
-                    {
-                        /// Grabbing Pwd Last set. This has to use the PrincipalSearch module as DirectorySearch displays a value in "INTER8" format
-                        /// which doesn't seem to have a 1:1 conversion to DateTime
-                        UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
-                        DateTime? passwordLastSet = user.LastPasswordSet;
+                            var pwdData = UserResult.Properties["pwdlastset"][0];
+                            DateTime UnZonedDate = new DateTime(1601, 01, 01, 01, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
+                            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                            DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
+                            OutputBox.AppendText("Password Last Set " + passwordLastSet + "\n");
 
-                        var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-                        passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)passwordLastSet, timeZone);
-
-                        if (passwordLastSet != null)
-                        {
-                            OutputBox.AppendText("Password Last Set: " + passwordLastSet.ToString() + '\n');
-                            TimeSpan diff = DateTime.Today - passwordLastSet.Value;
+                            TimeSpan diff = DateTime.Today - passwordLastSet;
                             if (diff.TotalDays >= 365)
                             {
                                 OutputBox.AppendText("Pwd Expired: True\n");
@@ -435,16 +418,14 @@ namespace DTTool
                         }
                         else
                         {
-                            OutputBox.AppendText("Password Last Set information is not available.\n");
-                        }
-                        
-
-                        // Grabbing OU
-                        using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
-                        {
-                            de.RefreshCache(new string[] { "canonicalName" });
-                            string canonicalName = de.Properties["canonicalName"].Value as string;
-                            OutputBox.AppendText($"OU: {canonicalName}\n");
+                            try
+                            {
+                                OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                            }
+                            catch
+                            {
+                                OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                            }
                         }
                     }
 
@@ -562,7 +543,7 @@ namespace DTTool
                     }
                     catch
                     {
-                        OutputBox.AppendText($"{UserResult.Properties["name"][0]} has no H: Drive");
+                        OutputBox.AppendText($"{UserResult.Properties["name"][0]} has no H: Drive\n");
                     }
                     try
                     {
