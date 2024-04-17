@@ -63,6 +63,20 @@ namespace DTTool
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
         }
 
+        public LoadingWindow ShowLoadingWindow()
+        {
+            LoadingWindow win = new LoadingWindow();
+            win.Show();
+            win.Topmost = true;
+            win.Focus();
+            return win;
+        }
+
+        public void CloseLoadingWindow(LoadingWindow win)
+        {
+            win.Close();
+        }
+
         public Boolean IsTextInNameBox()
         {
             if (NameBox.Text != "")
@@ -274,7 +288,7 @@ namespace DTTool
                             searcher.Filter = "(&(objectClass=user)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
                             SearchResult GroupUserResult = searcher.FindOne();
 
-                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
+                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
                         }
                         Array.Sort(SortedGroup);
                         OutputBox.AppendText($"Members of {GroupMembersResult.Properties["name"][0]}:\n\n");
@@ -707,10 +721,11 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
+                LoadingWindow Window = ShowLoadingWindow();
                 var SearchObject = UserTextbox.Text.Trim();
                 try
                 {
-                    OutputBox.AppendText("Searching for \"" + SearchObject + "*\" ...\n\n");
+                    OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n");
                     System.Windows.Clipboard.SetText(SearchObject);
                     UserTextbox.Clear();
 
@@ -720,117 +735,48 @@ namespace DTTool
 
                     bool ResultIsFound = false;
 
-                    searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
-                    SearchResultCollection Result = searcher.FindAll();
-                    if (Result.Count > 0) 
+                    searcher.Filter = $"(anr={SearchObject})";
+                    SearchResultCollection UserResult = searcher.FindAll();
+
+                    foreach (SearchResult result in UserResult)
                     {
-                        foreach (SearchResult result in Result)
+                        OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
+                        try
                         {
-                            OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
+                            OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
                         }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
+                        catch
                         {
-                            OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
+                            OutputBox.AppendText("\tThis object has no description\n");
                         }
+                        ResultIsFound = true;
                     }
-                    searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
-                        {
-                            OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
-                        }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
-                        {
-                            OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
-                        }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
-                        {
-                            OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
-                        }
-                    }
-                    
+
                     if (!ResultIsFound)
                     {
                         OutputBox.AppendText("URMC: No object found\n\n");
                     }
 
-                    // Search under UR umbrella
+                    ResultIsFound = false;
+
                     entry = new DirectoryEntry("LDAP://ur.rochester.edu");
                     searcher = new DirectorySearcher(entry);
 
-                    ResultIsFound = false;
+                    searcher.Filter = $"(anr={SearchObject})";
+                    UserResult = searcher.FindAll();
 
-                    searcher.Filter = $"(&(objectClass=*)(samaccountname={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
+                    foreach (SearchResult result in UserResult)
                     {
-                        foreach (SearchResult result in Result)
+                        OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
+                        try
                         {
-                            OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
+                            OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
                         }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(urid={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
+                        catch
                         {
-                            OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
+                            OutputBox.AppendText("\tThis object has no description\n");
                         }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(mail={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
-                        {
-                            OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
-                        }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(cn={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
-                        {
-                            OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
-                        }
-                    }
-                    searcher.Filter = $"(&(objectClass=*)(name={SearchObject}*))";
-                    Result = searcher.FindAll();
-                    if (Result.Count > 0)
-                    {
-                        foreach (SearchResult result in Result)
-                        {
-                            OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t\t" + result.Properties["objectclass"][^1].ToString() + '\n');
-                            ResultIsFound = true;
-                        }
+                        ResultIsFound = true;
                     }
 
                     if (!ResultIsFound)
@@ -838,14 +784,16 @@ namespace DTTool
                         OutputBox.AppendText("UR: No object found\n\n");
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria");
+                    OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
                 }
 
+                // This section is used to see if there are any printers that match the search criteria as well
                 string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
                 using (HttpClient client = new HttpClient())
                 {
+                    bool ResultIsFound = false;
                     HttpResponseMessage response = await client.GetAsync(url);
                     if (response.IsSuccessStatusCode)
                     {
@@ -857,7 +805,12 @@ namespace DTTool
                             if (StringArray[i].Contains($"{SearchObject}"))
                             {
                                 OutputBox.AppendText(StringArray[i]);
+                                ResultIsFound = true;
                             }
+                        }
+                        if (!ResultIsFound) 
+                        {
+                            OutputBox.AppendText("No printers found with criteria\n");
                         }
                     }
                     else
@@ -865,6 +818,7 @@ namespace DTTool
                         OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
                     }
                 }
+                CloseLoadingWindow(Window);
             }
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
