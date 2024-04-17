@@ -399,6 +399,17 @@ namespace DTTool
 
                     using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                     {
+
+                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        command.StartInfo.CreateNoWindow = true;
+                        command.StartInfo.FileName = "powershell";
+                        command.StartInfo.Arguments = "Get-ADUser -Identity " + UserResult.Properties["samaccountname"][0].ToString() + " -Properties PasswordLastSet | select PasswordLastSet -ExpandProperty PasswordLastSet";
+                        command.StartInfo.RedirectStandardOutput = true;
+                        command.Start();
+                        OutputBox.AppendText("Password Last Set: " + command.StandardOutput.ReadToEnd().Replace("\r", "").Replace("\n", "") + "\n");
+
+
+                        /* This version is way faster, but produces inaccurate results
                         /// Grabbing Pwd Last set. This has to use the PrincipalSearch module as DirectorySearch displays a value in "INTER8" format
                         /// which doesn't seem to have a 1:1 conversion to DateTime
                         UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
@@ -421,8 +432,12 @@ namespace DTTool
                         {
                             OutputBox.AppendText("Password Last Set information is not available.\n");
                         }
+                        */
+
 
                         // Grabbing OU
+                        UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+
                         using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
                         {
                             de.RefreshCache(new string[] { "canonicalName" });
