@@ -365,7 +365,7 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "space", "" }, { "Most Recent HR Role", "urrolestatus" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }, { "Description", "description" } };
+                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
@@ -692,6 +692,7 @@ namespace DTTool
             string helpInfo = "HDTool is an AD/computer management tool to improve the efficiency of the Help Desk" +
                 "\n" +
                 "\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input box to perform action on that item" +
+                "\nThe Master Seach Button Queries URMC and UR servers and the print Q report for any items that match" +
                 "\nPlease reach out to Joseph Patrick on Teams or joseph_patrick@urmc.rochester.edu / jpatrick5402@gmail.com for any questions comments or concerns";
             OutputBox.AppendText(helpInfo);
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
