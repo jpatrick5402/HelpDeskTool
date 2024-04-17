@@ -785,10 +785,8 @@ namespace DTTool
                     
                     if (!ResultIsFound)
                     {
-                        OutputBox.AppendText("URMC: No object found\n");
+                        OutputBox.AppendText("URMC: No object found\n\n");
                     }
-
-                    OutputBox.AppendText("\n");
 
                     // Search under UR umbrella
                     entry = new DirectoryEntry("LDAP://ur.rochester.edu");
@@ -849,7 +847,7 @@ namespace DTTool
 
                     if (!ResultIsFound)
                     {
-                        OutputBox.AppendText("UR: No object found\n");
+                        OutputBox.AppendText("UR: No object found\n\n");
                     }
                 }
                 catch
