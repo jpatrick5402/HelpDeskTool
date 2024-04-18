@@ -365,31 +365,13 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", "" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
+                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
                         if (PropertyList[i,0] == "space")
                         {
                             OutputBox.AppendText("\n");
-                        }
-                        else if (PropertyList[i, 0] == "UR AD")
-                        {
-                            // Grab UR AD username
-                            DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                            DirectorySearcher URsearcher = new DirectorySearcher(URentry);
-
-                            URsearcher.Filter = $"(&(objectClass=user)(uidnumber={UserResult.Properties["uidnumber"]}))";
-                            SearchResult URUserResult = searcher.FindOne();
-
-                            if (URUserResult != null)
-                            {
-                                OutputBox.AppendText("UR AD: " + URUserResult.Properties["uid"][0].ToString() + "\n");
-                            }
-                            else
-                            {
-                                OutputBox.AppendText("UR AD: No active UR Active Directory account\n");
-                            }
                         }
                         else if (PropertyList[i, 0] == "Most Recent HR Role")
                         {
