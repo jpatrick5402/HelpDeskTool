@@ -745,7 +745,7 @@ namespace DTTool
 
                     if (!ResultIsFound)
                     {
-                        OutputBox.AppendText("UR: No object found\n\n");
+                        OutputBox.AppendText("\nUR: No object found\n\n");
                     }
                 }
                 catch (Exception ex)
