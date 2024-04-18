@@ -808,23 +808,79 @@ namespace DTTool
 
         private void DarkButton_Click(object sender, RoutedEventArgs e)
         {
-            if (OutputBox.Background != Brushes.DarkGray)
+            if (OutputBox.Background != Brushes.Black)
             {
                 MainWindow1.Background = new LinearGradientBrush(Colors.Navy, Colors.Black, 90.00);
-                OutputBox.Background = Brushes.DarkGray;
+                OutputBox.Background = Brushes.Black;
+                OutputBox.Foreground = Brushes.White;
                 PCNameBox.Foreground = Brushes.White;
                 ADNameBox.Foreground = Brushes.White;
-                NameBox.Background = Brushes.DarkGray;
-                UserTextbox.Background = Brushes.DarkGray;
+                NameBox.Background = Brushes.Black;
+                NameBox.Foreground = Brushes.White;
+                UserTextbox.Background = Brushes.Black;
+                UserTextbox.Foreground = Brushes.White;
+
+                RestartButton.Background = Brushes.Black;
+                RestartButton.Foreground = Brushes.White;
+                PingButton.Background = Brushes.Black;
+                PingButton.Foreground = Brushes.White;
+                SysinfoButton.Background = Brushes.Black;
+                SysinfoButton.Foreground = Brushes.White;
+                NslookupButton.Background = Brushes.Black;
+                NslookupButton.Foreground = Brushes.White;
+                RemoteButton.Background = Brushes.Black;
+                RemoteButton.Foreground = Brushes.White;
+                ComputerInfoButton.Background = Brushes.Black;
+                ComputerInfoButton.Foreground = Brushes.White;
+                UserInfoButton.Background = Brushes.Black;
+                UserInfoButton.Foreground = Brushes.White;
+                MemberOfButton.Background = Brushes.Black;
+                MemberOfButton.Foreground = Brushes.White;
+                GroupInfoButton.Background = Brushes.Black;
+                GroupInfoButton.Foreground = Brushes.White;
+                GroupMembersButton.Background = Brushes.Black;
+                GroupMembersButton.Foreground = Brushes.White;
+                AddgroupButton.Background = Brushes.Black;
+                AddgroupButton.Foreground = Brushes.White;
+                MasterSearchButton.Background = Brushes.Black;
+                MasterSearchButton.Foreground = Brushes.White;
             }
             else
             {
                 MainWindow1.Background = new LinearGradientBrush(Colors.White, Colors.Green, 90.00);
                 OutputBox.Background = Brushes.White;
+                OutputBox.Foreground = Brushes.Black;
                 PCNameBox.Foreground = Brushes.Black;
                 ADNameBox.Foreground = Brushes.Black;
                 NameBox.Background = Brushes.White;
+                NameBox.Foreground = Brushes.Black;
                 UserTextbox.Background = Brushes.White;
+                UserTextbox.Foreground = Brushes.Black;
+
+                RestartButton.Background = Brushes.White;
+                RestartButton.Foreground = Brushes.Black;
+                PingButton.Background = Brushes.White;
+                PingButton.Foreground = Brushes.Black;
+                SysinfoButton.Background = Brushes.White;
+                SysinfoButton.Foreground = Brushes.Black;
+                NslookupButton.Background = Brushes.White;
+                NslookupButton.Foreground = Brushes.Black;
+                RemoteButton.Background = Brushes.White;
+                RemoteButton.Foreground = Brushes.Black;
+                ComputerInfoButton.Background = Brushes.White;
+                ComputerInfoButton.Foreground = Brushes.Black;
+                UserInfoButton.Background = Brushes.White;
+                UserInfoButton.Foreground = Brushes.Black;
+                MemberOfButton.Background = Brushes.White;
+                MemberOfButton.Foreground = Brushes.Black;
+                GroupInfoButton.Background = Brushes.White;
+                GroupInfoButton.Foreground = Brushes.Black;
+                GroupMembersButton.Background = Brushes.White;
+                GroupMembersButton.Foreground = Brushes.Black;
+                AddgroupButton.Background = Brushes.White;
+                AddgroupButton.Foreground = Brushes.Black;
+                MasterSearchButton.Background = Brushes.White;
+                MasterSearchButton.Foreground = Brushes.Black;
             }
         }
 
