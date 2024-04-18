@@ -423,9 +423,42 @@ namespace DTTool
 
                             for (int i = 0; i < MailboxOwners.Length; i++)
                             {
+                                bool FullAccess = false;
+                                bool SendAsAccess = false;
+                                bool SendOnBehalfAccess = false;
+
+                                foreach (var item in UserResult.Properties["memberof"])
+                                {
+                                    string test = item.ToString().Substring(3, item.ToString().IndexOf(",") - 3);
+                                    string test2 = MailboxOwners[i];
+                                    if (MailboxOwners[i].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
+                                    {
+                                        string[] LineArray = MailboxOwners[i].Split(',');
+
+                                        for (int j = 0; j < LineArray.Count(); j++)
+                                        {
+                                            if (LineArray[j].Contains(item.ToString().Substring(3, item.ToString().IndexOf(",") - 3)))
+                                            {
+                                                if (j == 4)
+                                                {
+                                                    FullAccess = true;
+                                                }
+                                                else if (j == 5)
+                                                {
+                                                    SendAsAccess = true;
+                                                }
+                                                else if (j == 6)
+                                                {
+                                                    SendOnBehalfAccess = true;
+                                                }
+                                            }
+                                        }
+                                        HasMailboxOrDL = true;
+                                    }
+                                }
+
                                 if (MailboxOwners[i].Contains(UserResult.Properties["samaccountname"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                     string[] LineArray = MailboxOwners[i].Split(',');
 
                                     for (int j = 0; j < LineArray.Count(); j++)
@@ -434,21 +467,32 @@ namespace DTTool
                                         {
                                             if (j == 4)
                                             {
-                                                OutputBox.AppendText("\tFull Access");
+                                                FullAccess = true;
                                             }
                                             else if (j == 5)
                                             {
-                                                OutputBox.AppendText("\tSend As Access");
+                                                SendAsAccess = true;
                                             }
                                             else if (j == 6)
                                             {
-                                                OutputBox.AppendText("\tSend On Behalf Access");
+                                                SendOnBehalfAccess = true;
                                             }
                                         }
                                     }
-                                    OutputBox.AppendText("\n");
                                     HasMailboxOrDL = true;
                                 }
+
+                                if (FullAccess || SendAsAccess || SendOnBehalfAccess)
+                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                if (FullAccess)
+                                    OutputBox.AppendText("\tFull Access");
+                                if (SendAsAccess)
+                                    OutputBox.AppendText("\tSend As Access");
+                                if (SendOnBehalfAccess)
+                                    OutputBox.AppendText("\tSend On Behalf Access");
+                                if (FullAccess || SendAsAccess || SendOnBehalfAccess)
+                                    OutputBox.AppendText("\n");
+
                             }
                         }
                         using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
