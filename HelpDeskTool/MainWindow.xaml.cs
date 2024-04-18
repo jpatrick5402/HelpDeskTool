@@ -870,6 +870,12 @@ namespace DTTool
                 AddgroupButton.Foreground = Brushes.White;
                 MasterSearchButton.Background = Brushes.Black;
                 MasterSearchButton.Foreground = Brushes.White;
+                HelpButton.Background = Brushes.Black;
+                HelpButton.Foreground = Brushes.White;
+                DarkButton.Background = Brushes.Black;
+                DarkButton.Foreground = Brushes.White;
+                ExportButton.Background = Brushes.Black;
+                ExportButton.Foreground = Brushes.White;
             }
             else
             {
@@ -907,6 +913,12 @@ namespace DTTool
                 AddgroupButton.Foreground = Brushes.Black;
                 MasterSearchButton.Background = Brushes.White;
                 MasterSearchButton.Foreground = Brushes.Black;
+                HelpButton.Background = Brushes.White;
+                HelpButton.Foreground = Brushes.Black;
+                DarkButton.Background = Brushes.White;
+                DarkButton.Foreground = Brushes.Black;
+                ExportButton.Background = Brushes.White;
+                ExportButton.Foreground = Brushes.Black;
             }
         }
 
