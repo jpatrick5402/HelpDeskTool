@@ -998,5 +998,11 @@ namespace DTTool
                 CloseLoadingWindow(Window);
             }
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow win = new SettingsWindow();
+            win.Show();
+        }
     }
 }
