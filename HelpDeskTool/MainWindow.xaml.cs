@@ -812,7 +812,7 @@ namespace DTTool
                         {
                             if (StringArray[i].Contains($"{SearchObject}"))
                             {
-                                OutputBox.AppendText(StringArray[i]);
+                                OutputBox.AppendText(StringArray[i].Replace("\"", ""));
                                 ResultIsFound = true;
                             }
                         }
@@ -876,6 +876,8 @@ namespace DTTool
                 DarkButton.Foreground = Brushes.White;
                 ExportButton.Background = Brushes.Black;
                 ExportButton.Foreground = Brushes.White;
+                LockoutToolButton.Background = Brushes.Black;
+                LockoutToolButton.Foreground = Brushes.White;
             }
             else
             {
@@ -919,6 +921,8 @@ namespace DTTool
                 DarkButton.Foreground = Brushes.Black;
                 ExportButton.Background = Brushes.White;
                 ExportButton.Foreground = Brushes.Black;
+                LockoutToolButton.Background = Brushes.White;
+                LockoutToolButton.Foreground = Brushes.Black;
             }
         }
 
@@ -940,6 +944,59 @@ namespace DTTool
 
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
+        }
+
+        private void LockoutToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsTextInUserBox())
+            {
+                LoadingWindow Window = ShowLoadingWindow();
+
+                var UserName = UserTextbox.Text.Trim();
+                OutputBox.AppendText("Searching for " + UserName + "...\n");
+                System.Windows.Clipboard.SetText(UserName);
+                UserTextbox.Clear();
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
+                SearchResult UserResult = searcher.FindOne();
+
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult != null)
+                {
+
+                    string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                    foreach (string DC in DCs)
+                        using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
+                        {
+                            UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                            DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
+                            OutputBox.AppendText(DC + "\t" + LastBad.ToString() + "\n");
+                        }
+                }
+                else
+                {
+                    OutputBox.AppendText($"Unable to find username \"{UserName}\"");
+                }
+                CloseLoadingWindow(Window);
+            }
         }
     }
 }
