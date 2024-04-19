@@ -953,7 +953,7 @@ namespace DTTool
                 LoadingWindow Window = ShowLoadingWindow();
 
                 var UserName = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Searching for " + UserName + "...\n");
+                OutputBox.AppendText("Searching Bad password attempts for " + UserName + "...\n");
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
@@ -988,7 +988,7 @@ namespace DTTool
                             UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
                             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                             DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
-                            OutputBox.AppendText(DC + "\t" + LastBad.ToString() + "\n");
+                            OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\n");
                         }
                 }
                 else
