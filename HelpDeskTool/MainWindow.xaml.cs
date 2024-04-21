@@ -369,7 +369,7 @@ namespace DTTool
                             DateTime UnZonedDate = new DateTime(1601, 01, 01, 01, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
                             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                             DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
-                            OutputBox.AppendText("Password Last Set\t" + passwordLastSet + "\n");
+                            OutputBox.AppendText("Password Last Set:\t" + passwordLastSet + "\n");
 
                             TimeSpan diff = DateTime.Today - passwordLastSet;
                             if (diff.TotalDays >= 365)
@@ -391,14 +391,6 @@ namespace DTTool
                                     de.RefreshCache(new string[] { "canonicalName" });
                                     string canonicalName = de.Properties["canonicalName"].Value as string;
                                     OutputBox.AppendText($"OU: {canonicalName}\n");
-                                    try
-                                    {
-                                        OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
-                                    }
-                                    catch
-                                    {
-                                        OutputBox.AppendText($"{PropertyList[i, 0]}:\tnot listed in object properties\n");
-                                    }
                                 }
                             }
                         }
@@ -768,6 +760,8 @@ namespace DTTool
                     {
                         OutputBox.AppendText("URMC:\tNo object found\n\n");
                     }
+
+                    OutputBox.AppendText("\n");
 
                     ResultIsFound = false;
 
