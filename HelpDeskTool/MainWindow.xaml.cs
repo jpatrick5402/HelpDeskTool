@@ -360,7 +360,7 @@ namespace DTTool
                         {
                             foreach (var item in UserResult.Properties[PropertyList[i, 1]])
                             {
-                                OutputBox.AppendText("HR relationship: " + item.ToString() + "\n");
+                                OutputBox.AppendText("HR relationship:\t" + item.ToString() + "\n");
                             }
                         }
                         else if (PropertyList[i, 0] == "Password Last Set")
@@ -369,16 +369,16 @@ namespace DTTool
                             DateTime UnZonedDate = new DateTime(1601, 01, 01, 01, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
                             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                             DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
-                            OutputBox.AppendText("Password Last Set " + passwordLastSet + "\n");
+                            OutputBox.AppendText("Password Last Set\t" + passwordLastSet + "\n");
 
                             TimeSpan diff = DateTime.Today - passwordLastSet;
                             if (diff.TotalDays >= 365)
                             {
-                                OutputBox.AppendText("Pwd Expired: True\n");
+                                OutputBox.AppendText("Pwd Expired:\tTrue\n");
                             }
                             else
                             {
-                                OutputBox.AppendText("Pwd Expired: False\n");
+                                OutputBox.AppendText("Pwd Expired:\tFalse\n");
                             }
                         }
                         else if (PropertyList[i, 0] == "OU")
@@ -393,11 +393,11 @@ namespace DTTool
                                     OutputBox.AppendText($"OU: {canonicalName}\n");
                                     try
                                     {
-                                        OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                                        OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
                                     }
                                     catch
                                     {
-                                        OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                                        OutputBox.AppendText($"{PropertyList[i, 0]}:\tnot listed in object properties\n");
                                     }
                                 }
                             }
@@ -406,11 +406,11 @@ namespace DTTool
                         {
                             try
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                                OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
                             }
                             catch
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                                OutputBox.AppendText($"{PropertyList[i, 0]}:\tnot listed in object properties\n");
                             }
                         }
                     }
@@ -543,7 +543,7 @@ namespace DTTool
                             {
                                 if (DLOwners[i].Contains(UserResult.Properties["name"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Managed DL: " + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
+                                    OutputBox.AppendText("Managed DL:\t" + DLOwners[i].ToString().Substring(0, DLOwners[i].ToString().IndexOf(",")) + "\n");
                                     HasMailboxOrDL = true;
                                 }
                             }
@@ -766,7 +766,7 @@ namespace DTTool
 
                     if (!ResultIsFound)
                     {
-                        OutputBox.AppendText("URMC: No object found\n\n");
+                        OutputBox.AppendText("URMC:\tNo object found\n\n");
                     }
 
                     ResultIsFound = false;
@@ -793,7 +793,7 @@ namespace DTTool
 
                     if (!ResultIsFound)
                     {
-                        OutputBox.AppendText("\nUR: No object found\n\n");
+                        OutputBox.AppendText("\nUR:\tNo object found\n\n");
                     }
                 }
                 catch (Exception ex)
@@ -822,7 +822,7 @@ namespace DTTool
                         }
                         if (!ResultIsFound) 
                         {
-                            OutputBox.AppendText("No printers found with criteria\n");
+                            OutputBox.AppendText("\nNo printers found with criteria\n");
                         }
                     }
                     else
