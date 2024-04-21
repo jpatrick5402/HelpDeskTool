@@ -10,9 +10,9 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <RadioButton Content="Dark Mode" HorizontalAlignment="Left" Margin="32,24,0,0" VerticalAlignment="Top"/>
         <Button Content="Cancel" Margin="0,0,92,9" HorizontalAlignment="Right" Width="60" Height="24" VerticalAlignment="Bottom"/>
         <Button Content="Save" Margin="0,0,10,10" HorizontalAlignment="Right" Width="60" Height="23" VerticalAlignment="Bottom"/>
+        <CheckBox Content="Dark Mode" Margin="10,10,332,220"/>
 
     </Grid>
 </Window>
