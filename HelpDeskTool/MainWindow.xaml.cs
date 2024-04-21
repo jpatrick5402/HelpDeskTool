@@ -23,6 +23,7 @@ using System.Collections.Immutable;
 using System.Data;
 using System.DirectoryServices.AccountManagement;
 using System.Net.Http;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace DTTool
 {
@@ -396,6 +397,27 @@ namespace DTTool
                             else
                             {
                                 OutputBox.AppendText("Pwd Expired: False\n");
+                            }
+                        }
+                        else if (PropertyList[i, 0] == "OU")
+                        {
+                            using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                            {
+                                UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                                using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
+                                {
+                                    de.RefreshCache(new string[] { "canonicalName" });
+                                    string canonicalName = de.Properties["canonicalName"].Value as string;
+                                    OutputBox.AppendText($"OU: {canonicalName}\n");
+                                    try
+                                    {
+                                        OutputBox.AppendText($"{PropertyList[i, 0]}: " + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                                    }
+                                    catch
+                                    {
+                                        OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                                    }
+                                }
                             }
                         }
                         else
