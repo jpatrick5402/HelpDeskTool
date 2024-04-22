@@ -78,6 +78,7 @@ namespace DTTool
             {
                 LoadingWindow Window = ShowLoadingWindow();
                 string ErrorList = "";
+                string PriorUser = "";
 
                 using PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
                 foreach (string group in groups)
@@ -96,7 +97,12 @@ namespace DTTool
                                 UserPrincipal auser = UserPrincipal.FindByIdentity(context, user.Trim());
                                 if (auser == null)
                                 {
-                                    MessageBox.Show($"User not found: {user}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    if (user.Trim() != PriorUser)
+                                    {
+                                        MessageBox.Show($"User not found: {user.Trim()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        ErrorList = ErrorList + $" User: \"{user.Trim()}\" not found" + '\n';
+                                        PriorUser = user.Trim();
+                                    }
                                 }
                                 else
                                 {
