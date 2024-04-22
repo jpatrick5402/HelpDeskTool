@@ -20,6 +20,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DTTool
@@ -81,75 +82,78 @@ namespace DTTool
                 using PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
                 foreach (string group in groups)
                 {
-                    GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group.Trim());
-                    foreach (string user in users)
+                    if (group != "")
                     {
-                        try
+                        GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group.Trim());
+                        if (agroup == null)
                         {
-                            if (user == null)
-                                throw new Exception($"User {user} not found");
-                            if (group == null)
-                                throw new Exception($"Group {group} not found");
-                            if (AddorRemove.ToLower() == "add")
-                            {
-                                agroup.Members.Add(UserPrincipal.FindByIdentity(context, user.Trim()));
-                            }
-                            else if (AddorRemove.ToLower() == "remove")
-                            {
-                                agroup.Members.Remove(UserPrincipal.FindByIdentity(context, user.Trim()));
-                            }
+                            MessageBox.Show($"Group not found: {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
-                        catch (Exception e)
+                        else
                         {
-                            ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
+                            foreach (string user in users)
+                            {
+                                UserPrincipal auser = UserPrincipal.FindByIdentity(context, user.Trim());
+                                if (auser == null)
+                                {
+                                    MessageBox.Show($"User not found: {user}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        if (AddorRemove.ToLower() == "add")
+                                        {
+                                            try
+                                            {
+                                                agroup.Members.Add(UserPrincipal.FindByIdentity(context, user.Trim()));
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                            }
+                                        }
+                                        else if (AddorRemove.ToLower() == "remove")
+                                        {
+                                            try
+                                            {
+                                                agroup.Members.Remove(UserPrincipal.FindByIdentity(context, user.Trim()));
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                    }
+
+                                    try
+                                    {
+                                        agroup.Save();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                    }
+                                }
+                            }
                         }
                     }
-                    CloseLoadingWindow(Window);
-                    if (ErrorList != "")
-                        MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
-                    agroup.Save();
+                }
+                CloseLoadingWindow(Window);
+                if (ErrorList != "")
+                {
+                    MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    System.Windows.Clipboard.SetText(ErrorList);
                 }
                 MessageBox.Show("All user(s)/group(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
                 MessageBox.Show("Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
-            }
-        }
-
-        private void AddGroup(string[] users, string group)
-        {
-            if (RTPHasText(ARusernameBox))
-            {
-                LoadingWindow Window = ShowLoadingWindow();
-                string ErrorList = "";
-
-                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
-                {
-                    foreach (string user in users)
-                    {
-                        try
-                        {
-                            if (user == null)
-                                throw new Exception($"User {user} not found");
-                            GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
-                            agroup.Members.Add(UserPrincipal.FindByIdentity(context, user.Trim()));
-                            agroup.Save();
-                        }
-                        catch (Exception e)
-                        {
-                            ErrorList = ErrorList + e.Message + $" User: \"{user}\" for {group}" + '\n';
-                        }
-                    }
-                    CloseLoadingWindow(Window);
-                    if (ErrorList != "")
-                        MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
-                    MessageBox.Show("All user(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                }
-            }
-            else
-            {
-                MessageBox.Show("User Input Missing", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
         }
 
@@ -175,28 +179,32 @@ namespace DTTool
         {
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
-            AddGroup(myUserList,"ISDU_VPN_GP_FullAccess");
+            string[] myGroupList = { "ISDU_VPN_GP_FullAccess" };
+            AddOrRemoveBulk(myUserList, myGroupList, "add");
         }
 
         private void AddCisco_Click(object sender, RoutedEventArgs e)
         {
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
-            AddGroup(myUserList, "ISDG_VPN_FullAccess");
+            string[] myGroupList = { "ISDG_VPN_FullAccess" };
+            AddOrRemoveBulk(myUserList, myGroupList, "add");
         }
 
         private void AddMyApps_Click(object sender, RoutedEventArgs e)
         {
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
-            AddGroup(myUserList, "ISDU_CitrixAccessGateway");
+            string[] myGroupList = { "ISDU_CitrixAccessGateway" };
+            AddOrRemoveBulk(myUserList, myGroupList, "add");
         }
 
         private void AddeRecord_Click(object sender, RoutedEventArgs e)
         {
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
-            AddGroup(myUserList, "ISDG_CTX_eRecord2");
+            string[] myGroupList = { "ISDG_CTX_eRecord2" };
+            AddOrRemoveBulk(myUserList, myGroupList, "add");
         }
     }
 }
