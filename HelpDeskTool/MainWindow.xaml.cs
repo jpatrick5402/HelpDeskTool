@@ -761,8 +761,6 @@ namespace DTTool
                         OutputBox.AppendText("URMC:\tNo object found\n\n");
                     }
 
-                    OutputBox.AppendText("\n");
-
                     ResultIsFound = false;
 
                     entry = new DirectoryEntry("LDAP://ur.rochester.edu");
