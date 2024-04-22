@@ -89,6 +89,7 @@ namespace DTTool
                         if (agroup == null)
                         {
                             MessageBox.Show($"Group not found: {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            ErrorList = ErrorList + $" Group: \"{group.Trim()}\" not found" + '\n';
                         }
                         else
                         {
@@ -155,7 +156,7 @@ namespace DTTool
                     MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
                     System.Windows.Clipboard.SetText(ErrorList);
                 }
-                MessageBox.Show("All user(s)/group(s) have been processed", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                MessageBox.Show("All user(s)/group(s) have been processed (Any errors have been copied to your clipboard)", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
