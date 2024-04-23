@@ -19,19 +19,19 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="87,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="17" HorizontalScrollBarVisibility="Disabled" FontSize="11"/>
-        <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Left" Height="30" Margin="231,10,0,0" VerticalAlignment="Top" Width="60" Click="RestartButton_Click"/>
+        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="87,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="17" HorizontalScrollBarVisibility="Disabled" FontSize="11" TabIndex="1"/>
+        <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Left" Height="30" Margin="231,10,0,0" VerticalAlignment="Top" Width="60" Click="RestartButton_Click" TabIndex="2"/>
         <Label x:Name="PCNameBox" Content="PC Name/IP:" HorizontalAlignment="Left" Height="30" Margin="10,9,0,0" VerticalAlignment="Top" Width="84"/>
-        <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" Height="30" Margin="296,10,0,0" VerticalAlignment="Top" Width="60" Click="PingButton_Click"/>
-        <Button x:Name="NslookupButton" Content="nslookup" HorizontalAlignment="Left" Height="30" Margin="426,10,0,0" VerticalAlignment="Top" Width="60" Click="NslookupButton_Click"/>
-        <Button x:Name="SysinfoButton" Content="Sys. info" HorizontalAlignment="Left" Height="30" Margin="361,10,0,0" VerticalAlignment="Top" Width="60" Click="SysinfoButton_Click"/>
-        <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="491,10,0,0" VerticalAlignment="Top" Width="60" Click="RemoteButton_Click"/>
+        <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" Height="30" Margin="296,10,0,0" VerticalAlignment="Top" Width="60" Click="PingButton_Click" TabIndex="3"/>
+        <Button x:Name="NslookupButton" Content="nslookup" HorizontalAlignment="Left" Height="30" Margin="426,10,0,0" VerticalAlignment="Top" Width="60" Click="NslookupButton_Click" TabIndex="5"/>
+        <Button x:Name="SysinfoButton" Content="Sys. info" HorizontalAlignment="Left" Height="30" Margin="361,10,0,0" VerticalAlignment="Top" Width="60" Click="SysinfoButton_Click" TabIndex="4"/>
+        <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="491,10,0,0" VerticalAlignment="Top" Width="60" Click="RemoteButton_Click" TabIndex="6"/>
         <Label x:Name="ADNameBox" Content="AD Name:" HorizontalAlignment="Left" Height="29" Margin="10,55,0,0" VerticalAlignment="Top" Width="84"/>
-        <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="87,60,0,0" VerticalAlignment="Top" Width="130" FontSize="11" TextWrapping="Wrap" Grid.IsSharedSizeScope="True" UseLayoutRounding="False"/>
-        <Button x:Name="UserInfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="231,54,0,0" VerticalAlignment="Top" Width="60" Click="UserInfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
-        <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Left" Height="30" Margin="295,54,0,0" VerticalAlignment="Top" Width="60" Click="MemberOfButton_Click" FontSize="11"/>
-        <Button x:Name="ComputerInfoButton" Content="AD PC info" HorizontalAlignment="Left" Height="30" Margin="556,10,0,0" VerticalAlignment="Top" Width="60" Click="ComputerInfoButton_Click" FontSize="11"/>
-        <Button x:Name="GroupMembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="427,54,0,0" VerticalAlignment="Top" Width="60" Click="GroupMembersButton_Click"/>
+        <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="87,60,0,0" VerticalAlignment="Top" Width="130" FontSize="11" TextWrapping="Wrap" Grid.IsSharedSizeScope="True" UseLayoutRounding="False" TabIndex="8"/>
+        <Button x:Name="UserInfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="231,54,0,0" VerticalAlignment="Top" Width="60" Click="UserInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="9"/>
+        <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Left" Height="30" Margin="295,54,0,0" VerticalAlignment="Top" Width="60" Click="MemberOfButton_Click" FontSize="11" TabIndex="10"/>
+        <Button x:Name="ComputerInfoButton" Content="AD PC info" HorizontalAlignment="Left" Height="30" Margin="556,10,0,0" VerticalAlignment="Top" Width="60" Click="ComputerInfoButton_Click" FontSize="11" TabIndex="7"/>
+        <Button x:Name="GroupMembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="427,54,0,0" VerticalAlignment="Top" Width="60" Click="GroupMembersButton_Click" TabIndex="12"/>
         <Border BorderBrush="Black" BorderThickness="1" Margin="0,106,0,0">
             <RichTextBox x:Name="OutputBox" Margin="19,17,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" Width="2000">
                 <FlowDocument>
@@ -41,14 +41,14 @@
                 </FlowDocument>
             </RichTextBox>
         </Border>
-        <Button x:Name="AddgroupButton" Content="Add/Remove&#xD;&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="491,54,0,0" VerticalAlignment="Top" Width="60" Click="AddgroupButton_Click" FontSize="9"/>
-        <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" Margin="0,125,21,0" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2"/>
-        <Button x:Name="GroupInfoButton" Content="Group info" HorizontalAlignment="Left" Height="30" Margin="361,54,0,0" VerticalAlignment="Top" Width="60" Click="GroupInfoButton_Click" RenderTransformOrigin="0.021,0.544"/>
-        <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Right" Height="30" Margin="0,155,21,0" VerticalAlignment="Top" Width="60" Click="HelpButton_Click" FontSize="11"/>
-        <Button x:Name="MasterSearchButton" Content="Master Search" HorizontalAlignment="Left" Height="30" Margin="556,54,0,0" VerticalAlignment="Top" Width="60" Click="MasterSearchButton_Click" FontSize="9"/>
-        <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Right" Height="30" Margin="0,185,21,0" VerticalAlignment="Top" Width="60" Click="DarkButton_Click" FontSize="11"/>
-        <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Right" Height="30" Margin="0,215,21,0" VerticalAlignment="Top" Width="60" Click="ExportButton_Click" FontSize="11"/>
-        <Button x:Name="LockoutToolButton" Content="Bad PWDs" HorizontalAlignment="Left" Height="30" Margin="621,54,0,0" VerticalAlignment="Top" Width="60" Click="LockoutToolButton_Click" FontSize="9"/>
+        <Button x:Name="AddgroupButton" Content="Add/Remove&#xD;&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="491,54,0,0" VerticalAlignment="Top" Width="60" Click="AddgroupButton_Click" FontSize="9" TabIndex="13"/>
+        <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" Margin="0,125,21,0" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2" TabIndex="16"/>
+        <Button x:Name="GroupInfoButton" Content="Group info" HorizontalAlignment="Left" Height="30" Margin="361,54,0,0" VerticalAlignment="Top" Width="60" Click="GroupInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="11"/>
+        <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Right" Height="30" Margin="0,155,21,0" VerticalAlignment="Top" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="17"/>
+        <Button x:Name="MasterSearchButton" Content="Master Search" HorizontalAlignment="Left" Height="30" Margin="556,54,0,0" VerticalAlignment="Top" Width="60" Click="MasterSearchButton_Click" FontSize="9" TabIndex="14"/>
+        <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Right" Height="30" Margin="0,185,21,0" VerticalAlignment="Top" Width="60" Click="DarkButton_Click" FontSize="11" TabIndex="18"/>
+        <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Right" Height="30" Margin="0,215,21,0" VerticalAlignment="Top" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="19"/>
+        <Button x:Name="LockoutToolButton" Content="Bad PWDs" HorizontalAlignment="Left" Height="30" Margin="621,54,0,0" VerticalAlignment="Top" Width="60" Click="LockoutToolButton_Click" FontSize="9" TabIndex="15"/>
         <Button x:Name="SettingsButton" Content="Settings" HorizontalAlignment="Right" Height="30" Margin="0,245,21,0" VerticalAlignment="Top" Width="60" Click="SettingsButton_Click" FontSize="11" Visibility="Hidden"/>
     </Grid>
 </Window>
