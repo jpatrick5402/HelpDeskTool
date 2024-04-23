@@ -88,7 +88,6 @@ namespace DTTool
                         GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group.Trim());
                         if (agroup == null)
                         {
-                            MessageBox.Show($"Group not found: {group}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             ErrorList = ErrorList + $" Group: \"{group.Trim()}\" not found" + '\n';
                         }
                         else
@@ -100,7 +99,6 @@ namespace DTTool
                                 {
                                     if (user.Trim() != PriorUser)
                                     {
-                                        MessageBox.Show($"User not found: {user.Trim()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                                         ErrorList = ErrorList + $" User: \"{user.Trim()}\" not found" + '\n';
                                         PriorUser = user.Trim();
                                     }
