@@ -946,53 +946,69 @@ namespace DTTool
         {
             if (IsTextInUserBox())
             {
-                LoadingWindow Window = ShowLoadingWindow();
-
                 var UserName = UserTextbox.Text.Trim();
-                OutputBox.AppendText("Searching Bad password attempts for " + UserName + "...\n");
-                System.Windows.Clipboard.SetText(UserName);
-                UserTextbox.Clear();
 
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
+                MessageBoxResult result = System.Windows.MessageBox.Show("This may take approximately 1 minute, do you wish to continue?",
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
 
-                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
-                SearchResult UserResult = searcher.FindOne();
-
-                if (UserResult == null)
-                {
-                    searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
-                    UserResult = searcher.FindOne();
-                }
-                if (UserResult == null)
-                {
-                    searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
-                    UserResult = searcher.FindOne();
-                }
-                if (UserResult == null)
-                {
-                    searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
-                    UserResult = searcher.FindOne();
-                }
-                if (UserResult != null)
+                if (result == MessageBoxResult.Yes)
                 {
 
-                    string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
-                    foreach (string DC in DCs)
-                        using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
-                        {
-                            UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
-                            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-                            DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
-                            OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\n");
-                        }
+                    LoadingWindow Window = ShowLoadingWindow();
+                    OutputBox.AppendText("Searching Bad password attempts for " + UserName + "...\n\n");
+                    System.Windows.Clipboard.SetText(UserName);
+                    UserTextbox.Clear();
+
+                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                    DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                    searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
+                    SearchResult UserResult = searcher.FindOne();
+
+                    if (UserResult == null)
+                    {
+                        searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
+                        UserResult = searcher.FindOne();
+                    }
+                    if (UserResult == null)
+                    {
+                        searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
+                        UserResult = searcher.FindOne();
+                    }
+                    if (UserResult == null)
+                    {
+                        searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
+                        UserResult = searcher.FindOne();
+                    }
+                    if (UserResult != null)
+                    {
+
+                        string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                        OutputBox.AppendText("DC\t\tCount\tTime\t\t\tLast Set\n");
+                        foreach (string DC in DCs)
+                            using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
+                            {
+                                UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                                var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                                DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
+                                OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + auser.LastPasswordSet.ToString() + "\n");
+                            }
+                    }
+                    else
+                    {
+                        OutputBox.AppendText($"Unable to find username \"{UserName}\"");
+                    }
+                    CloseLoadingWindow(Window);
                 }
                 else
                 {
-                    OutputBox.AppendText($"Unable to find username \"{UserName}\"");
+                    OutputBox.AppendText("Action Cancelled\n");
                 }
-                CloseLoadingWindow(Window);
             }
+            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

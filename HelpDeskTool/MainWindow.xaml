@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="HelpDeskTool" Height="759" Width="651">
+        Title="HelpDeskTool" Height="759" Width="719">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="White" Offset="0.248"/>
@@ -48,7 +48,7 @@
         <Button x:Name="MasterSearchButton" Content="Master Search" HorizontalAlignment="Left" Height="30" Margin="556,54,0,0" VerticalAlignment="Top" Width="60" Click="MasterSearchButton_Click" FontSize="9"/>
         <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Right" Height="30" Margin="0,185,21,0" VerticalAlignment="Top" Width="60" Click="DarkButton_Click" FontSize="11"/>
         <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Right" Height="30" Margin="0,215,21,0" VerticalAlignment="Top" Width="60" Click="ExportButton_Click" FontSize="11"/>
-        <Button x:Name="LockoutToolButton" Content="Pwd info" HorizontalAlignment="Left" Height="30" Margin="621,54,0,0" VerticalAlignment="Top" Width="60" Click="LockoutToolButton_Click" FontSize="9" Visibility="Hidden"/>
+        <Button x:Name="LockoutToolButton" Content="Bad PWDs" HorizontalAlignment="Left" Height="30" Margin="621,54,0,0" VerticalAlignment="Top" Width="60" Click="LockoutToolButton_Click" FontSize="9"/>
         <Button x:Name="SettingsButton" Content="Settings" HorizontalAlignment="Right" Height="30" Margin="0,245,21,0" VerticalAlignment="Top" Width="60" Click="SettingsButton_Click" FontSize="11" Visibility="Hidden"/>
     </Grid>
 </Window>
