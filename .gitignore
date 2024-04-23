@@ -5,3 +5,5 @@ HelpDeskTool/obj/*
 HelpDeskTool/.vs/*
 /HelpDeskTool/Properties/PublishProfiles/ClickOnceProfile.pubxml.user
 /HelpDeskTool/Properties/PublishProfiles/ClickOnceProfile.pubxml
+/HelpDeskTool/Properties/PublishProfiles
+/HelpDeskTool/HelpDeskTool.csproj.user
