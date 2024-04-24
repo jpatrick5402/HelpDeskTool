@@ -19,7 +19,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="1" Margin="0,106,0,0">
+        <Border BorderThickness="1" Margin="0,106,0,0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black" Opacity="0"/>
+            </Border.BorderBrush>
             <RichTextBox x:Name="OutputBox" Margin="19,17,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" Width="2000">
                 <FlowDocument>
                     <Paragraph>
