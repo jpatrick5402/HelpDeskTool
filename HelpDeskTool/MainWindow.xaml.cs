@@ -1026,11 +1026,5 @@ namespace DTTool
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsWindow win = new SettingsWindow();
-            win.Show();
-        }
     }
 }
