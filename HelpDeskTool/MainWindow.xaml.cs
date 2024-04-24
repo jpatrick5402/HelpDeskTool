@@ -1078,7 +1078,6 @@ namespace DTTool
                                     var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                                     DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
                                     OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + auser.LastPasswordSet.ToString() + "\n");
-                                    OutputBox.AppendText("An error occurred\n");
                                 }
                             }
                         }
