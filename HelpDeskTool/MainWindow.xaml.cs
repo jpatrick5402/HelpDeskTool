@@ -82,6 +82,15 @@ namespace DTTool
             return false;
         }
 
+        public Boolean IsTextInMasterBox()
+        {
+            if (MasterSearchBox.Text != "")
+                return true;
+            System.Windows.MessageBox.Show("No Search Input Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            OutputBox.AppendText("No Search Input Detected");
+            return false;
+        }
+
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsTextInNameBox())
@@ -744,103 +753,118 @@ namespace DTTool
 
         private async void MasterSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInUserBox())
+            if (IsTextInMasterBox())
             {
                 LoadingWindow Window = ShowLoadingWindow();
-                var SearchObject = UserTextbox.Text.Trim();
+                var SearchObject = MasterSearchBox.Text.Trim();
                 OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n");
                 System.Windows.Clipboard.SetText(SearchObject);
-                UserTextbox.Clear();
-                try
+                MasterSearchBox.Clear();
+                if (URMCDomainCB.IsChecked == true)
                 {
-                    // Search under URMC umbrella
-                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
-                    DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                    bool ResultIsFound = false;
-
-                    searcher.Filter = $"(anr={SearchObject})";
-                    SearchResultCollection UserResult = searcher.FindAll();
-
-                    foreach (SearchResult result in UserResult)
+                    try
                     {
-                        OutputBox.AppendText("URMC:\t" + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
-                        try
+                        // Search under URMC umbrella
+                        DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
+                        DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                        bool ResultIsFound = false;
+
+                        searcher.Filter = $"(anr={SearchObject})";
+                        SearchResultCollection UserResult = searcher.FindAll();
+
+                        foreach (SearchResult result in UserResult)
                         {
-                            OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
-                        }
-                        catch
-                        {
-                            OutputBox.AppendText("\tThis object has no description\n");
-                        }
-                        ResultIsFound = true;
-                    }
-
-                    if (!ResultIsFound)
-                    {
-                        OutputBox.AppendText("URMC:\tNo object found\n\n");
-                    }
-
-                    ResultIsFound = false;
-
-                    entry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                    searcher = new DirectorySearcher(entry);
-
-                    searcher.Filter = $"(anr={SearchObject})";
-                    UserResult = searcher.FindAll();
-
-                    foreach (SearchResult result in UserResult)
-                    {
-                        OutputBox.AppendText("UR:\t" + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
-                        try
-                        {
-                            OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
-                        }
-                        catch
-                        {
-                            OutputBox.AppendText("\tThis object has no description\n");
-                        }
-                        ResultIsFound = true;
-                    }
-
-                    if (!ResultIsFound)
-                    {
-                        OutputBox.AppendText("\nUR:\tNo object found\n\n");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
-                }
-
-                // This section is used to see if there are any printers that match the search criteria as well
-                string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
-                using (HttpClient client = new HttpClient())
-                {
-                    bool ResultIsFound = false;
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string csvContent = await response.Content.ReadAsStringAsync();
-                        string[] StringArray = csvContent.Split('\n');
-
-                        for (int i = 0; i < StringArray.Length; i++)
-                        {
-                            if (StringArray[i].Contains($"{SearchObject}"))
+                            OutputBox.AppendText("URMC:\t" + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
+                            try
                             {
-                                OutputBox.AppendText(StringArray[i].Replace("\"", ""));
-                                ResultIsFound = true;
+                                OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
+                            }
+                            catch
+                            {
+                                OutputBox.AppendText("\tThis object has no description\n");
+                            }
+                            ResultIsFound = true;
+                        }
+
+                        if (!ResultIsFound)
+                        {
+                            OutputBox.AppendText("URMC:\tNo object found\n\n");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
+                    }
+                }
+                if (URDomainCB.IsChecked == true) 
+                {
+                    try
+                    {
+                        DirectoryEntry entry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                        DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                        bool ResultIsFound = false;
+
+                        searcher.Filter = $"(anr={SearchObject})";
+                        SearchResultCollection UserResult = searcher.FindAll();
+
+                        foreach (SearchResult result in UserResult)
+                        {
+                            OutputBox.AppendText("UR:\t" + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
+                            try
+                            {
+                                OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
+                            }
+                            catch
+                            {
+                                OutputBox.AppendText("\tThis object has no description\n");
+                            }
+                            ResultIsFound = true;
+                        }
+
+                        if (!ResultIsFound)
+                        {
+                            OutputBox.AppendText("\nUR:\tNo object found\n\n");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
+                    }
+                }
+                if (PrintersCB.IsChecked == true)
+                {
+                    // This section is used to see if there are any printers that match the search criteria as well
+                    string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
+                    using (HttpClient client = new HttpClient())
+                    {
+                        bool ResultIsFound = false;
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string csvContent = await response.Content.ReadAsStringAsync();
+                            string[] StringArray = csvContent.Split('\n');
+
+                            for (int i = 0; i < StringArray.Length; i++)
+                            {
+                                if (StringArray[i].Contains($"{SearchObject}"))
+                                {
+                                    OutputBox.AppendText(StringArray[i].Replace("\"", ""));
+                                    ResultIsFound = true;
+                                }
+                            }
+                            if (!ResultIsFound)
+                            {
+                                OutputBox.AppendText("\nNo printers found with criteria\n");
                             }
                         }
-                        if (!ResultIsFound) 
+                        else
                         {
-                            OutputBox.AppendText("\nNo printers found with criteria\n");
+                            OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
                         }
                     }
-                    else
-                    {
-                        OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
-                    }
+                
                 }
                 CloseLoadingWindow(Window);
             }
@@ -894,6 +918,23 @@ namespace DTTool
                 ExportButton.Foreground = Brushes.White;
                 LockoutToolButton.Background = Brushes.Black;
                 LockoutToolButton.Foreground = Brushes.White;
+                ToolTab1.Background = Brushes.Black;
+                ToolTab1.Foreground = Brushes.DarkGray;
+                ToolTab2.Background = Brushes.Black;
+                ToolTab2.Foreground = Brushes.DarkGray;
+                ToolTab3.Background = Brushes.Black;
+                ToolTab3.Foreground = Brushes.DarkGray;
+                ToolTab5.Background = Brushes.Black;
+                ToolTab5.Foreground = Brushes.DarkGray;
+                ToolBox1.Background = Brushes.Black;
+                ToolBox2.Background = Brushes.Black;
+                ToolBox3.Background = Brushes.Black;
+                ToolBox5.Background = Brushes.Black;
+                URMCDomainCB.Foreground = Brushes.White;
+                URDomainCB.Foreground = Brushes.White;
+                PrintersCB.Foreground = Brushes.White;
+                MasterSearchBox.Background = Brushes.Black;
+                MasterSearchBox.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -941,6 +982,23 @@ namespace DTTool
                 ExportButton.Foreground = Brushes.Black;
                 LockoutToolButton.Background = Brushes.White;
                 LockoutToolButton.Foreground = Brushes.Black;
+                ToolTab1.Background = Brushes.White;
+                ToolTab1.Foreground = Brushes.Black;
+                ToolTab2.Background = Brushes.White;
+                ToolTab2.Foreground = Brushes.Black;
+                ToolTab3.Background = Brushes.White;
+                ToolTab3.Foreground = Brushes.Black;
+                ToolTab5.Background = Brushes.White;
+                ToolTab5.Foreground = Brushes.Black;
+                ToolBox1.Background = Brushes.White;
+                ToolBox2.Background = Brushes.White;
+                ToolBox3.Background = Brushes.White;
+                ToolBox5.Background = Brushes.White;
+                URMCDomainCB.Foreground = Brushes.Black;
+                URDomainCB.Foreground = Brushes.Black;
+                PrintersCB.Foreground = Brushes.Black;
+                MasterSearchBox.Background = Brushes.White;
+                MasterSearchBox.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
