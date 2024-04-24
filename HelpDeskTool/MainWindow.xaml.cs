@@ -743,12 +743,11 @@ namespace DTTool
             {
                 LoadingWindow Window = ShowLoadingWindow();
                 var SearchObject = UserTextbox.Text.Trim();
+                OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n");
+                System.Windows.Clipboard.SetText(SearchObject);
+                UserTextbox.Clear();
                 try
                 {
-                    OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n");
-                    System.Windows.Clipboard.SetText(SearchObject);
-                    UserTextbox.Clear();
-
                     // Search under URMC umbrella
                     DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
                     DirectorySearcher searcher = new DirectorySearcher(entry);
@@ -760,7 +759,7 @@ namespace DTTool
 
                     foreach (SearchResult result in UserResult)
                     {
-                        OutputBox.AppendText("URMC: " + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
+                        OutputBox.AppendText("URMC:\t" + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
                         try
                         {
                             OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
@@ -787,7 +786,7 @@ namespace DTTool
 
                     foreach (SearchResult result in UserResult)
                     {
-                        OutputBox.AppendText("UR: " + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
+                        OutputBox.AppendText("UR:\t" + result.Properties["cn"][0].ToString() + "\t" + result.Properties["objectclass"][^1].ToString());
                         try
                         {
                             OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
