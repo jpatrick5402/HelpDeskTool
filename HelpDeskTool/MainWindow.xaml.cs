@@ -383,6 +383,12 @@ namespace DTTool
                             DateTime UnZonedDate = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
                             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                             DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
+
+                            if (!timeZone.IsDaylightSavingTime(passwordLastSet))
+                            {
+                                passwordLastSet = passwordLastSet.AddHours(1);
+                            }
+
                             OutputBox.AppendText("Password Last Set:\t" + passwordLastSet + "\n");
 
                             TimeSpan diff = DateTime.Today - passwordLastSet;
@@ -1078,6 +1084,14 @@ namespace DTTool
                                     var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                                     DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
                                     DateTime LastSet = TimeZoneInfo.ConvertTime((DateTime)auser.LastPasswordSet, timeZone);
+                                    if (!timeZone.IsDaylightSavingTime(LastBad))
+                                    {
+                                        LastBad = LastBad.AddHours(1);
+                                    }
+                                    if (!timeZone.IsDaylightSavingTime(LastSet))
+                                    {
+                                        LastSet = LastSet.AddHours(1);
+                                    }
                                     OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + LastSet.ToString() + "\n");
                                 }
                             }
