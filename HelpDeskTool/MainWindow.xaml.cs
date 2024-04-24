@@ -24,6 +24,9 @@ using System.Data;
 using System.DirectoryServices.AccountManagement;
 using System.Net.Http;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Configuration;
+using Microsoft.VisualBasic;
+using System.Windows.Forms.PropertyGridInternal;
 
 namespace DTTool
 {
@@ -40,6 +43,8 @@ namespace DTTool
         {
             InitializeComponent();
 
+            if (Settings.Default.DarkMode)
+                DarkButton_Click(null, null);
 
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
@@ -889,6 +894,8 @@ namespace DTTool
                 ExportButton.Foreground = Brushes.White;
                 LockoutToolButton.Background = Brushes.Black;
                 LockoutToolButton.Foreground = Brushes.White;
+                Settings.Default.DarkMode = true;
+                Settings.Default.Save();
             }
             else
             {
@@ -934,6 +941,8 @@ namespace DTTool
                 ExportButton.Foreground = Brushes.Black;
                 LockoutToolButton.Background = Brushes.White;
                 LockoutToolButton.Foreground = Brushes.Black;
+                Settings.Default.DarkMode = false;
+                Settings.Default.Save();
             }
         }
 
