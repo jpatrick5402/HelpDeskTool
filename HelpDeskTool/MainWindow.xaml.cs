@@ -1066,24 +1066,26 @@ namespace DTTool
                     }
                     if (UserResult != null)
                     {
-
-                        string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
-                        OutputBox.AppendText("DC\t\tCount\tTime\t\t\tLast Set\n");
-                        foreach (string DC in DCs)
-                            using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
+                        try
+                        {
+                            string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                            OutputBox.AppendText("DC\t\tCount\tTime\t\t\tLast Set\n");
+                            foreach (string DC in DCs)
                             {
-                                try
+                                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
                                 {
                                     UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
                                     var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                                     DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
                                     OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + auser.LastPasswordSet.ToString() + "\n");
-                                }
-                                catch
-                                {
                                     OutputBox.AppendText("An error occurred\n");
                                 }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            OutputBox.AppendText($"An error occurred when trying to get password information for {UserName}");
+                        }
                     }
                     else
                     {
