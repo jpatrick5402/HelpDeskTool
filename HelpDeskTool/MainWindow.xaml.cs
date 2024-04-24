@@ -380,7 +380,7 @@ namespace DTTool
                         else if (PropertyList[i, 0] == "Password Last Set")
                         {
                             var pwdData = UserResult.Properties["pwdlastset"][0];
-                            DateTime UnZonedDate = new DateTime(1601, 01, 01, 01, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
+                            DateTime UnZonedDate = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
                             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                             DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
                             OutputBox.AppendText("Password Last Set:\t" + passwordLastSet + "\n");
@@ -1077,7 +1077,8 @@ namespace DTTool
                                     UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
                                     var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                                     DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
-                                    OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + auser.LastPasswordSet.ToString() + "\n");
+                                    DateTime LastSet = TimeZoneInfo.ConvertTime((DateTime)auser.LastPasswordSet, timeZone);
+                                    OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + LastSet.ToString() + "\n");
                                 }
                             }
                         }
