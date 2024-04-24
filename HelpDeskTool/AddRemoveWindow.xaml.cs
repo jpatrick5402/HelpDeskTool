@@ -116,7 +116,7 @@ namespace DTTool
                                             }
                                             catch (Exception ex)
                                             {
-                                                ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                                ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
                                             }
                                         }
                                         else if (AddorRemove.ToLower() == "remove")
@@ -127,13 +127,13 @@ namespace DTTool
                                             }
                                             catch (Exception ex)
                                             {
-                                                ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                                ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
                                             }
                                         }
                                     }
                                     catch (Exception ex)
                                     {
-                                        ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                        ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
                                     }
 
                                     try
@@ -142,7 +142,7 @@ namespace DTTool
                                     }
                                     catch (Exception ex)
                                     {
-                                        ErrorList = ErrorList + ex.Message + $" User: \"{user}\" for {group}" + '\n';
+                                        ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
                                     }
                                 }
                             }
