@@ -430,7 +430,7 @@ namespace DTTool
                             {
                                 OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
                             }
-                            catch
+                            catch (Exception ex)
                             {
                                 OutputBox.AppendText($"{PropertyList[i, 0]}:\tnot listed in object properties\n");
                             }
@@ -593,7 +593,7 @@ namespace DTTool
 
                         OutputBox.AppendText(MemberOfresult.Properties["homedirectory"][0].ToString() + "\n");
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         OutputBox.AppendText($"{UserResult.Properties["name"][0]} has no H: Drive\n");
                     }
@@ -622,7 +622,7 @@ namespace DTTool
                             }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         OutputBox.AppendText($"Unable to find Shared Drives for {UserName}");
                     }
@@ -661,7 +661,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText($"{PropertyList[i, 0]}: " + result.Properties[PropertyList[i, 1]][0] + '\n');
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             OutputBox.AppendText($"{PropertyList[i, 0]} is not listed on properties\n");
                         }
@@ -707,7 +707,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText($"{PropertyList[i, 0]}: " + GroupResultInfo.Properties[PropertyList[i, 1]][0] + '\n');
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
                         }
@@ -780,7 +780,7 @@ namespace DTTool
                             {
                                 OutputBox.AppendText("\t" + result.Properties["description"][0] + '\n');
                             }
-                            catch
+                            catch (Exception ex)
                             {
                                 OutputBox.AppendText("\tThis object has no description\n");
                             }
