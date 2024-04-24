@@ -1072,10 +1072,17 @@ namespace DTTool
                         foreach (string DC in DCs)
                             using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
                             {
-                                UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
-                                var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-                                DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
-                                OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + auser.LastPasswordSet.ToString() + "\n");
+                                try
+                                {
+                                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                                    var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                                    DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
+                                    OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + auser.LastPasswordSet.ToString() + "\n");
+                                }
+                                catch
+                                {
+                                    OutputBox.AppendText("An error occurred\n");
+                                }
                             }
                     }
                     else
