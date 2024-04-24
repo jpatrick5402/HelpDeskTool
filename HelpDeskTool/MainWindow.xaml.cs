@@ -653,7 +653,7 @@ namespace DTTool
 
                 if (result != null)
                 {
-                    string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" } };
+                    string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
