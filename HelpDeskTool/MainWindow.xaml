@@ -66,7 +66,7 @@
                 <Grid x:Name="ToolBox3" Background="#FFE5E5E5">
                     <Button x:Name="MasterSearchButton" Content="Search" HorizontalAlignment="Left" Height="30" Margin="408,0,0,0" VerticalAlignment="Center" Width="60" Click="MasterSearchButton_Click" FontSize="11" TabIndex="14"/>
                     <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="15" Margin="6,10,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="6,30,0,0" VerticalAlignment="Top" Height="15"/>
+                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="6,30,0,0" VerticalAlignment="Center" Height="15"/>
                     <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="15" Margin="115,10,0,0" VerticalAlignment="Top" Width="80"/>
                     <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" Margin="207,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="172" FontSize="11"/>
                 </Grid>
