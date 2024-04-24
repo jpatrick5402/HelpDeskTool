@@ -348,7 +348,7 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
+                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", ""}, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
@@ -394,8 +394,24 @@ namespace DTTool
                                 }
                             }
                         }
-                        else
+                        else if (PropertyList[i, 0] == "UR AD")
                         {
+                            DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                            DirectorySearcher URsearcher = new DirectorySearcher(URentry);
+                            URsearcher.Filter = "(&(objectClass=user)(uidNumber=" + UserResult.Properties["uidNumber"][0].ToString() + "))";
+                            SearchResult URUserResult = URsearcher.FindOne();
+
+                            if (URUserResult != null)
+                            {
+                                OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + URUserResult.Properties["samaccountname"][0] + '\n');
+                            }
+                            else
+                            {
+                                OutputBox.AppendText($"{PropertyList[i, 0]}:\tNo UR AD account\n");
+                            }
+                        }
+                        else
+                                {
                             try
                             {
                                 OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
