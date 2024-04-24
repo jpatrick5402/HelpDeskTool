@@ -72,9 +72,10 @@ namespace DTTool
             win.Close();
         }
 
-        public void AddOrRemoveBulk(string[] users, string[] groups, string AddorRemove)
+        public void AddOrRemoveBulk(string[] users, string[] groups, string AddorRemove, bool QuickAdd)
         {
-            if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox))
+
+            if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox) || RTPHasText(ARusernameBox) && QuickAdd)
             {
                 LoadingWindow Window = ShowLoadingWindow();
                 string ErrorList = "";
@@ -168,7 +169,7 @@ namespace DTTool
             string grouptext = StringFromRTB(ARgroupBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = grouptext.Split("\r\n").SkipLast(1).ToArray();
-            AddOrRemoveBulk(myUserList, myGroupList, "remove");
+            AddOrRemoveBulk(myUserList, myGroupList, "remove", false);
         }
 
         private void AddUGButton_Click(object sender, RoutedEventArgs e)
@@ -177,7 +178,7 @@ namespace DTTool
             string grouptext = StringFromRTB(ARgroupBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = grouptext.Split("\r\n").SkipLast(1).ToArray();
-            AddOrRemoveBulk(myUserList, myGroupList, "add");
+            AddOrRemoveBulk(myUserList, myGroupList, "add", false);
         }
 
         private void AddGP_Click(object sender, RoutedEventArgs e)
@@ -185,7 +186,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDU_VPN_GP_FullAccess" };
-            AddOrRemoveBulk(myUserList, myGroupList, "add");
+            AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
 
         private void AddCisco_Click(object sender, RoutedEventArgs e)
@@ -193,7 +194,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDG_VPN_FullAccess" };
-            AddOrRemoveBulk(myUserList, myGroupList, "add");
+            AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
 
         private void AddMyApps_Click(object sender, RoutedEventArgs e)
@@ -201,7 +202,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDU_CitrixAccessGateway" };
-            AddOrRemoveBulk(myUserList, myGroupList, "add");
+            AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
 
         private void AddeRecord_Click(object sender, RoutedEventArgs e)
@@ -209,7 +210,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDG_CTX_eRecord2" };
-            AddOrRemoveBulk(myUserList, myGroupList, "add");
+            AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
     }
 }
