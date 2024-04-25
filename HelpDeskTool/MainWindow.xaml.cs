@@ -846,14 +846,18 @@ namespace DTTool
                         using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                         {
                             string[] ShareList = sr.ReadToEnd().Split("\n");
+                            bool ItemFound = false;
 
                             for (int i = 0; i < ShareList.Length; i++)
                             {
                                 if (ShareList[i].Contains(SearchObject))
                                 {
-                                    OutputBox.AppendText(ShareList[i] + '\n');
+                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
+                                    ItemFound = true;
                                 }
                             }
+                            if (!ItemFound)
+                                OutputBox.AppendText("No Shares found with criteria\n");
                         }
                     }
                     catch (Exception ex)
