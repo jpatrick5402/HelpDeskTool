@@ -67,11 +67,12 @@
             </TabItem>
             <TabItem x:Name="ToolTab3" Header="Master Search" Margin="0,-1,0,0" Height="22">
                 <Grid x:Name="ToolBox3" Background="#FFE5E5E5">
-                    <Button x:Name="MasterSearchButton" Content="Search" HorizontalAlignment="Left" Height="30" Margin="408,0,0,0" VerticalAlignment="Center" Width="60" Click="MasterSearchButton_Click" FontSize="11" TabIndex="14"/>
-                    <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="15" Margin="6,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="6,30,0,0" VerticalAlignment="Center" Height="15" IsChecked="True"/>
-                    <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="15" Margin="115,10,0,0" VerticalAlignment="Top" Width="80" IsChecked="True"/>
-                    <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" Margin="207,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="172" FontSize="11"/>
+                    <Button x:Name="MasterSearchButton" Content="Search" HorizontalAlignment="Left" Height="30" Margin="623,0,0,0" VerticalAlignment="Center" Width="60" Click="MasterSearchButton_Click" FontSize="11" TabIndex="14"/>
+                    <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="16" Margin="6,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="6,43,0,0" VerticalAlignment="Top" Height="16" IsChecked="True"/>
+                    <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="115,42,0,0" VerticalAlignment="Top" Width="80" IsChecked="True"/>
+                    <CheckBox x:Name="SharedDriveCB" Content="Shared Drives" HorizontalAlignment="Left" Height="16" Margin="115,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" FontSize="11" Margin="243,0,0,0"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab5" Header="Settings" Height="22">

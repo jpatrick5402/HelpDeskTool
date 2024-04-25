@@ -839,6 +839,28 @@ namespace DTTool
                         OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
                     }
                 }
+                if (SharedDriveCB.IsChecked == true)
+                {
+                    try
+                    {
+                        using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
+                        {
+                            string[] ShareList = sr.ReadToEnd().Split("\n");
+
+                            for (int i = 0; i < ShareList.Length; i++)
+                            {
+                                if (ShareList[i].Contains(SearchObject))
+                                {
+                                    OutputBox.AppendText(ShareList[i] + '\n');
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText($"Unable to find Shared Drives\n");
+                    }
+                }
                 if (PrintersCB.IsChecked == true)
                 {
                     // This section is used to see if there are any printers that match the search criteria as well
@@ -939,6 +961,7 @@ namespace DTTool
                 URMCDomainCB.Foreground = Brushes.White;
                 URDomainCB.Foreground = Brushes.White;
                 PrintersCB.Foreground = Brushes.White;
+                SharedDriveCB.Foreground = Brushes.White;
                 MasterSearchBox.Background = Brushes.Black;
                 MasterSearchBox.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
@@ -1003,6 +1026,7 @@ namespace DTTool
                 URMCDomainCB.Foreground = Brushes.Black;
                 URDomainCB.Foreground = Brushes.Black;
                 PrintersCB.Foreground = Brushes.Black;
+                SharedDriveCB.Foreground = Brushes.Black;
                 MasterSearchBox.Background = Brushes.White;
                 MasterSearchBox.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
