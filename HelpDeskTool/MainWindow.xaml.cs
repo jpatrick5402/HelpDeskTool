@@ -592,12 +592,7 @@ namespace DTTool
                     OutputBox.AppendText("\nShared/Home Drive Access List: \n");
                     try
                     {
-                        entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                        searcher = new DirectorySearcher(entry);
-                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
-                        SearchResult MemberOfresult = searcher.FindOne();
-
-                        OutputBox.AppendText(MemberOfresult.Properties["homedirectory"][0].ToString() + "\n");
+                        OutputBox.AppendText(UserResult.Properties["homedirectory"][0].ToString() + "\n");
                     }
                     catch (Exception ex)
                     {
@@ -605,24 +600,17 @@ namespace DTTool
                     }
                     try
                     {
-                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
-                        SearchResult MemberOfresult = searcher.FindOne();
-
-                        if (MemberOfresult != null)
+                        ResultPropertyValueCollection groups = UserResult.Properties["memberOf"];
+                        using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                         {
-
-                            ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                            using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
+                            string[] ShareList = sr.ReadToEnd().Split("\n");
+                            foreach (var group in groups)
                             {
-                                string[] ShareList = sr.ReadToEnd().Split("\n");
-                                foreach (var group in groups)
+                                for (int i = 0; i < ShareList.Length; i++)
                                 {
-                                    for (int i = 0; i < ShareList.Length; i++)
+                                    if (ShareList[i].Contains(group.ToString().Substring(3, group.ToString().IndexOf(",") - 3) + "|"))
                                     {
-                                        if (ShareList[i].Contains(group.ToString().Substring(3, group.ToString().IndexOf(",") - 3) + "|"))
-                                        {
-                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
-                                        }
+                                        OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     }
                                 }
                             }
@@ -852,7 +840,7 @@ namespace DTTool
                             {
                                 if (ShareList[i].Contains(SearchObject))
                                 {
-                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
+                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     ItemFound = true;
                                 }
                             }
