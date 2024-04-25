@@ -863,34 +863,41 @@ namespace DTTool
                 }
                 if (PrintersCB.IsChecked == true)
                 {
-                    // This section is used to see if there are any printers that match the search criteria as well
-                    string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
-                    using (HttpClient client = new HttpClient())
+                    try
                     {
-                        bool ResultIsFound = false;
-                        HttpResponseMessage response = await client.GetAsync(url);
-                        if (response.IsSuccessStatusCode)
+                        // This section is used to see if there are any printers that match the search criteria as well
+                        string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
+                        using (HttpClient client = new HttpClient())
                         {
-                            string csvContent = await response.Content.ReadAsStringAsync();
-                            string[] StringArray = csvContent.Split('\n');
-
-                            for (int i = 0; i < StringArray.Length; i++)
+                            bool ResultIsFound = false;
+                            HttpResponseMessage response = await client.GetAsync(url);
+                            if (response.IsSuccessStatusCode)
                             {
-                                if (StringArray[i].Contains($"{SearchObject}"))
+                                string csvContent = await response.Content.ReadAsStringAsync();
+                                string[] StringArray = csvContent.Split('\n');
+
+                                for (int i = 0; i < StringArray.Length; i++)
                                 {
-                                    OutputBox.AppendText(StringArray[i].Replace("\"", ""));
-                                    ResultIsFound = true;
+                                    if (StringArray[i].Contains($"{SearchObject}"))
+                                    {
+                                        OutputBox.AppendText(StringArray[i].Replace("\"", ""));
+                                        ResultIsFound = true;
+                                    }
+                                }
+                                if (!ResultIsFound)
+                                {
+                                    OutputBox.AppendText("\nNo printers found with criteria\n");
                                 }
                             }
-                            if (!ResultIsFound)
+                            else
                             {
-                                OutputBox.AppendText("\nNo printers found with criteria\n");
+                                OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
                             }
                         }
-                        else
-                        {
-                            OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText($"An error has occurred {ex.Message}\n");
                     }
                 
                 }
