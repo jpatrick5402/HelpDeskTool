@@ -362,11 +362,11 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", ""}, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
+                    string[,] PropertyList = { { "First Name:", "givenname" }, { "Last Name:", "sn" }, { "URMC AD:", "samaccountname" }, { "UR AD:\t", ""}, { "NetID:\t", "uid" }, { "URID:\t", "urid" }, { "Title:\t", "title" }, { "Dept.:\t", "department" }, { "Email:\t", "mail" }, { "Phone:\t", "telephoneNumber" }, { "Description:", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "PWD Last Set:\t", "pwdlastset" }, { "OU", "adspath" }};
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
-                        if (PropertyList[i,0] == "space")
+                        if (PropertyList[i, 0] == "space")
                         {
                             OutputBox.AppendText("\n");
                         }
@@ -377,7 +377,7 @@ namespace DTTool
                                 OutputBox.AppendText("HR relationship:\t" + item.ToString() + "\n");
                             }
                         }
-                        else if (PropertyList[i, 0] == "Password Last Set")
+                        else if (PropertyList[i, 0].Contains("PWD Last Set"))
                         {
                             var pwdData = UserResult.Properties["pwdlastset"][0];
                             DateTime UnZonedDate = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
@@ -389,7 +389,7 @@ namespace DTTool
                                 passwordLastSet = passwordLastSet.AddHours(1);
                             }
 
-                            OutputBox.AppendText("Password Last Set:\t" + passwordLastSet + "\n");
+                            OutputBox.AppendText(PropertyList[i,0] + passwordLastSet + "\n");
 
                             TimeSpan diff = DateTime.Today - passwordLastSet;
                             if (diff.TotalDays >= 365)
@@ -410,7 +410,7 @@ namespace DTTool
                                 {
                                     de.RefreshCache(new string[] { "canonicalName" });
                                     string canonicalName = de.Properties["canonicalName"].Value as string;
-                                    OutputBox.AppendText($"OU: {canonicalName}\n");
+                                    OutputBox.AppendText($"OU:\t\t{canonicalName}\n");
                                 }
                             }
                         }
@@ -434,11 +434,11 @@ namespace DTTool
                                 {
                             try
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                                OutputBox.AppendText($"{PropertyList[i, 0]}\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
                             }
                             catch (Exception ex)
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}:\tnot listed in object properties\n");
+                                OutputBox.AppendText($"{PropertyList[i, 0]}\tnot listed in object properties\n");
                             }
                         }
                     }
@@ -515,7 +515,7 @@ namespace DTTool
                                 }
 
                                 if (FullAccess || SendAsAccess || SendOnBehalfAccess)
-                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Mailbox Access:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                 if (FullAccess)
                                     OutputBox.AppendText("\tFull Access");
                                 if (SendAsAccess)
@@ -537,7 +537,7 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Mailbox Access:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                     string[] LineArray = MailboxOwners[i].Split(',');
 
                                     for (int j = 0; j < LineArray.Count(); j++)
