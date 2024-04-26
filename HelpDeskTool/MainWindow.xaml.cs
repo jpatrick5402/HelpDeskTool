@@ -788,7 +788,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n\n");
+                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
                     }
                 }
                 if (URDomainCB.IsChecked == true) 
@@ -824,7 +824,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n\n");
+                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
                     }
                 }
                 if (SharedDriveCB.IsChecked == true)
@@ -852,7 +852,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"Unable to find Shared Drives\n\n");
+                        OutputBox.AppendText($"Unable to find Shared Drives: {ex.Message}\n\n");
                     }
                 }
                 if (PrintersCB.IsChecked == true)
