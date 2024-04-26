@@ -1039,7 +1039,8 @@ namespace DTTool
         {
             TextRange textRange = new TextRange(OutputBox.Document.ContentStart, OutputBox.Document.ContentEnd);
             string[] OutputArray = textRange.Text.Split('\n');
-            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDT_Export_{DateTime.Now.ToString("M-d-yyyy HH-mm-ss")}.csv";
+            Directory.CreateDirectory($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDTEXPORT\\");
+            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDTEXPORT\\HDT_Export_{DateTime.Now.ToString("M-d-yyyy HH-mm-ss")}.csv";
 
             using (StreamWriter sw = new StreamWriter(path))
             {
