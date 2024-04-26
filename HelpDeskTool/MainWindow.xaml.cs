@@ -782,13 +782,13 @@ namespace DTTool
                         }
 
                         if (!ResultIsFound)
-                        {
                             OutputBox.AppendText("URMC:\tNo object found\n\n");
-                        }
+                        else
+                            OutputBox.AppendText("\n");
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
+                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n\n");
                     }
                 }
                 if (URDomainCB.IsChecked == true) 
@@ -818,13 +818,13 @@ namespace DTTool
                         }
 
                         if (!ResultIsFound)
-                        {
-                            OutputBox.AppendText("\nUR:\tNo object found\n\n");
-                        }
+                            OutputBox.AppendText("UR:\tNo object found\n\n");
+                        else
+                            OutputBox.AppendText("\n");
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
+                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n\n");
                     }
                 }
                 if (SharedDriveCB.IsChecked == true)
@@ -845,12 +845,14 @@ namespace DTTool
                                 }
                             }
                             if (!ItemFound)
-                                OutputBox.AppendText("No Shares found with criteria\n");
+                                OutputBox.AppendText("No Shares found with criteria\n\n");
+                            else
+                                OutputBox.AppendText("\n");
                         }
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"Unable to find Shared Drives\n");
+                        OutputBox.AppendText($"Unable to find Shared Drives\n\n");
                     }
                 }
                 if (PrintersCB.IsChecked == true)
@@ -872,14 +874,14 @@ namespace DTTool
                                 {
                                     if (StringArray[i].Contains($"{SearchObject}"))
                                     {
-                                        OutputBox.AppendText(StringArray[i].Replace("\"", ""));
+                                        OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
                                         ResultIsFound = true;
                                     }
                                 }
                                 if (!ResultIsFound)
-                                {
-                                    OutputBox.AppendText("\nNo printers found with criteria\n");
-                                }
+                                    OutputBox.AppendText("No printers found with criteria\n\n");
+                                else
+                                    OutputBox.AppendText("\n");
                             }
                             else
                             {
@@ -889,7 +891,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"An error has occurred {ex.Message}\n");
+                        OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
                     }
                 
                 }
