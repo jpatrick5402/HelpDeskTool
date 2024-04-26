@@ -374,7 +374,7 @@ namespace DTTool
                         {
                             foreach (var item in UserResult.Properties[PropertyList[i, 1]])
                             {
-                                OutputBox.AppendText("HR relationship:\t" + item.ToString() + "\n");
+                                OutputBox.AppendText("HR status:\t" + item.ToString() + "\n");
                             }
                         }
                         else if (PropertyList[i, 0].Contains("PWD Last Set"))
@@ -515,7 +515,7 @@ namespace DTTool
                                 }
 
                                 if (FullAccess || SendAsAccess || SendOnBehalfAccess)
-                                    OutputBox.AppendText("Mailbox Access:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Mailbox:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                 if (FullAccess)
                                     OutputBox.AppendText("\tFull Access");
                                 if (SendAsAccess)
@@ -537,7 +537,7 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Mailbox Access:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Mailbox:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                     string[] LineArray = MailboxOwners[i].Split(',');
 
                                     for (int j = 0; j < LineArray.Count(); j++)
@@ -666,7 +666,7 @@ namespace DTTool
                     {
                         de.RefreshCache(new string[] { "canonicalName" });
                         string canonicalName = de.Properties["canonicalName"].Value as string;
-                        OutputBox.AppendText("OU: " + canonicalName);
+                        OutputBox.AppendText("OU: " + canonicalName + "\n");
                     }
                 }
                 else
