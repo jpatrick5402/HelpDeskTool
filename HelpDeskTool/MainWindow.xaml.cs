@@ -39,6 +39,7 @@ namespace DTTool
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Initialization Function
         public MainWindow()
         {
             InitializeComponent();
@@ -51,6 +52,7 @@ namespace DTTool
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
         }
 
+        // Helper Functions
         public LoadingWindow ShowLoadingWindow()
         {
             LoadingWindow win = new LoadingWindow();
@@ -59,41 +61,15 @@ namespace DTTool
             win.Focus();
             return win;
         }
-
         public void CloseLoadingWindow(LoadingWindow win)
         {
             win.Close();
         }
 
-        public Boolean IsTextInNameBox()
-        {
-            if (NameBox.Text != "")
-                return true;
-            System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            OutputBox.AppendText("No PC Name/IP Detected");
-            return false;
-        }
-        public Boolean IsTextInUserBox()
-        {
-            if (UserTextbox.Text != "")
-                return true;
-            System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            OutputBox.AppendText("No AD Name Detected");
-            return false;
-        }
-
-        public Boolean IsTextInMasterBox()
-        {
-            if (MasterSearchBox.Text != "")
-                return true;
-            System.Windows.MessageBox.Show("No Search Input Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            OutputBox.AppendText("No Search Input Detected");
-            return false;
-        }
-
+        // Button Functions
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInNameBox())
+            if (NameBox.Text != "")
             {
                 var PCName = NameBox.Text.Trim();
 
@@ -118,13 +94,17 @@ namespace DTTool
                 {
                     OutputBox.AppendText("PC not restarted\n");
                 }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void PingButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInNameBox())
+            if (NameBox.Text != "")
             {
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Pinging " + PCName + "\n\n");
@@ -138,13 +118,18 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
         private void NslookupButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInNameBox())
+            if (NameBox.Text != "")
             {
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Looking for " + PCName + "\n\n");
@@ -158,13 +143,17 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void SysinfoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInNameBox())
+            if (NameBox.Text != "")
             {
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info on " + PCName + "\n\n");
@@ -178,13 +167,17 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void RemoteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInNameBox())
+            if (NameBox.Text != "")
             {
                 var PCName = NameBox.Text.Trim();
                 System.Windows.Clipboard.SetText(PCName);
@@ -196,14 +189,18 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText("Remote Session Initiated with " + PCName);
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
-        }
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
+        }
         private void MemberOfButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInUserBox())
+            if (UserTextbox.Text != "")
             {
 
                 var UserName = UserTextbox.Text.Trim();
@@ -251,13 +248,17 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find object \"{UserName}\"");
                 }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInUserBox())
+            if (UserTextbox.Text != "")
             {
                 var GroupName = UserTextbox.Text.Trim();
                 System.Windows.Clipboard.SetText(GroupName);
@@ -321,14 +322,17 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
         private void UserInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInUserBox())
+            if (UserTextbox.Text != "")
             {
                 var UserName = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Searching for " + UserName + "...\n");
@@ -637,14 +641,17 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
-
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInNameBox())
+            if (NameBox.Text != "")
             {
                 var ComputerName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + ComputerName + "\n\n");
@@ -682,14 +689,19 @@ namespace DTTool
                     }
                 }
                 else
-                { OutputBox.AppendText($"{ComputerName} not found"); }
+                    OutputBox.AppendText($"{ComputerName} not found");
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
         private void GroupInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInUserBox())
+            if (UserTextbox.Text != "")
             {
                 var GroupName = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + GroupName + "\n\n");
@@ -731,11 +743,14 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
         private void AddgroupButton_Click(object sender, RoutedEventArgs e)
         {
             AddRemoveWindow win = new AddRemoveWindow();
@@ -756,10 +771,9 @@ namespace DTTool
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-
         private async void MasterSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInMasterBox())
+            if (MasterSearchBox.Text != "")
             {
                 LoadingWindow Window = ShowLoadingWindow();
                 var SearchObject = MasterSearchBox.Text.Trim();
@@ -902,11 +916,14 @@ namespace DTTool
                 
                 }
                 CloseLoadingWindow(Window);
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No Search Input Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
         private void DarkButton_Click(object sender, RoutedEventArgs e)
         {
             if (OutputBox.Background != Brushes.Black)
@@ -1040,7 +1057,6 @@ namespace DTTool
                 Settings.Default.Save();
             }
         }
-
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
             TextRange textRange = new TextRange(OutputBox.Document.ContentStart, OutputBox.Document.ContentEnd);
@@ -1060,10 +1076,9 @@ namespace DTTool
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-
         private void LockoutToolButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextInUserBox())
+            if (UserTextbox.Text != "")
             {
                 var UserName = UserTextbox.Text.Trim();
 
@@ -1142,9 +1157,13 @@ namespace DTTool
                 {
                     OutputBox.AppendText("Action Cancelled\n");
                 }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
             }
-            OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-            OutputBox.ScrollToEnd();
+            else
+            {
+                System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
