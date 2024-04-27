@@ -366,11 +366,11 @@ namespace DTTool
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
-                    string[,] PropertyList = { { "First Name", "givenname" }, { "Last Name", "sn" }, { "URMC AD", "samaccountname" }, { "UR AD", ""}, { "NetID", "uid" }, { "URID", "urid" }, { "Title", "title" }, { "Dept.", "department" }, { "Email", "mail" }, { "Phone", "telephoneNumber" }, { "Description", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "Bad Password Count (Not Always Accurate)", "badpwdcount" }, { "Password Last Set", "pwdlastset" }, { "OU", "adspath" }};
+                    string[,] PropertyList = { { "First Name:", "givenname" }, { "Last Name:", "sn" }, { "URMC AD:", "samaccountname" }, { "UR AD:\t", ""}, { "NetID:\t", "uid" }, { "URID:\t", "urid" }, { "Title:\t", "title" }, { "Dept.:\t", "department" }, { "Email:\t", "mail" }, { "Phone:\t", "telephoneNumber" }, { "Description:", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "PWD Last Set:\t", "pwdlastset" }, { "OU", "adspath" }};
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
                     {
-                        if (PropertyList[i,0] == "space")
+                        if (PropertyList[i, 0] == "space")
                         {
                             OutputBox.AppendText("\n");
                         }
@@ -378,10 +378,10 @@ namespace DTTool
                         {
                             foreach (var item in UserResult.Properties[PropertyList[i, 1]])
                             {
-                                OutputBox.AppendText("HR relationship:\t" + item.ToString() + "\n");
+                                OutputBox.AppendText("HR status:\t" + item.ToString() + "\n");
                             }
                         }
-                        else if (PropertyList[i, 0] == "Password Last Set")
+                        else if (PropertyList[i, 0].Contains("PWD Last Set"))
                         {
                             var pwdData = UserResult.Properties["pwdlastset"][0];
                             DateTime UnZonedDate = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
@@ -393,7 +393,7 @@ namespace DTTool
                                 passwordLastSet = passwordLastSet.AddHours(1);
                             }
 
-                            OutputBox.AppendText("Password Last Set:\t" + passwordLastSet + "\n");
+                            OutputBox.AppendText(PropertyList[i,0] + passwordLastSet + "\n");
 
                             TimeSpan diff = DateTime.Today - passwordLastSet;
                             if (diff.TotalDays >= 365)
@@ -414,7 +414,7 @@ namespace DTTool
                                 {
                                     de.RefreshCache(new string[] { "canonicalName" });
                                     string canonicalName = de.Properties["canonicalName"].Value as string;
-                                    OutputBox.AppendText($"OU: {canonicalName}\n");
+                                    OutputBox.AppendText($"OU:\t\t{canonicalName}\n");
                                 }
                             }
                         }
@@ -438,11 +438,11 @@ namespace DTTool
                                 {
                             try
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                                OutputBox.AppendText($"{PropertyList[i, 0]}\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
                             }
                             catch (Exception ex)
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}:\tnot listed in object properties\n");
+                                OutputBox.AppendText($"{PropertyList[i, 0]}\tnot listed in object properties\n");
                             }
                         }
                     }
@@ -519,7 +519,7 @@ namespace DTTool
                                 }
 
                                 if (FullAccess || SendAsAccess || SendOnBehalfAccess)
-                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Mailbox:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                 if (FullAccess)
                                     OutputBox.AppendText("\tFull Access");
                                 if (SendAsAccess)
@@ -541,7 +541,7 @@ namespace DTTool
                             {
                                 if (MailboxOwners[i].Contains(UserResult.Properties["mail"][0].ToString()))
                                 {
-                                    OutputBox.AppendText("Accessible Mailbox: " + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
+                                    OutputBox.AppendText("Mailbox:\t" + MailboxOwners[i].ToString().Substring(0, MailboxOwners[i].ToString().IndexOf(",")));
                                     string[] LineArray = MailboxOwners[i].Split(',');
 
                                     for (int j = 0; j < LineArray.Count(); j++)
@@ -596,12 +596,7 @@ namespace DTTool
                     OutputBox.AppendText("\nShared/Home Drive Access List: \n");
                     try
                     {
-                        entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                        searcher = new DirectorySearcher(entry);
-                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
-                        SearchResult MemberOfresult = searcher.FindOne();
-
-                        OutputBox.AppendText(MemberOfresult.Properties["homedirectory"][0].ToString() + "\n");
+                        OutputBox.AppendText(UserResult.Properties["homedirectory"][0].ToString() + "\n");
                     }
                     catch (Exception ex)
                     {
@@ -609,24 +604,17 @@ namespace DTTool
                     }
                     try
                     {
-                        searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserResult.Properties["samaccountname"][0].ToString() + "))";
-                        SearchResult MemberOfresult = searcher.FindOne();
-
-                        if (MemberOfresult != null)
+                        ResultPropertyValueCollection groups = UserResult.Properties["memberOf"];
+                        using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                         {
-
-                            ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                            using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
+                            string[] ShareList = sr.ReadToEnd().Split("\n");
+                            foreach (var group in groups)
                             {
-                                string[] ShareList = sr.ReadToEnd().Split("\n");
-                                foreach (var group in groups)
+                                for (int i = 0; i < ShareList.Length; i++)
                                 {
-                                    for (int i = 0; i < ShareList.Length; i++)
+                                    if (ShareList[i].Contains(group.ToString().Substring(3, group.ToString().IndexOf(",") - 3) + "|"))
                                     {
-                                        if (ShareList[i].Contains(group.ToString().Substring(3, group.ToString().IndexOf(",") - 3) + "|"))
-                                        {
-                                            OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(0, ShareList[i].IndexOf('|')) + '\n');
-                                        }
+                                        OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     }
                                 }
                             }
@@ -685,7 +673,7 @@ namespace DTTool
                     {
                         de.RefreshCache(new string[] { "canonicalName" });
                         string canonicalName = de.Properties["canonicalName"].Value as string;
-                        OutputBox.AppendText("OU: " + canonicalName);
+                        OutputBox.AppendText("OU: " + canonicalName + "\n");
                     }
                 }
                 else
@@ -808,13 +796,13 @@ namespace DTTool
                         }
 
                         if (!ResultIsFound)
-                        {
                             OutputBox.AppendText("URMC:\tNo object found\n\n");
-                        }
+                        else
+                            OutputBox.AppendText("\n");
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
+                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
                     }
                 }
                 if (URDomainCB.IsChecked == true) 
@@ -844,13 +832,13 @@ namespace DTTool
                         }
 
                         if (!ResultIsFound)
-                        {
-                            OutputBox.AppendText("\nUR:\tNo object found\n\n");
-                        }
+                            OutputBox.AppendText("UR:\tNo object found\n\n");
+                        else
+                            OutputBox.AppendText("\n");
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText("An error has occurred, try refining your search or adjusting your search criteria\n");
+                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
                     }
                 }
                 if (SharedDriveCB.IsChecked == true)
@@ -860,19 +848,25 @@ namespace DTTool
                         using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
                         {
                             string[] ShareList = sr.ReadToEnd().Split("\n");
+                            bool ItemFound = false;
 
                             for (int i = 0; i < ShareList.Length; i++)
                             {
                                 if (ShareList[i].Contains(SearchObject))
                                 {
-                                    OutputBox.AppendText(ShareList[i] + '\n');
+                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
+                                    ItemFound = true;
                                 }
                             }
+                            if (!ItemFound)
+                                OutputBox.AppendText("No Shares found with criteria\n\n");
+                            else
+                                OutputBox.AppendText("\n");
                         }
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"Unable to find Shared Drives\n");
+                        OutputBox.AppendText($"Unable to find Shared Drives: {ex.Message}\n\n");
                     }
                 }
                 if (PrintersCB.IsChecked == true)
@@ -894,14 +888,14 @@ namespace DTTool
                                 {
                                     if (StringArray[i].Contains($"{SearchObject}"))
                                     {
-                                        OutputBox.AppendText(StringArray[i].Replace("\"", ""));
+                                        OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
                                         ResultIsFound = true;
                                     }
                                 }
                                 if (!ResultIsFound)
-                                {
-                                    OutputBox.AppendText("\nNo printers found with criteria\n");
-                                }
+                                    OutputBox.AppendText("No printers found with criteria\n\n");
+                                else
+                                    OutputBox.AppendText("\n");
                             }
                             else
                             {
@@ -911,7 +905,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"An error has occurred {ex.Message}\n");
+                        OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
                     }
                 
                 }
@@ -1061,7 +1055,8 @@ namespace DTTool
         {
             TextRange textRange = new TextRange(OutputBox.Document.ContentStart, OutputBox.Document.ContentEnd);
             string[] OutputArray = textRange.Text.Split('\n');
-            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDT_Export_{DateTime.Now.ToString("M-d-yyyy HH-mm-ss")}.csv";
+            Directory.CreateDirectory($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDTEXPORT\\");
+            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDTEXPORT\\HDT_Export_{DateTime.Now.ToString("M-d-yyyy HH-mm-ss")}.csv";
 
             using (StreamWriter sw = new StreamWriter(path))
             {
