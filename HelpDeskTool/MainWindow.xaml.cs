@@ -1116,7 +1116,7 @@ namespace DTTool
                         try
                         {
                             string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
-                            OutputBox.AppendText("DC\t\tCount\tTime\t\t\tLast Set\n");
+                            OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
                             foreach (string DC in DCs)
                             {
                                 using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
@@ -1133,7 +1133,7 @@ namespace DTTool
                                     {
                                         LastSet = LastSet.AddHours(1);
                                     }
-                                    OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t" + LastSet.ToString() + "\n");
+                                    OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t\t" + LastSet.ToString() + "\n");
                                 }
                             }
                         }
