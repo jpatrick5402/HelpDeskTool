@@ -442,7 +442,7 @@ namespace DTTool
                             }
                             catch (Exception ex)
                             {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}\tnot listed in object properties\n");
+                                OutputBox.AppendText($"{PropertyList[i, 0]}\t[Not Listed]\n");
                             }
                         }
                     }
