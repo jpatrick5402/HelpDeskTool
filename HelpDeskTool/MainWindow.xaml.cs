@@ -596,7 +596,7 @@ namespace DTTool
                     OutputBox.AppendText("\nShared/Home Drive Access List: \n");
                     try
                     {
-                        OutputBox.AppendText(UserResult.Properties["homedirectory"][0].ToString() + "\n");
+                        OutputBox.AppendText("H" + UserResult.Properties["homedirectory"][0].ToString() + "\n");
                     }
                     catch (Exception ex)
                     {
