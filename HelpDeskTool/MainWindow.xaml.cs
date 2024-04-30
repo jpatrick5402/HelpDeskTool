@@ -759,153 +759,6 @@ namespace DTTool
             OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
-        private async void MasterSearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (MasterSearchBox.Text != "")
-            {
-                LoadingWindow Window = ShowLoadingWindow();
-                var SearchObject = MasterSearchBox.Text.Trim();
-                OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n");
-                System.Windows.Clipboard.SetText(SearchObject);
-                MasterSearchBox.Clear();
-                if (URMCDomainCB.IsChecked == true)
-                {
-                    try
-                    {
-                        // Search under URMC umbrella
-                        DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
-                        DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                        bool ResultIsFound = false;
-
-                        searcher.Filter = $"(anr={SearchObject})";
-                        SearchResultCollection UserResult = searcher.FindAll();
-
-                        foreach (SearchResult result in UserResult)
-                        {
-                            OutputBox.AppendText("URMC:   ");
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
-                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
-                            try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
-                            catch { OutputBox.AppendText("[This object has no description]\n"); }
-                            ResultIsFound = true;
-                        }
-
-                        if (!ResultIsFound) OutputBox.AppendText("URMC:\tNo object found\n\n");
-                        else OutputBox.AppendText("\n");
-                    }
-                    catch (Exception ex)
-                    {
-                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
-                    }
-                }
-                if (URDomainCB.IsChecked == true) 
-                {
-                    try
-                    {
-                        DirectoryEntry entry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                        DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                        bool ResultIsFound = false;
-
-                        searcher.Filter = $"(anr={SearchObject})";
-                        SearchResultCollection UserResult = searcher.FindAll();
-
-                        foreach (SearchResult result in UserResult)
-                        {
-                            OutputBox.AppendText("UR:     ");
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
-                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
-                            try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
-                            catch { OutputBox.AppendText("[This object has no description]\n"); }
-                            ResultIsFound = true;
-                        }
-
-                        if (!ResultIsFound) OutputBox.AppendText("UR:\tNo object found\n\n");
-                        else OutputBox.AppendText("\n");
-                    }
-                    catch (Exception ex)
-                    {
-                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
-                    }
-                }
-                if (SharedDriveCB.IsChecked == true)
-                {
-                    try
-                    {
-                        using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
-                        {
-                            string[] ShareList = sr.ReadToEnd().Split("\n");
-                            bool ItemFound = false;
-
-                            for (int i = 0; i < ShareList.Length; i++)
-                            {
-                                if (ShareList[i].Contains(SearchObject))
-                                {
-                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
-                                    ItemFound = true;
-                                }
-                            }
-                            if (!ItemFound)
-                                OutputBox.AppendText("No Shares found with criteria\n\n");
-                            else
-                                OutputBox.AppendText("\n");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        OutputBox.AppendText($"Unable to find Shared Drives: {ex.Message}\n\n");
-                    }
-                }
-                if (PrintersCB.IsChecked == true)
-                {
-                    try
-                    {
-                        // This section is used to see if there are any printers that match the search criteria as well
-                        string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
-                        using (HttpClient client = new HttpClient())
-                        {
-                            bool ResultIsFound = false;
-                            HttpResponseMessage response = await client.GetAsync(url);
-                            if (response.IsSuccessStatusCode)
-                            {
-                                string csvContent = await response.Content.ReadAsStringAsync();
-                                string[] StringArray = csvContent.Split('\n');
-
-                                for (int i = 0; i < StringArray.Length; i++)
-                                {
-                                    if (StringArray[i].Contains($"{SearchObject}"))
-                                    {
-                                        OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
-                                        ResultIsFound = true;
-                                    }
-                                }
-                                if (!ResultIsFound)
-                                    OutputBox.AppendText("No printers found with criteria\n\n");
-                                else
-                                    OutputBox.AppendText("\n");
-                            }
-                            else
-                            {
-                                OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
-                    }
-                
-                }
-                CloseLoadingWindow(Window);
-                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-                OutputBox.ScrollToEnd();
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("No Search Input Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
         private void DarkButton_Click(object sender, RoutedEventArgs e)
         {
             if (OutputBox.Background != Brushes.Black)
@@ -942,8 +795,6 @@ namespace DTTool
                 GroupMembersButton.Foreground = Brushes.White;
                 AddgroupButton.Background = Brushes.Black;
                 AddgroupButton.Foreground = Brushes.White;
-                MasterSearchButton.Background = Brushes.Black;
-                MasterSearchButton.Foreground = Brushes.White;
                 HelpButton.Background = Brushes.Black;
                 HelpButton.Foreground = Brushes.White;
                 DarkButton.Background = Brushes.Black;
@@ -1007,8 +858,6 @@ namespace DTTool
                 GroupMembersButton.Foreground = Brushes.Black;
                 AddgroupButton.Background = Brushes.White;
                 AddgroupButton.Foreground = Brushes.Black;
-                MasterSearchButton.Background = Brushes.White;
-                MasterSearchButton.Foreground = Brushes.Black;
                 HelpButton.Background = Brushes.White;
                 HelpButton.Foreground = Brushes.Black;
                 DarkButton.Background = Brushes.White;
@@ -1146,6 +995,160 @@ namespace DTTool
             else
             {
                 System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void FuzzySearch(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var SearchObject = MasterSearchBox.Text.Trim();
+            if (SearchObject.Length > 3)
+            {
+                OutputBox.Document.Blocks.Clear();
+                SearchObject = MasterSearchBox.Text.Trim();
+                OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n\n");
+                if (URMCDomainCB.IsChecked == true)
+                {
+                    try
+                    {
+                        // Search under URMC umbrella
+                        DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu");
+                        DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                        bool ResultIsFound = false;
+
+                        searcher.Filter = $"(anr={SearchObject})";
+                        SearchResultCollection UserResult = searcher.FindAll();
+                        int count = 0;
+                        foreach (SearchResult result in UserResult)
+                        {
+                            OutputBox.AppendText("URMC:   ");
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
+                            try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
+                            catch { OutputBox.AppendText("[This object has no description]\n"); }
+                            ResultIsFound = true;
+                            if (count == 10)
+                                break;
+                            else count++;
+                        }
+
+                        if (!ResultIsFound) OutputBox.AppendText("URMC:\tNo object found\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
+                    }
+                }
+                if (URDomainCB.IsChecked == true)
+                {
+                    try
+                    {
+                        DirectoryEntry entry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                        DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                        bool ResultIsFound = false;
+
+                        searcher.Filter = $"(anr={SearchObject})";
+                        SearchResultCollection UserResult = searcher.FindAll();
+                        int count = 0;
+                        foreach (SearchResult result in UserResult)
+                        {
+                            OutputBox.AppendText("UR:     ");
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
+                            try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
+                            catch { OutputBox.AppendText("[This object has no description]\n"); }
+                            ResultIsFound = true;
+                            if (count == 10)
+                                break;
+                            else count++;
+                        }
+
+                        if (!ResultIsFound) OutputBox.AppendText("UR:\tNo object found\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText($"An error has occurred, try refining your search or adjusting your search criteria: {ex.Message}\n\n");
+                    }
+                }
+                if (SharedDriveCB.IsChecked == true)
+                {
+                    try
+                    {
+                        using (var sr = new StreamReader("\\\\ADSDC01\\netlogon\\SIG\\logon.dmd"))
+                        {
+                            string[] ShareList = sr.ReadToEnd().Split("\n");
+                            bool ItemFound = false;
+                            int count = 0;
+                            for (int i = 0; i < ShareList.Length; i++)
+                            {
+                                if (ShareList[i].Contains(SearchObject))
+                                {
+                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
+                                    ItemFound = true;
+                                    if (count == 10)
+                                        break;
+                                    else count++;
+                                }
+                            }
+                            if (!ItemFound)
+                                OutputBox.AppendText("No Shares found with criteria\n\n");
+                            else
+                                OutputBox.AppendText("\n");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText($"Unable to find Shared Drives: {ex.Message}\n\n");
+                    }
+                }
+                if (PrintersCB.IsChecked == true)
+                {
+                    try
+                    {
+                        // This section is used to see if there are any printers that match the search criteria as well
+                        string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
+                        using (HttpClient client = new HttpClient())
+                        {
+                            bool ResultIsFound = false;
+                            HttpResponseMessage response = await client.GetAsync(url);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                string csvContent = await response.Content.ReadAsStringAsync();
+                                string[] StringArray = csvContent.Split('\n');
+                                int count = 0;
+                                OutputBox.AppendText("Ignore if Duplicate\n");
+                                for (int i = 0; i < StringArray.Length; i++)
+                                {
+                                    if (StringArray[i].Contains($"{SearchObject}"))
+                                    {
+                                        OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
+                                        ResultIsFound = true;
+                                        if (count == 10)
+                                            break;
+                                        else count++;           
+                                    }
+                                }
+                                if (!ResultIsFound)
+                                    OutputBox.AppendText("No printers found with criteria\n\n");
+                                else
+                                    OutputBox.AppendText("\n");
+                            }
+                            else
+                            {
+                                OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
+                    }
+                }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToHome();
             }
         }
     }
