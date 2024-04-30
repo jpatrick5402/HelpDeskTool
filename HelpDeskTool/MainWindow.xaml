@@ -34,7 +34,7 @@
         <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" Margin="0,125,20,0" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2" TabIndex="101"/>
         <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Right" Height="30" Margin="0,155,20,0" VerticalAlignment="Top" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="102"/>
         <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Right" Height="30" Margin="0,185,20,0" VerticalAlignment="Top" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="103"/>
-        <TabControl HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="699" Margin="0,6,0,0" Foreground="Black">
+        <TabControl Height="100" VerticalAlignment="Top" Margin="19,6,19,0" Foreground="Black">
             <TabItem x:Name="ToolTab1" Header="User/Group Tools" Height="22">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1">
