@@ -784,35 +784,15 @@ namespace DTTool
                         foreach (SearchResult result in UserResult)
                         {
                             OutputBox.AppendText("URMC:   ");
-
-
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString());
-                            int count = 35 - result.Properties["cn"][0].ToString().Length;
-                            for (int i = 0; i < count; i++)
-                            {
-                                OutputBox.AppendText(" ");
-                            }
-                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString());
-                            count = 15 - result.Properties["objectclass"][^1].ToString().Length;
-                            for (int i = 0; i < count; i++)
-                            {
-                                OutputBox.AppendText(" ");
-                            }
-                            try
-                            {
-                                OutputBox.AppendText(result.Properties["description"][0] + "\n");
-                            }
-                            catch (Exception ex)
-                            {
-                                OutputBox.AppendText("[This object has no description]\n");
-                            }
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
+                            try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
+                            catch { OutputBox.AppendText("[This object has no description]\n"); }
                             ResultIsFound = true;
                         }
 
-                        if (!ResultIsFound)
-                            OutputBox.AppendText("URMC:\tNo object found\n\n");
-                        else
-                            OutputBox.AppendText("\n");
+                        if (!ResultIsFound) OutputBox.AppendText("URMC:\tNo object found\n\n");
+                        else OutputBox.AppendText("\n");
                     }
                     catch (Exception ex)
                     {
@@ -834,34 +814,15 @@ namespace DTTool
                         foreach (SearchResult result in UserResult)
                         {
                             OutputBox.AppendText("UR:     ");
-
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString());
-                            int count = 35 - result.Properties["cn"][0].ToString().Length;
-                            for (int i = 0; i < count; i++)
-                            {
-                                OutputBox.AppendText(" ");
-                            }
-                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString());
-                            count = 15 - result.Properties["objectclass"][^1].ToString().Length;
-                            for (int i = 0; i < count; i++)
-                            {
-                                OutputBox.AppendText(" ");
-                            }
-                            try
-                            {
-                                OutputBox.AppendText(result.Properties["description"][0] + "\n");
-                            }
-                            catch
-                            {
-                                OutputBox.AppendText("[This object has no description]\n");
-                            }
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
+                            try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
+                            catch { OutputBox.AppendText("[This object has no description]\n"); }
                             ResultIsFound = true;
                         }
 
-                        if (!ResultIsFound)
-                            OutputBox.AppendText("UR:\tNo object found\n\n");
-                        else
-                            OutputBox.AppendText("\n");
+                        if (!ResultIsFound) OutputBox.AppendText("UR:\tNo object found\n\n");
+                        else OutputBox.AppendText("\n");
                     }
                     catch (Exception ex)
                     {
