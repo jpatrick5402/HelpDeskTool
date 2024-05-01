@@ -75,7 +75,7 @@
                     <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="115,42,0,0" VerticalAlignment="Top" Width="80" IsChecked="True" TabIndex="4"/>
                     <CheckBox x:Name="SharedDriveCB" Content="Shared Drives" HorizontalAlignment="Left" Height="16" Margin="115,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="2"/>
                     <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" FontSize="11" Margin="243,0,0,0" TabIndex="5" KeyUp="FuzzySearch"/>
-                    <Label Content="Type at least 4 characters to&#xD;&#xA;start searching." HorizontalAlignment="Left" Height="50" Margin="507,0,0,0" VerticalAlignment="Center" Width="165" Foreground="#FF545454"/>
+                    <Label Content="Type at least 4 characters to&#xA;start searching.&#xD;&#xA;Shows 10 results in each section" HorizontalAlignment="Left" Height="70" Margin="507,0,0,0" VerticalAlignment="Center" Width="185" Foreground="#FF545454"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab5" Header="Settings" Height="22">

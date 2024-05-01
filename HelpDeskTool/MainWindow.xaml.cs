@@ -899,7 +899,7 @@ namespace DTTool
             {
                 foreach (var line in OutputArray)
                 {
-                    sw.WriteLine(line.Replace("\t", ","));
+                    sw.WriteLine(line);
                 }
             }
 
