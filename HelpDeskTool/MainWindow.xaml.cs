@@ -990,11 +990,12 @@ namespace DTTool
                     }
                     if (UserResult != null)
                     {
-                        try
+
+                        string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                        OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
+                        foreach (string DC in DCs)
                         {
-                            string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
-                            OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
-                            foreach (string DC in DCs)
+                            try
                             {
                                 using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
                                 {
@@ -1013,10 +1014,10 @@ namespace DTTool
                                     OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t\t" + LastSet.ToString() + "\n");
                                 }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            OutputBox.AppendText($"An error occurred when trying to get password information for {UserName}");
+                            catch (Exception ex)
+                            {
+                                OutputBox.AppendText($"{DC} An error occurred when trying to get password information for {UserName}\n");
+                            }
                         }
                     }
                     else
