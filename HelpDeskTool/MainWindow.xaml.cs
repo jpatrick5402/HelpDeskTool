@@ -44,6 +44,8 @@ namespace DTTool
         {
             InitializeComponent();
 
+            CreatePrinterCache();
+
             if (Settings.Default.DarkMode)
                 DarkButton_Click(null, null);
 
@@ -53,6 +55,40 @@ namespace DTTool
         }
 
         // Helper Functions
+        public async void CreatePrinterCache()
+        {
+            try
+            {
+                // This section is used to see if there are any printers that match the search criteria as well
+                string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
+                using (HttpClient client = new HttpClient())
+                {
+                    bool ResultIsFound = false;
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string csvContent = await response.Content.ReadAsStringAsync();
+                        Directory.CreateDirectory($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\HDTCACHE\\");
+
+                        string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\HDTCACHE\\HDT_Printer_Report.csv";
+
+                        using (StreamWriter sw = new StreamWriter(path))
+                        {
+                            sw.Write(csvContent);
+                        }
+                    }
+                    else
+                    {
+                        OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
+            }
+        }
+
         public LoadingWindow ShowLoadingWindow()
         {
             LoadingWindow win = new LoadingWindow();
@@ -1002,7 +1038,7 @@ namespace DTTool
             }
         }
 
-        private async void FuzzySearch(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FuzzySearch(object sender, System.Windows.Input.KeyEventArgs e)
         {
             var SearchObject = MasterSearchBox.Text.Trim();
             if (SearchObject.Length > 3)
@@ -1126,40 +1162,29 @@ namespace DTTool
                     try
                     {
                         // This section is used to see if there are any printers that match the search criteria as well
-                        string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
-                        using (HttpClient client = new HttpClient())
+                        using (var sr = new StreamReader($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\HDTCACHE\\HDT_Printer_Report.csv"))
                         {
                             bool ResultIsFound = false;
-                            HttpResponseMessage response = await client.GetAsync(url);
-                            if (response.IsSuccessStatusCode)
+                            string[] PrinterList = sr.ReadToEnd().Split("\n");
+                            int count = 0;
+                            for (int i = 0; i < PrinterList.Length; i++)
                             {
-                                string csvContent = await response.Content.ReadAsStringAsync();
-                                string[] StringArray = csvContent.Split('\n');
-                                int count = 0;
-                                OutputBox.AppendText("Ignore if Duplicate\n");
-                                for (int i = 0; i < StringArray.Length; i++)
+                                if (PrinterList[i].Contains($"{SearchObject}"))
                                 {
-                                    if (StringArray[i].Contains($"{SearchObject}"))
+                                    OutputBox.AppendText(PrinterList[i].Replace("\"", "").Replace(",", ", "));
+                                    ResultIsFound = true;
+                                    if (count == 10)
                                     {
-                                        OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
-                                        ResultIsFound = true;
-                                        if (count == 10)
-                                        {
-                                            OutputBox.AppendText("There are more results available, keep typing to refine your search\n");
-                                            break;
-                                        }
-                                        else count++;           
+                                        OutputBox.AppendText("There are more results available, keep typing to refine your search\n");
+                                        break;
                                     }
+                                    else count++;           
                                 }
-                                if (!ResultIsFound)
-                                    OutputBox.AppendText("No printers found with criteria\n\n");
-                                else
-                                    OutputBox.AppendText("\n");
                             }
+                            if (!ResultIsFound)
+                                OutputBox.AppendText("No printers found with criteria\n\n");
                             else
-                            {
-                                OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
-                            }
+                                OutputBox.AppendText("\n");
                         }
                     }
                     catch (Exception ex)
