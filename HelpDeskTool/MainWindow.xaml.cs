@@ -1135,7 +1135,7 @@ namespace DTTool
                             int count = 0;
                             for (int i = 0; i < ShareList.Length; i++)
                             {
-                                if (ShareList[i].Contains(SearchObject))
+                                if (ShareList[i].Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                                 {
                                     OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     ItemFound = true;
@@ -1170,7 +1170,7 @@ namespace DTTool
                             int count = 0;
                             for (int i = 0; i < PrinterList.Length; i++)
                             {
-                                if (PrinterList[i].Contains($"{SearchObject.ToUpper()}"))
+                                if (PrinterList[i].Contains($"{SearchObject}", StringComparison.OrdinalIgnoreCase))
                                 {
                                     OutputBox.AppendText(PrinterList[i].Replace("\"", "").Replace(",", ", "));
                                     ResultIsFound = true;
@@ -1278,7 +1278,7 @@ namespace DTTool
 
                             for (int i = 0; i < ShareList.Length; i++)
                             {
-                                if (ShareList[i].Contains(SearchObject))
+                                if (ShareList[i].Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                                 {
                                     OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     ItemFound = true;
@@ -1312,7 +1312,7 @@ namespace DTTool
 
                                 for (int i = 0; i < StringArray.Length; i++)
                                 {
-                                    if (StringArray[i].Contains($"{SearchObject.ToUpper()}"))
+                                    if (StringArray[i].Contains($"{SearchObject}", StringComparison.OrdinalIgnoreCase))
                                     {
                                         OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
                                         ResultIsFound = true;
