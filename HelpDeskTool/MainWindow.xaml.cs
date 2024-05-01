@@ -1170,7 +1170,7 @@ namespace DTTool
                             int count = 0;
                             for (int i = 0; i < PrinterList.Length; i++)
                             {
-                                if (PrinterList[i].Contains($"{SearchObject}"))
+                                if (PrinterList[i].Contains($"{SearchObject.ToUpper()}"))
                                 {
                                     OutputBox.AppendText(PrinterList[i].Replace("\"", "").Replace(",", ", "));
                                     ResultIsFound = true;
@@ -1312,7 +1312,7 @@ namespace DTTool
 
                                 for (int i = 0; i < StringArray.Length; i++)
                                 {
-                                    if (StringArray[i].Contains($"{SearchObject}"))
+                                    if (StringArray[i].Contains($"{SearchObject.ToUpper()}"))
                                     {
                                         OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
                                         ResultIsFound = true;
