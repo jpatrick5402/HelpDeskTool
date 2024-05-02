@@ -1058,6 +1058,7 @@ namespace DTTool
                         bool ResultIsFound = false;
 
                         searcher.Filter = $"(anr={SearchObject})";
+                        searcher.SizeLimit = 11;
                         SearchResultCollection UserResult = searcher.FindAll();
                         int count = 0;
                         foreach (SearchResult result in UserResult)
@@ -1096,6 +1097,7 @@ namespace DTTool
                         bool ResultIsFound = false;
 
                         searcher.Filter = $"(anr={SearchObject})";
+                        searcher.SizeLimit = 11;
                         SearchResultCollection UserResult = searcher.FindAll();
                         int count = 0;
                         foreach (SearchResult result in UserResult)
