@@ -981,93 +981,80 @@ namespace DTTool
             {
                 var UserName = UserTextbox.Text.Trim();
 
-                MessageBoxResult result = System.Windows.MessageBox.Show("This may take approximately 1 minute, do you wish to continue?",
-                                          "Confirmation",
-                                          MessageBoxButton.YesNo,
-                                          MessageBoxImage.Question);
+                LoadingWindow Window = ShowLoadingWindow();
+                OutputBox.AppendText("Searching Bad password attempts for " + UserName + "...\n\n");
+                System.Windows.Clipboard.SetText(UserName);
+                UserTextbox.Clear();
 
-                if (result == MessageBoxResult.Yes)
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
+                SearchResult UserResult = searcher.FindOne();
+
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult == null)
+                {
+                    searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
+                    UserResult = searcher.FindOne();
+                }
+                if (UserResult != null)
                 {
 
-                    LoadingWindow Window = ShowLoadingWindow();
-                    OutputBox.AppendText("Searching Bad password attempts for " + UserName + "...\n\n");
-                    System.Windows.Clipboard.SetText(UserName);
-                    UserTextbox.Clear();
+                    string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                    string result1 = "";
+                    string result2 = "";
+                    string result3 = "";
+                    string result4 = "";
+                    string result5 = "";
+                    string result6 = "";
+                    string result7 = "";
+                    string result8 = "";
+                    string result9 = "";
+                    string result10 = "";
 
-                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                    DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                    searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + UserName + "))";
-                    SearchResult UserResult = searcher.FindOne();
-
-                    if (UserResult == null)
+                    OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
+                    Thread Thread1 = new Thread(() => result1 += GetLockoutInfo(UserResult, DCs[0]));
+                    Thread Thread2 = new Thread(() => result2 += GetLockoutInfo(UserResult, DCs[1]));
+                    Thread Thread3 = new Thread(() => result3 += GetLockoutInfo(UserResult, DCs[2]));
+                    Thread Thread4 = new Thread(() => result4 += GetLockoutInfo(UserResult, DCs[3]));
+                    Thread Thread5 = new Thread(() => result5 += GetLockoutInfo(UserResult, DCs[4]));
+                    Thread Thread6 = new Thread(() => result6 += GetLockoutInfo(UserResult, DCs[5]));
+                    Thread Thread7 = new Thread(() => result7 += GetLockoutInfo(UserResult, DCs[6]));
+                    Thread Thread8 = new Thread(() => result8 += GetLockoutInfo(UserResult, DCs[7]));
+                    Thread Thread9 = new Thread(() => result9 += GetLockoutInfo(UserResult, DCs[8]));
+                    Thread Thread10 = new Thread(() => result10 += GetLockoutInfo(UserResult, DCs[9]));
+                    Thread1.Start();
+                    Thread2.Start();
+                    Thread3.Start();
+                    Thread4.Start();
+                    Thread5.Start();
+                    Thread6.Start();
+                    Thread7.Start();
+                    Thread8.Start();
+                    Thread9.Start();
+                    Thread10.Start();
+                    bool ThreadIsRunning = true;
+                    while (ThreadIsRunning)
                     {
-                        searcher.Filter = "(&(objectClass=user)(urid=" + UserName + "))";
-                        UserResult = searcher.FindOne();
+                        if(!Thread1.IsAlive && !Thread2.IsAlive && !Thread3.IsAlive && !Thread4.IsAlive && !Thread5.IsAlive && !Thread6.IsAlive && !Thread7.IsAlive && !Thread8.IsAlive && !Thread9.IsAlive && !Thread10.IsAlive) ThreadIsRunning = false;
                     }
-                    if (UserResult == null)
-                    {
-                        searcher.Filter = "(&(objectClass=user)(mail=" + UserName + "))";
-                        UserResult = searcher.FindOne();
-                    }
-                    if (UserResult == null)
-                    {
-                        searcher.Filter = "(&(objectClass=user)(name=" + UserName + "))";
-                        UserResult = searcher.FindOne();
-                    }
-                    if (UserResult != null)
-                    {
-
-                        string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
-                        string result1 = "";
-                        string result2 = "";
-                        string result3 = "";
-                        string result4 = "";
-                        string result5 = "";
-                        string result6 = "";
-                        string result7 = "";
-                        string result8 = "";
-                        string result9 = "";
-                        string result10 = "";
-
-                        OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
-                        Thread Thread1 = new Thread(() => result1 += GetLockoutInfo(UserResult, DCs[0]));
-                        Thread Thread2 = new Thread(() => result2 += GetLockoutInfo(UserResult, DCs[1]));
-                        Thread Thread3 = new Thread(() => result3 += GetLockoutInfo(UserResult, DCs[2]));
-                        Thread Thread4 = new Thread(() => result4 += GetLockoutInfo(UserResult, DCs[3]));
-                        Thread Thread5 = new Thread(() => result5 += GetLockoutInfo(UserResult, DCs[4]));
-                        Thread Thread6 = new Thread(() => result6 += GetLockoutInfo(UserResult, DCs[5]));
-                        Thread Thread7 = new Thread(() => result7 += GetLockoutInfo(UserResult, DCs[6]));
-                        Thread Thread8 = new Thread(() => result8 += GetLockoutInfo(UserResult, DCs[7]));
-                        Thread Thread9 = new Thread(() => result9 += GetLockoutInfo(UserResult, DCs[8]));
-                        Thread Thread10 = new Thread(() => result10 += GetLockoutInfo(UserResult, DCs[9]));
-                        Thread1.Start();
-                        Thread2.Start();
-                        Thread3.Start();
-                        Thread4.Start();
-                        Thread5.Start();
-                        Thread6.Start();
-                        Thread7.Start();
-                        Thread8.Start();
-                        Thread9.Start();
-                        Thread10.Start();
-                        bool ThreadIsRunning = true;
-                        while (ThreadIsRunning)
-                        {
-                            if(!Thread1.IsAlive && !Thread2.IsAlive && !Thread3.IsAlive && !Thread4.IsAlive && !Thread5.IsAlive && !Thread6.IsAlive && !Thread7.IsAlive && !Thread8.IsAlive && !Thread9.IsAlive && !Thread10.IsAlive) ThreadIsRunning = false;
-                        }
-                        OutputBox.AppendText(result1 + result2 + result3 + result4 + result5 + result6 + result7 + result8 + result9 + result10 + "\n");
-                    }
-                    else
-                    {
-                        OutputBox.AppendText($"Unable to find username \"{UserName}\"");
-                    }
-                    CloseLoadingWindow(Window);
+                    OutputBox.AppendText(result1 + result2 + result3 + result4 + result5 + result6 + result7 + result8 + result9 + result10 + "\n");
                 }
                 else
                 {
-                    OutputBox.AppendText("Action Cancelled\n");
+                    OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
+                CloseLoadingWindow(Window);
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
