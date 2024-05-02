@@ -27,6 +27,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 using System.Configuration;
 using Microsoft.VisualBasic;
 using System.Windows.Forms.PropertyGridInternal;
+using System.Threading;
 
 namespace DTTool
 {
@@ -55,6 +56,32 @@ namespace DTTool
         }
 
         // Helper Functions
+        public string GetLockoutInfo(SearchResult UserResult, string DC)
+        {
+            try
+            {
+                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
+                {
+                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                    var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                    DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
+                    DateTime LastSet = TimeZoneInfo.ConvertTime((DateTime)auser.LastPasswordSet, timeZone);
+                    if (!timeZone.IsDaylightSavingTime(LastBad))
+                    {
+                        LastBad = LastBad.AddHours(1);
+                    }
+                    if (!timeZone.IsDaylightSavingTime(LastSet))
+                    {
+                        LastSet = LastSet.AddHours(1);
+                    }
+                    return DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t\t" + LastSet.ToString() + "\n";
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"{DC} An error occurred when trying to get password information for user\n";
+            }
+        }
         public async void CreatePrinterCache()
         {
             try
@@ -992,33 +1019,44 @@ namespace DTTool
                     {
 
                         string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                        string result1 = "";
+                        string result2 = "";
+                        string result3 = "";
+                        string result4 = "";
+                        string result5 = "";
+                        string result6 = "";
+                        string result7 = "";
+                        string result8 = "";
+                        string result9 = "";
+                        string result10 = "";
+
                         OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
-                        foreach (string DC in DCs)
+                        Thread Thread1 = new Thread(() => result1 += GetLockoutInfo(UserResult, DCs[0]));
+                        Thread Thread2 = new Thread(() => result2 += GetLockoutInfo(UserResult, DCs[1]));
+                        Thread Thread3 = new Thread(() => result3 += GetLockoutInfo(UserResult, DCs[2]));
+                        Thread Thread4 = new Thread(() => result4 += GetLockoutInfo(UserResult, DCs[3]));
+                        Thread Thread5 = new Thread(() => result5 += GetLockoutInfo(UserResult, DCs[4]));
+                        Thread Thread6 = new Thread(() => result6 += GetLockoutInfo(UserResult, DCs[5]));
+                        Thread Thread7 = new Thread(() => result7 += GetLockoutInfo(UserResult, DCs[6]));
+                        Thread Thread8 = new Thread(() => result8 += GetLockoutInfo(UserResult, DCs[7]));
+                        Thread Thread9 = new Thread(() => result9 += GetLockoutInfo(UserResult, DCs[8]));
+                        Thread Thread10 = new Thread(() => result10 += GetLockoutInfo(UserResult, DCs[9]));
+                        Thread1.Start();
+                        Thread2.Start();
+                        Thread3.Start();
+                        Thread4.Start();
+                        Thread5.Start();
+                        Thread6.Start();
+                        Thread7.Start();
+                        Thread8.Start();
+                        Thread9.Start();
+                        Thread10.Start();
+                        bool ThreadIsRunning = true;
+                        while (ThreadIsRunning)
                         {
-                            try
-                            {
-                                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, DC))
-                                {
-                                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
-                                    var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-                                    DateTime LastBad = TimeZoneInfo.ConvertTime((DateTime)auser.LastBadPasswordAttempt, timeZone);
-                                    DateTime LastSet = TimeZoneInfo.ConvertTime((DateTime)auser.LastPasswordSet, timeZone);
-                                    if (!timeZone.IsDaylightSavingTime(LastBad))
-                                    {
-                                        LastBad = LastBad.AddHours(1);
-                                    }
-                                    if (!timeZone.IsDaylightSavingTime(LastSet))
-                                    {
-                                        LastSet = LastSet.AddHours(1);
-                                    }
-                                    OutputBox.AppendText(DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t\t" + LastSet.ToString() + "\n");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                OutputBox.AppendText($"{DC} An error occurred when trying to get password information for {UserName}\n");
-                            }
+                            if(!Thread1.IsAlive && !Thread2.IsAlive && !Thread3.IsAlive && !Thread4.IsAlive && !Thread5.IsAlive && !Thread6.IsAlive && !Thread7.IsAlive && !Thread8.IsAlive && !Thread9.IsAlive && !Thread10.IsAlive) ThreadIsRunning = false;
                         }
+                        OutputBox.AppendText(result1 + result2 + result3 + result4 + result5 + result6 + result7 + result8 + result9 + result10 + "\n");
                     }
                     else
                     {
