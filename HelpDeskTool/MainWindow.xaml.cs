@@ -116,19 +116,6 @@ namespace DTTool
             }
         }
 
-        public LoadingWindow ShowLoadingWindow()
-        {
-            LoadingWindow win = new LoadingWindow();
-            win.Show();
-            win.Topmost = true;
-            win.Focus();
-            return win;
-        }
-        public void CloseLoadingWindow(LoadingWindow win)
-        {
-            win.Close();
-        }
-
         // Button Functions
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
@@ -981,7 +968,7 @@ namespace DTTool
             {
                 var UserName = UserTextbox.Text.Trim();
 
-                LoadingWindow Window = ShowLoadingWindow();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 OutputBox.AppendText("Searching Bad password attempts for " + UserName + "...\n\n");
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
@@ -1054,7 +1041,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
-                CloseLoadingWindow(Window);
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
@@ -1228,7 +1215,7 @@ namespace DTTool
         {
             if (MasterSearchBox.Text != "")
             {
-                LoadingWindow Window = ShowLoadingWindow();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 var SearchObject = MasterSearchBox.Text.Trim();
                 OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n");
                 System.Windows.Clipboard.SetText(SearchObject);
@@ -1362,7 +1349,7 @@ namespace DTTool
                     }
 
                 }
-                CloseLoadingWindow(Window);
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }

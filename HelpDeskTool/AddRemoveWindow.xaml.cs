@@ -58,26 +58,12 @@ namespace DTTool
             return textRange.Text;
         }
 
-        public LoadingWindow ShowLoadingWindow()
-        {
-            LoadingWindow win = new LoadingWindow();
-            win.Show();
-            win.Topmost = true;
-            win.Focus();
-            return win;
-        }
-
-        public void CloseLoadingWindow(LoadingWindow win)
-        {
-            win.Close();
-        }
-
         public void AddOrRemoveBulk(string[] users, string[] groups, string AddorRemove, bool QuickAdd)
         {
 
             if (RTPHasText(ARusernameBox) && RTPHasText(ARgroupBox) || RTPHasText(ARusernameBox) && QuickAdd)
             {
-                LoadingWindow Window = ShowLoadingWindow();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 string ErrorList = "";
                 string PriorUser = "";
 
@@ -149,7 +135,7 @@ namespace DTTool
                         }
                     }
                 }
-                CloseLoadingWindow(Window);
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 if (ErrorList != "")
                 {
                     MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
