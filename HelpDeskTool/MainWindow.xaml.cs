@@ -79,7 +79,7 @@ namespace DTTool
             }
             catch (Exception ex)
             {
-                return $"{DC} An error occurred when trying to get password information for user\n";
+                return $"{DC}".PadRight(10) + "No attempts on this Domain Controller\n";
             }
         }
         public async void CreatePrinterCache()
@@ -129,6 +129,7 @@ namespace DTTool
                                           MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                     System.Windows.Clipboard.SetText(PCName);
                     NameBox.Clear();
                     System.Diagnostics.Process command = new System.Diagnostics.Process();
@@ -139,6 +140,7 @@ namespace DTTool
                     command.Start();
                     OutputBox.AppendText("Restart Initiated (Ask to ensure as this is not 100% accurate)");
                     OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 }
                 else
                 {
@@ -156,6 +158,7 @@ namespace DTTool
         {
             if (NameBox.Text != "")
             {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Pinging " + PCName + "\n\n");
 
@@ -170,6 +173,7 @@ namespace DTTool
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
             }
             else
             {
@@ -205,6 +209,7 @@ namespace DTTool
         {
             if (NameBox.Text != "")
             {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 var PCName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info on " + PCName + "\n\n");
 
@@ -219,6 +224,7 @@ namespace DTTool
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
             }
             else
             {
@@ -384,6 +390,7 @@ namespace DTTool
         {
             if (UserTextbox.Text != "")
             {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 var UserName = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Searching for " + UserName + "...\n");
                 System.Windows.Clipboard.SetText(UserName);
@@ -681,6 +688,7 @@ namespace DTTool
                 }
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
             }
             else
             {
