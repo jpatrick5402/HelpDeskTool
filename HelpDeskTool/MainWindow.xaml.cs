@@ -1091,7 +1091,7 @@ namespace DTTool
             {
                 OutputBox.Document.Blocks.Clear();
                 SearchObject = MasterSearchBox.Text.Trim();
-                OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n\n");
+                OutputBox.AppendText("\nSearching for \"" + SearchObject + "*\"...\n\n\n");
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 if (URMCDomainCB.IsChecked == true)
                 {
