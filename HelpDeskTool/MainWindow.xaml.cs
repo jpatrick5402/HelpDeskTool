@@ -713,8 +713,9 @@ namespace DTTool
                     proc.StartInfo.RedirectStandardOutput = true;
                     proc.StartInfo.RedirectStandardError = true;
                     proc.Start();
-                    if (proc.StandardError != null)
-                        OutputBox.AppendText("Computer is offline\n");
+                    proc.WaitForExit();
+                    if (proc.ExitCode != 0)
+                        OutputBox.AppendText($"Computer is offline\n\n");
                     else
                     OutputBox.AppendText("Currently Logged on\n" + proc.StandardOutput.ReadToEnd() + "\n");
 
@@ -739,7 +740,7 @@ namespace DTTool
                         string canonicalName = de.Properties["canonicalName"].Value as string;
                         OutputBox.AppendText("OU: ".PadRight(27) + canonicalName + "\n");
                     }
-                    if (proc.StandardError == null)
+                    if (proc.ExitCode == 0)
                     {
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
