@@ -881,6 +881,8 @@ namespace DTTool
                 MasterSearchBox.Foreground = Brushes.White;
                 MasterSearchButton.Background = Brushes.Black;
                 MasterSearchButton.Foreground = Brushes.White;
+                MessageButton.Background = Brushes.Black;
+                MessageButton.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -944,6 +946,8 @@ namespace DTTool
                 MasterSearchBox.Foreground = Brushes.Black;
                 MasterSearchButton.Background = Brushes.White;
                 MasterSearchButton.Foreground = Brushes.Black;
+                MessageButton.Background = Brushes.White;
+                MessageButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1364,6 +1368,53 @@ namespace DTTool
             else
             {
                 System.Windows.MessageBox.Show("No Search Input Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MessageButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (NameBox.Text != "")
+            {
+                var PCName = NameBox.Text.Trim();
+
+                MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to send a message to this computer? " + PCName,
+                                          "Confirmation",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                    System.Windows.Clipboard.SetText(PCName);
+                    NameBox.Clear();
+
+                    string message = Interaction.InputBox("What is the message you would like to send?", "Message Input");
+                    if (message != "")
+                    {
+                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        command.StartInfo.CreateNoWindow = true;
+                        command.StartInfo.FileName = "powershell";
+                        command.StartInfo.Arguments = "Invoke-WmiMethod -Path Win32_Process -Name Create -ArgumentList \"'msg * " + message + "'\" -ComputerName " + PCName;
+                        command.StartInfo.RedirectStandardOutput = true;
+                        command.Start();
+                        OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                    }
+                    else
+                    {
+                        OutputBox.AppendText("Message not sent\n");
+                    }
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                }
+                else
+                {
+                    OutputBox.AppendText("Message not sent\n");
+                }
+                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
