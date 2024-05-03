@@ -74,7 +74,7 @@ namespace DTTool
                     {
                         LastSet = LastSet.AddHours(1);
                     }
-                    return DC + "\t" + auser.BadLogonCount + "\t" + LastBad.ToString() + "\t\t" + LastSet.ToString() + "\n";
+                    return DC.PadRight(10) + auser.BadLogonCount.ToString().PadRight(6) + LastBad.ToString().PadRight(25) + LastSet.ToString().PadRight(25) + "\n";
                 }
             }
             catch (Exception ex)
@@ -1009,7 +1009,7 @@ namespace DTTool
                     string result9 = "";
                     string result10 = "";
 
-                    OutputBox.AppendText("DC\t\tCount\tTime\t\t\t\tLast Set\n");
+                    OutputBox.AppendText("DC".PadRight(10) + "Count".PadRight(6) + "Time".PadRight(25) + "Last Set".PadRight(25) + "\n");
                     Thread Thread1 = new Thread(() => result1 += GetLockoutInfo(UserResult, DCs[0]));
                     Thread Thread2 = new Thread(() => result2 += GetLockoutInfo(UserResult, DCs[1]));
                     Thread Thread3 = new Thread(() => result3 += GetLockoutInfo(UserResult, DCs[2]));
