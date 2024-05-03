@@ -394,91 +394,109 @@ namespace DTTool
                 }
                 if (UserResult != null)
                 {
+                    using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                    {
+                        UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                        if (user == null)
+                        {
+                            OutputBox.AppendText("User not found\n");
+                            OutputBox.AppendText("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                            OutputBox.ScrollToEnd();
+                            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                            return;
+                        }
+                        
+                    }
 
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
                     // Grabbing common items
                     string[,] PropertyList = { { "First Name:", "givenname" }, { "Last Name:", "sn" }, { "URMC AD:", "samaccountname" }, { "UR AD:\t", ""}, { "NetID:\t", "uid" }, { "URID:\t", "urid" }, { "Title:\t", "title" }, { "Dept.:\t", "department" }, { "Email:\t", "mail" }, { "Phone:\t", "telephoneNumber" }, { "Description:", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "PWD Last Set:\t", "pwdlastset" }, { "OU", "adspath" }};
-
-                    for (int i = 0; i < PropertyList.Length / 2; i++)
+                    try
                     {
-                        if (PropertyList[i, 0] == "space")
+                        for (int i = 0; i < PropertyList.Length / 2; i++)
                         {
-                            OutputBox.AppendText("\n");
-                        }
-                        else if (PropertyList[i, 0] == "Most Recent HR Role")
-                        {
-                            foreach (var item in UserResult.Properties[PropertyList[i, 1]])
+                            if (PropertyList[i, 0] == "space")
                             {
-                                OutputBox.AppendText("HR status:\t" + item.ToString() + "\n");
+                                OutputBox.AppendText("\n");
                             }
-                        }
-                        else if (PropertyList[i, 0].Contains("PWD Last Set"))
-                        {
-                            var pwdData = UserResult.Properties["pwdlastset"][0];
-                            DateTime UnZonedDate = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
-                            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-                            DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
+                            else if (PropertyList[i, 0] == "Most Recent HR Role")
+                            {
+                                foreach (var item in UserResult.Properties[PropertyList[i, 1]])
+                                {
+                                    OutputBox.AppendText("HR status:\t" + item.ToString() + "\n");
+                                }
+                            }
+                            else if (PropertyList[i, 0].Contains("PWD Last Set"))
+                            {
+                                var pwdData = UserResult.Properties["pwdlastset"][0];
+                                DateTime UnZonedDate = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).AddTicks((long)pwdData);
+                                var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                                DateTime passwordLastSet = TimeZoneInfo.ConvertTime((DateTime)UnZonedDate, timeZone);
 
-                            if (!timeZone.IsDaylightSavingTime(passwordLastSet))
-                            {
-                                passwordLastSet = passwordLastSet.AddHours(1);
-                            }
+                                if (!timeZone.IsDaylightSavingTime(passwordLastSet))
+                                {
+                                    passwordLastSet = passwordLastSet.AddHours(1);
+                                }
 
                             OutputBox.AppendText(PropertyList[i,0] + passwordLastSet + "\n");
 
-                            TimeSpan diff = DateTime.Today - passwordLastSet;
-                            if (diff.TotalDays >= 365)
+                                TimeSpan diff = DateTime.Today - passwordLastSet;
+                                if (diff.TotalDays >= 365)
+                                {
+                                    OutputBox.AppendText("Pwd Expired:\tTrue\n");
+                                }
+                                else
+                                {
+                                    OutputBox.AppendText("Pwd Expired:\tFalse\n");
+                                }
+                            }
+                            else if (PropertyList[i, 0] == "OU")
                             {
-                                OutputBox.AppendText("Pwd Expired:\tTrue\n");
+                                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                                {
+                                    UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+                                    using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
+                                    {
+                                        de.RefreshCache(new string[] { "canonicalName" });
+                                        string canonicalName = de.Properties["canonicalName"].Value as string;
+                                        OutputBox.AppendText($"OU:\t\t{canonicalName}\n");
+                                    }
+                                }
+                            }
+                            else if (PropertyList[i, 0] == "UR AD")
+                            {
+                                DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
+                                DirectorySearcher URsearcher = new DirectorySearcher(URentry);
+                                URsearcher.Filter = "(&(objectClass=user)(uidNumber=" + UserResult.Properties["uidNumber"][0].ToString() + "))";
+                                SearchResult URUserResult = URsearcher.FindOne();
+
+                                if (URUserResult != null)
+                                {
+                                    OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + URUserResult.Properties["samaccountname"][0] + '\n');
+                                }
+                                else
+                                {
+                                    OutputBox.AppendText($"{PropertyList[i, 0]}:\tNo UR AD account\n");
+                                }
                             }
                             else
                             {
-                                OutputBox.AppendText("Pwd Expired:\tFalse\n");
-                            }
-                        }
-                        else if (PropertyList[i, 0] == "OU")
-                        {
-                            using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
-                            {
-                                UserPrincipal user = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
-                                using (DirectoryEntry de = user.GetUnderlyingObject() as DirectoryEntry)
+                                try
                                 {
-                                    de.RefreshCache(new string[] { "canonicalName" });
-                                    string canonicalName = de.Properties["canonicalName"].Value as string;
-                                    OutputBox.AppendText($"OU:\t\t{canonicalName}\n");
+                                    OutputBox.AppendText($"{PropertyList[i, 0]}\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
+                                }
+                                catch (Exception ex)
+                                {
+                                    OutputBox.AppendText($"{PropertyList[i, 0]}\t[Not Listed]\n");
                                 }
                             }
                         }
-                        else if (PropertyList[i, 0] == "UR AD")
-                        {
-                            DirectoryEntry URentry = new DirectoryEntry("LDAP://ur.rochester.edu");
-                            DirectorySearcher URsearcher = new DirectorySearcher(URentry);
-                            URsearcher.Filter = "(&(objectClass=user)(uidNumber=" + UserResult.Properties["uidNumber"][0].ToString() + "))";
-                            SearchResult URUserResult = URsearcher.FindOne();
-
-                            if (URUserResult != null)
-                            {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}:\t" + URUserResult.Properties["samaccountname"][0] + '\n');
-                            }
-                            else
-                            {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}:\tNo UR AD account\n");
-                            }
-                        }
-                        else
-                                {
-                            try
-                            {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}\t" + UserResult.Properties[PropertyList[i, 1]][0] + '\n');
-                            }
-                            catch (Exception ex)
-                            {
-                                OutputBox.AppendText($"{PropertyList[i, 0]}\t[Not Listed]\n");
-                            }
-                        }
                     }
-
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText("An error has occurred: " + ex.Message);
+                    }
                     /// This section is where we search for any shared mailboxes, this is done by searching each line of the files used for this task
                     /// and checking to see if the value of 'samaccountname' for our user is valid
                     try
@@ -661,7 +679,6 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
@@ -694,7 +711,11 @@ namespace DTTool
                     proc.StartInfo.FileName = "Powershell";
                     proc.StartInfo.Arguments = $"quser /SERVER:{ComputerName}";
                     proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.RedirectStandardError = true;
                     proc.Start();
+                    if (proc.StandardError != null)
+                        OutputBox.AppendText("Computer is offline\n");
+                    else
                     OutputBox.AppendText("Currently Logged on\n" + proc.StandardOutput.ReadToEnd() + "\n");
 
                     string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
@@ -718,28 +739,30 @@ namespace DTTool
                         string canonicalName = de.Properties["canonicalName"].Value as string;
                         OutputBox.AppendText("OU: ".PadRight(27) + canonicalName + "\n");
                     }
+                    if (proc.StandardError == null)
+                    {
+                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        command.StartInfo.CreateNoWindow = true;
+                        command.StartInfo.FileName = "Powershell";
+                        command.StartInfo.Arguments = $"Get-WMIObject Win32_Bios -ComputerName {ComputerName} | Select-Object SerialNumber -ExpandProperty SerialNumber";
+                        command.StartInfo.RedirectStandardOutput = true;
+                        command.Start();
+                        OutputBox.AppendText("Serial #: ".PadRight(27) + command.StandardOutput.ReadToEnd());
 
-                    System.Diagnostics.Process command = new System.Diagnostics.Process();
-                    command.StartInfo.CreateNoWindow = true;
-                    command.StartInfo.FileName = "Powershell";
-                    command.StartInfo.Arguments = $"Get-WMIObject Win32_Bios -ComputerName {ComputerName} | Select-Object SerialNumber -ExpandProperty SerialNumber";
-                    command.StartInfo.RedirectStandardOutput = true;
-                    command.Start();
-                    OutputBox.AppendText("Serial #: ".PadRight(27) + command.StandardOutput.ReadToEnd());
-
-                    System.Diagnostics.Process command2 = new System.Diagnostics.Process();
-                    command2.StartInfo.CreateNoWindow = true;
-                    command2.StartInfo.FileName = "powershell";
-                    command2.StartInfo.Arguments = "systeminfo /S " + ComputerName;
-                    command2.StartInfo.RedirectStandardOutput = true;
-                    command2.Start();
-                    OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
+                        System.Diagnostics.Process command2 = new System.Diagnostics.Process();
+                        command2.StartInfo.CreateNoWindow = true;
+                        command2.StartInfo.FileName = "powershell";
+                        command2.StartInfo.Arguments = "systeminfo /S " + ComputerName;
+                        command2.StartInfo.RedirectStandardOutput = true;
+                        command2.Start();
+                        OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
+                    }
                 }
                 else
                     OutputBox.AppendText($"{ComputerName} not found");
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-            }
+                }
             else
             {
                 System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
