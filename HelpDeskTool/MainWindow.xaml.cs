@@ -703,11 +703,11 @@ namespace DTTool
                     {
                         try
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]}: " + result.Properties[PropertyList[i, 1]][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i, 0]}: ".PadRight(27) + result.Properties[PropertyList[i, 1]][0] + '\n');
                         }
                         catch (Exception ex)
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]} is not listed on properties\n");
+                            OutputBox.AppendText($"{PropertyList[i, 0]} [Not listed on properties]\n");
                         }
                     }
                     PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
@@ -716,7 +716,7 @@ namespace DTTool
                     {
                         de.RefreshCache(new string[] { "canonicalName" });
                         string canonicalName = de.Properties["canonicalName"].Value as string;
-                        OutputBox.AppendText("OU: " + canonicalName + "\n");
+                        OutputBox.AppendText("OU: ".PadRight(27) + canonicalName + "\n");
                     }
 
                     System.Diagnostics.Process command = new System.Diagnostics.Process();
@@ -725,7 +725,7 @@ namespace DTTool
                     command.StartInfo.Arguments = $"Get-WMIObject Win32_Bios -ComputerName {ComputerName} | Select-Object SerialNumber -ExpandProperty SerialNumber";
                     command.StartInfo.RedirectStandardOutput = true;
                     command.Start();
-                    OutputBox.AppendText("Serial #: " + command.StandardOutput.ReadToEnd());
+                    OutputBox.AppendText("Serial #: ".PadRight(27) + command.StandardOutput.ReadToEnd());
 
                     System.Diagnostics.Process command2 = new System.Diagnostics.Process();
                     command2.StartInfo.CreateNoWindow = true;
