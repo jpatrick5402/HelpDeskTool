@@ -393,6 +393,7 @@ namespace DTTool
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 var UserName = UserTextbox.Text.Trim();
                 OutputBox.AppendText("Searching for " + UserName + "...\n");
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
@@ -686,6 +687,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
@@ -1067,6 +1069,7 @@ namespace DTTool
                 OutputBox.Document.Blocks.Clear();
                 SearchObject = MasterSearchBox.Text.Trim();
                 OutputBox.AppendText("Searching for \"" + SearchObject + "*\"...\n\n\n");
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 if (URMCDomainCB.IsChecked == true)
                 {
                     try
@@ -1215,6 +1218,7 @@ namespace DTTool
                         OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
                     }
                 }
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToHome();
             }
