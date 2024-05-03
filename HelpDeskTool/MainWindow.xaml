@@ -60,12 +60,11 @@
                 <Grid x:Name="ToolBox2" Background="#FFE5E5E5">
                     <Label x:Name="PCNameBox" Content="PC Name/IP:" HorizontalAlignment="Left" Height="30" Margin="10,0,0,0" VerticalAlignment="Center" Width="84"/>
                     <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="94,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="130" Height="18" HorizontalScrollBarVisibility="Disabled" FontSize="11" TabIndex="1"/>
-                    <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="RestartButton_Click" TabIndex="2" FontSize="11"/>
-                    <Button x:Name="PingButton" Content="Ping" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="PingButton_Click" TabIndex="3" FontSize="11"/>
-                    <Button x:Name="NslookupButton" Content="nslookup" HorizontalAlignment="Left" Height="30" Margin="425,0,0,0" VerticalAlignment="Center" Width="60" Click="NslookupButton_Click" TabIndex="5" FontSize="11"/>
-                    <Button x:Name="SysinfoButton" Content="Sys. info" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="SysinfoButton_Click" TabIndex="4" FontSize="11"/>
+                    <Button x:Name="RestartButton" Content="restart" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="RestartButton_Click" TabIndex="2" FontSize="11" FontFamily="Courier New"/>
+                    <Button x:Name="PingButton" Content="ping" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="PingButton_Click" TabIndex="3" FontSize="11" FontFamily="Courier New"/>
+                    <Button x:Name="NslookupButton" Content="nslookup" HorizontalAlignment="Left" Height="30" Margin="425,0,0,0" VerticalAlignment="Center" Width="60" Click="NslookupButton_Click" TabIndex="5" FontSize="11" FontFamily="Courier New"/>
                     <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="490,0,0,0" VerticalAlignment="Center" Width="60" Click="RemoteButton_Click" TabIndex="6" FontSize="11"/>
-                    <Button x:Name="ComputerInfoButton" Content="AD PC info" HorizontalAlignment="Left" Height="30" Margin="555,0,0,0" VerticalAlignment="Center" Width="60" Click="ComputerInfoButton_Click" FontSize="11" TabIndex="7"/>
+                    <Button x:Name="ComputerInfoButton" Content="PC info" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="ComputerInfoButton_Click" FontSize="11" TabIndex="7"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab3" Header="Master Search" Margin="0,-1,0,0" Height="22">

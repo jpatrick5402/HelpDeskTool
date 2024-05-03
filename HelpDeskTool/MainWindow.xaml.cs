@@ -205,32 +205,6 @@ namespace DTTool
                 System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void SysinfoButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (NameBox.Text != "")
-            {
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                var PCName = NameBox.Text.Trim();
-                OutputBox.AppendText("Gathering info on " + PCName + "\n\n");
-
-                System.Windows.Clipboard.SetText(PCName);
-                NameBox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "cmd";
-                command.StartInfo.Arguments = "/C powershell systeminfo /S " + PCName;
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
-                OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
-                OutputBox.ScrollToEnd();
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
         private void RemoteButton_Click(object sender, RoutedEventArgs e)
         {
             if (NameBox.Text != "")
@@ -701,6 +675,7 @@ namespace DTTool
         {
             if (NameBox.Text != "")
             {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 var ComputerName = NameBox.Text.Trim();
                 OutputBox.AppendText("Gathering info for " + ComputerName + "\n\n");
                 System.Windows.Clipboard.SetText(ComputerName);
@@ -714,6 +689,14 @@ namespace DTTool
 
                 if (result != null)
                 {
+                    System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                    proc.StartInfo.CreateNoWindow = true;
+                    proc.StartInfo.FileName = "Powershell";
+                    proc.StartInfo.Arguments = $"quser /SERVER:{ComputerName}";
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.Start();
+                    OutputBox.AppendText("Currently Logged on\n" + proc.StandardOutput.ReadToEnd() + "\n");
+
                     string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
 
                     for (int i = 0; i < PropertyList.Length / 2; i++)
@@ -735,9 +718,26 @@ namespace DTTool
                         string canonicalName = de.Properties["canonicalName"].Value as string;
                         OutputBox.AppendText("OU: " + canonicalName + "\n");
                     }
+
+                    System.Diagnostics.Process command = new System.Diagnostics.Process();
+                    command.StartInfo.CreateNoWindow = true;
+                    command.StartInfo.FileName = "Powershell";
+                    command.StartInfo.Arguments = $"Get-WMIObject Win32_Bios -ComputerName {ComputerName} | Select-Object SerialNumber -ExpandProperty SerialNumber";
+                    command.StartInfo.RedirectStandardOutput = true;
+                    command.Start();
+                    OutputBox.AppendText("Serial #: " + command.StandardOutput.ReadToEnd());
+
+                    System.Diagnostics.Process command2 = new System.Diagnostics.Process();
+                    command2.StartInfo.CreateNoWindow = true;
+                    command2.StartInfo.FileName = "powershell";
+                    command2.StartInfo.Arguments = "systeminfo /S " + ComputerName;
+                    command2.StartInfo.RedirectStandardOutput = true;
+                    command2.Start();
+                    OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
                 }
                 else
                     OutputBox.AppendText($"{ComputerName} not found");
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-------------------------------------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
@@ -837,8 +837,6 @@ namespace DTTool
                 RestartButton.Foreground = Brushes.White;
                 PingButton.Background = Brushes.Black;
                 PingButton.Foreground = Brushes.White;
-                SysinfoButton.Background = Brushes.Black;
-                SysinfoButton.Foreground = Brushes.White;
                 NslookupButton.Background = Brushes.Black;
                 NslookupButton.Foreground = Brushes.White;
                 RemoteButton.Background = Brushes.Black;
@@ -902,8 +900,6 @@ namespace DTTool
                 RestartButton.Foreground = Brushes.Black;
                 PingButton.Background = Brushes.White;
                 PingButton.Foreground = Brushes.Black;
-                SysinfoButton.Background = Brushes.White;
-                SysinfoButton.Foreground = Brushes.Black;
                 NslookupButton.Background = Brushes.White;
                 NslookupButton.Foreground = Brushes.Black;
                 RemoteButton.Background = Brushes.White;
