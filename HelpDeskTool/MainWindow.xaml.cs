@@ -112,7 +112,7 @@ namespace DTTool
             }
             catch (Exception ex)
             {
-                OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
+                OutputBox.AppendText($"An error has occurred: {ex.Message}\n\n");
             }
         }
 
@@ -1238,7 +1238,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
+                        OutputBox.AppendText($"An error has occurred: {ex.Message}\n\n");
                     }
                 }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
@@ -1380,7 +1380,7 @@ namespace DTTool
                     }
                     catch (Exception ex)
                     {
-                        OutputBox.AppendText($"An error has occurred {ex.Message}\n\n");
+                        OutputBox.AppendText($"An error has occurred: {ex.Message}\n\n");
                     }
 
                 }
