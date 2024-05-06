@@ -270,7 +270,26 @@ namespace DTTool
                         Array.Sort(memberships);
                         foreach (var group in memberships)
                         {
-                            OutputBox.AppendText(group + '\n');
+                            OutputBox.AppendText(group.PadRight(40));
+
+                            searcher.Filter = "(&(objectClass=group)(CN=" + group + "))";
+                            SearchResult result = searcher.FindOne();
+
+                            if (result != null)
+                            {
+                                try
+                                {
+                                    OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace("\n", ""));
+                                }
+                                catch { }
+                                OutputBox.AppendText(" ");
+                                try
+                                {
+                                    OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace("\n", ""));
+                                }
+                                catch { }
+                            }
+                            OutputBox.AppendText("\n");
                         }
                     }
                 }
