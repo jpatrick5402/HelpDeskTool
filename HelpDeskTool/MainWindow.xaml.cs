@@ -230,6 +230,7 @@ namespace DTTool
         }
         private void MemberOfButton_Click(object sender, RoutedEventArgs e)
         {
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             if (UserTextbox.Text != "")
             {
 
@@ -277,16 +278,16 @@ namespace DTTool
 
                             if (result != null)
                             {
-                                OutputBox.AppendText("    ");
+                                OutputBox.AppendText("\n    ");
                                 try
                                 {
-                                    OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace("\n", ""));
+                                    OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
                                 }
                                 catch { }
-                                OutputBox.AppendText("    ");
+                                OutputBox.AppendText("\n    ");
                                 try
                                 {
-                                    OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace("\n", ""));
+                                    OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
                                 }
                                 catch { }
                             }
@@ -305,6 +306,7 @@ namespace DTTool
             {
                 System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
         private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
         {
