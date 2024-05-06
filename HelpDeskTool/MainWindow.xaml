@@ -70,13 +70,13 @@
             </TabItem>
             <TabItem x:Name="ToolTab3" Header="Master Search" Margin="0,-1,0,0" Height="22">
                 <Grid x:Name="ToolBox3" Background="#FFE5E5E5">
-                    <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="16" Margin="6,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="1"/>
-                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="6,43,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" TabIndex="3"/>
-                    <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="115,42,0,0" VerticalAlignment="Top" Width="80" IsChecked="True" TabIndex="4"/>
-                    <CheckBox x:Name="SharedDriveCB" Content="Shared Drives" HorizontalAlignment="Left" Height="16" Margin="115,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="2"/>
-                    <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" FontSize="11" Margin="243,0,0,0" TabIndex="5" KeyUp="FuzzySearch"/>
-                    <Label Content="Type at least 4 characters to&#xA;start searching.&#xD;&#xA;Shows 10 results in each section" HorizontalAlignment="Left" Height="70" Margin="388,0,0,0" VerticalAlignment="Center" Width="185" Foreground="#FF545454" VerticalContentAlignment="Center"/>
-                    <Button x:Name="MasterSearchButton" Content="Full Search" HorizontalAlignment="Left" Height="30" Margin="606,0,0,0" VerticalAlignment="Center" Width="60" FontSize="11" Click="MasterSearchButton_Click"/>
+                    <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="16" Margin="370,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="2"/>
+                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="370,43,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" TabIndex="4"/>
+                    <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="479,42,0,0" VerticalAlignment="Top" Width="80" IsChecked="True" TabIndex="5"/>
+                    <CheckBox x:Name="SharedDriveCB" Content="Shared Drives" HorizontalAlignment="Left" Height="16" Margin="479,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="3"/>
+                    <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" FontSize="11" Margin="23,0,0,0" TabIndex="1" KeyUp="FuzzySearch"/>
+                    <Label Content="Type at least 4 characters to&#xA;start searching.&#xD;&#xA;Shows 10 results in each section" HorizontalAlignment="Left" Height="70" Margin="176,0,0,0" VerticalAlignment="Center" Width="186" Foreground="#FF545454" VerticalContentAlignment="Center"/>
+                    <Button x:Name="MasterSearchButton" Content="Full Search" HorizontalAlignment="Left" Height="30" Margin="606,0,0,0" VerticalAlignment="Center" Width="60" FontSize="11" Click="MasterSearchButton_Click" TabIndex="6"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab5" Header="Settings" Height="22">
