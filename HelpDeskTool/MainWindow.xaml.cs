@@ -277,13 +277,13 @@ namespace DTTool
 
                             if (result != null)
                             {
-                                OutputBox.AppendText(" ");
+                                OutputBox.AppendText("    ");
                                 try
                                 {
                                     OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace("\n", ""));
                                 }
                                 catch { }
-                                OutputBox.AppendText(" ");
+                                OutputBox.AppendText("    ");
                                 try
                                 {
                                     OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace("\n", ""));
