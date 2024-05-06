@@ -310,6 +310,7 @@ namespace DTTool
         }
         private void GroupMembersButton_Click(object sender, RoutedEventArgs e)
         {
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             if (UserTextbox.Text != "")
             {
                 var GroupName = UserTextbox.Text.Trim();
@@ -338,7 +339,7 @@ namespace DTTool
                             searcher.Filter = "(&(objectClass=user)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
                             SearchResult GroupUserResult = searcher.FindOne();
 
-                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "\t" + GroupUserResult.Properties["samaccountname"][0].ToString();
+                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "").PadRight(30) + GroupUserResult.Properties["samaccountname"][0].ToString();
                         }
                         Array.Sort(SortedGroup);
                         OutputBox.AppendText($"Members of {GroupMembersResult.Properties["name"][0]}:\n\n");
@@ -381,6 +382,7 @@ namespace DTTool
             {
                 System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
         private void UserInfoButton_Click(object sender, RoutedEventArgs e)
         {
