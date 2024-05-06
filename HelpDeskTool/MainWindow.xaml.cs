@@ -762,6 +762,7 @@ namespace DTTool
                 else
                     OutputBox.AppendText($"{ComputerName} not found");
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                OutputBox.ScrollToEnd();
                 OutputBox.AppendText("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
                 }
             else
