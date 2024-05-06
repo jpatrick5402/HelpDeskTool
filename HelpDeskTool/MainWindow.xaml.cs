@@ -277,6 +277,7 @@ namespace DTTool
 
                             if (result != null)
                             {
+                                OutputBox.AppendText(" ");
                                 try
                                 {
                                     OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace("\n", ""));
