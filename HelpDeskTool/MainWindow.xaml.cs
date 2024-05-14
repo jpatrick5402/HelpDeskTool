@@ -1135,7 +1135,9 @@ namespace DTTool
                         foreach (SearchResult result in UserResult)
                         {
                             OutputBox.AppendText("URMC:   ");
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
+                            try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
+                            catch { OutputBox.AppendText("[No Username]".PadRight(15)); }
                             try { OutputBox.AppendText(result.Properties["uidNumber"][^1].ToString().PadRight(15)); }
                             catch { OutputBox.AppendText("[No URID]".PadRight(15)); }
                             OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
@@ -1174,7 +1176,9 @@ namespace DTTool
                         foreach (SearchResult result in UserResult)
                         {
                             OutputBox.AppendText("UR:     ");
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
+                            try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
+                            catch { OutputBox.AppendText("[No Username]".PadRight(15)); }
                             try { OutputBox.AppendText(result.Properties["uidNumber"][^1].ToString().PadRight(15)); }
                             catch { OutputBox.AppendText("[No URID]".PadRight(15)); }
                             OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
@@ -1296,10 +1300,14 @@ namespace DTTool
                         foreach (SearchResult result in UserResult)
                         {
                             OutputBox.AppendText("URMC:   ");
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
+                            try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
+                            catch { OutputBox.AppendText("[No Username]".PadRight(15)); }
+                            try { OutputBox.AppendText(result.Properties["uidNumber"][^1].ToString().PadRight(15)); }
+                            catch { OutputBox.AppendText("[No URID]".PadRight(15)); }
                             OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
                             try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
-                            catch { OutputBox.AppendText("[This object has no description]\n"); }
+                            catch { OutputBox.AppendText("[No Description]\n"); }
                             ResultIsFound = true;
                         }
 
@@ -1326,10 +1334,14 @@ namespace DTTool
                         foreach (SearchResult result in UserResult)
                         {
                             OutputBox.AppendText("UR:     ");
-                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(35));
+                            OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
+                            try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
+                            catch { OutputBox.AppendText("[No Username]".PadRight(15)); }
+                            try { OutputBox.AppendText(result.Properties["uidNumber"][^1].ToString().PadRight(15)); }
+                            catch { OutputBox.AppendText("[No URID]".PadRight(15)); }
                             OutputBox.AppendText(result.Properties["objectclass"][^1].ToString().PadRight(15));
                             try { OutputBox.AppendText(result.Properties["description"][0] + "\n"); }
-                            catch { OutputBox.AppendText("[This object has no description]\n"); }
+                            catch { OutputBox.AppendText("[No Description]\n"); }
                             ResultIsFound = true;
                         }
 
