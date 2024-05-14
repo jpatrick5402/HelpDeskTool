@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool"
         mc:Ignorable="d"
-        Title="HelpDeskTool" Height="759" Width="751">
+        Title="HelpDeskTool" Height="926" Width="751">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="White" Offset="0.248"/>
@@ -19,18 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border BorderThickness="1" Margin="0,106,0,0">
-            <Border.BorderBrush>
-                <SolidColorBrush Color="Black" Opacity="0"/>
-            </Border.BorderBrush>
-            <RichTextBox x:Name="OutputBox" Margin="19,17,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" Width="3000" FontFamily="Cascadia Mono" TabIndex="104">
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text=""/>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
-        </Border>
+        <TextBox x:Name="OutputBox" Margin="19,125,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" FontFamily="Cascadia Mono" TabIndex="104" VerticalScrollBarVisibility="Disabled" Padding="5,0,0,0"/>
         <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" Margin="0,125,20,0" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2" TabIndex="101"/>
         <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Right" Height="30" Margin="0,155,20,0" VerticalAlignment="Top" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="102"/>
         <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Right" Height="30" Margin="0,185,20,0" VerticalAlignment="Top" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="103"/>

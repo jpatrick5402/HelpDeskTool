@@ -52,7 +52,7 @@ namespace DTTool
 
             OutputBox.AppendText("\nHelp Desk Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
-            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
         }
 
         // Helper Functions
@@ -146,7 +146,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText("PC not restarted\n");
                 }
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -171,7 +171,7 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
             }
@@ -197,7 +197,7 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText(command.StandardOutput.ReadToEnd());
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -219,7 +219,7 @@ namespace DTTool
                 command.StartInfo.RedirectStandardOutput = true;
                 command.Start();
                 OutputBox.AppendText("Remote Session Initiated with " + PCName);
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -299,7 +299,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find object \"{UserName}\"");
                 }
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -375,7 +375,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -424,7 +424,7 @@ namespace DTTool
                         if (user == null)
                         {
                             OutputBox.AppendText("User not found\n");
-                            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                            OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                             OutputBox.ScrollToEnd();
                             Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                             return;
@@ -703,7 +703,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
             }
@@ -787,7 +787,7 @@ namespace DTTool
                     OutputBox.AppendText($"{ComputerName} not found");
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.ScrollToEnd();
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 }
             else
             {
@@ -839,7 +839,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText($"Unable to find group \"{GroupName}\"");
                 }
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -854,7 +854,7 @@ namespace DTTool
         }
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            OutputBox.Document.Blocks.Clear();
+            OutputBox.Clear();
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -864,7 +864,7 @@ namespace DTTool
                 "\nThe Master Seach Button Queries URMC and UR servers and the print Q report for any items that match" +
                 "\nPlease reach out to Joseph Patrick on Teams or joseph_patrick@urmc.rochester.edu / jpatrick5402@gmail.com for any questions comments or concerns";
             OutputBox.AppendText(helpInfo);
-            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void DarkButton_Click(object sender, RoutedEventArgs e)
@@ -1002,8 +1002,8 @@ namespace DTTool
         }
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            TextRange textRange = new TextRange(OutputBox.Document.ContentStart, OutputBox.Document.ContentEnd);
-            string[] OutputArray = textRange.Text.Split('\n');
+            string textRange = OutputBox.Text;
+            string[] OutputArray = textRange.Split('\n');
             Directory.CreateDirectory($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDTEXPORT\\");
             string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\HDTEXPORT\\HDT_Export_{DateTime.Now.ToString("M-d-yyyy HH-mm-ss")}.csv";
 
@@ -1017,7 +1017,7 @@ namespace DTTool
 
             OutputBox.AppendText($"Export completed to {path}");
 
-            OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
         private void LockoutToolButton_Click(object sender, RoutedEventArgs e)
@@ -1100,7 +1100,7 @@ namespace DTTool
                     OutputBox.AppendText($"Unable to find username \"{UserName}\"");
                 }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -1114,7 +1114,7 @@ namespace DTTool
             var SearchObject = MasterSearchBox.Text.Trim();
             if (SearchObject.Length > 3)
             {
-                OutputBox.Document.Blocks.Clear();
+                OutputBox.Clear();
                 SearchObject = MasterSearchBox.Text.Trim();
                 OutputBox.AppendText("\nSearching for \"" + SearchObject + "*\"...\n\n\n");
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
@@ -1271,7 +1271,7 @@ namespace DTTool
                     }
                 }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToHome();
             }
         }
@@ -1422,7 +1422,7 @@ namespace DTTool
 
                 }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
@@ -1469,7 +1469,7 @@ namespace DTTool
                 {
                     OutputBox.AppendText("Message not sent\n");
                 }
-                OutputBox.AppendText("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
