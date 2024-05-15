@@ -19,12 +19,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="OutputBox" Margin="19,125,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" FontFamily="Cascadia Mono" TabIndex="104" Padding="5,0,0,0"/>
+        <TextBox x:Name="OutputBox" Margin="19,125,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" FontFamily="Cascadia Mono" TabIndex="104" Padding="5,0,0,0" Background="White"/>
         <TabControl Height="100" VerticalAlignment="Top" Margin="19,6,19,0" Foreground="Black">
             <TabControl.Background>
                 <SolidColorBrush Color="White" Opacity="0"/>
             </TabControl.Background>
-            <TabItem x:Name="ToolTab1" Header="User/Group Tools" Height="22">
+            <TabItem x:Name="ToolTab1" Header="User/Group Tools" Padding="2,2,2,2" Height="33">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1">
                         <GradientStop Color="#FFF0F0F0"/>
@@ -33,44 +33,44 @@
                 </TabItem.Background>
                 <Grid x:Name="ToolBox1" Background="#FFE5E5E5">
                     <Label x:Name="ADNameBox" Content="AD Name:" HorizontalAlignment="Left" Height="29" Margin="10,0,0,0" VerticalAlignment="Center" Width="84"/>
-                    <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="94,0,0,0" VerticalAlignment="Center" Width="130" FontSize="11" TextWrapping="Wrap" Grid.IsSharedSizeScope="True" UseLayoutRounding="False" TabIndex="1"/>
-                    <Button x:Name="UserInfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="UserInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="2" FontSize="11"/>
-                    <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="MemberOfButton_Click" FontSize="11" TabIndex="3"/>
-                    <Button x:Name="GroupMembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="425,0,0,0" VerticalAlignment="Center" Width="60" Click="GroupMembersButton_Click" TabIndex="5" FontSize="11"/>
-                    <Button x:Name="GroupInfoButton" Content="Group info" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="GroupInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="4" FontSize="11"/>
-                    <Button x:Name="LockoutToolButton" Content="Lockout&#xD;&#xA;Tool" HorizontalAlignment="Left" Height="30" Margin="490,0,0,0" VerticalAlignment="Center" Width="60" Click="LockoutToolButton_Click" FontSize="10" TabIndex="6"/>
-                    <Button x:Name="AddgroupButton" Content="Add/Remove&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="555,0,0,0" VerticalAlignment="Center" Width="60" Click="AddgroupButton_Click" FontSize="9" TabIndex="7"/>
+                    <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="94,0,0,0" VerticalAlignment="Center" Width="130" FontSize="11" TextWrapping="Wrap" Grid.IsSharedSizeScope="True" UseLayoutRounding="False" TabIndex="1" Padding="0,0,0,0"/>
+                    <Button x:Name="UserInfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="UserInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="2" FontSize="11" Padding="2,2,2,2"/>
+                    <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="MemberOfButton_Click" FontSize="11" TabIndex="3" Padding="2,2,2,2"/>
+                    <Button x:Name="GroupMembersButton" Content="Members" HorizontalAlignment="Left" Height="30" Margin="425,0,0,0" VerticalAlignment="Center" Width="60" Click="GroupMembersButton_Click" TabIndex="5" FontSize="11" Padding="2,2,2,2"/>
+                    <Button x:Name="GroupInfoButton" Content="Group info" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="GroupInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="4" FontSize="11" Padding="2,2,2,2"/>
+                    <Button x:Name="LockoutToolButton" Content="Lockout&#xD;&#xA;Tool" HorizontalAlignment="Left" Height="30" Margin="490,0,0,0" VerticalAlignment="Center" Width="60" Click="LockoutToolButton_Click" FontSize="10" TabIndex="6" Padding="2,2,2,2"/>
+                    <Button x:Name="AddgroupButton" Content="Add/Remove&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="555,0,0,0" VerticalAlignment="Center" Width="60" Click="AddgroupButton_Click" FontSize="9" TabIndex="7" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ToolTab2" Header="Computer Tools" Height="22">
+            <TabItem x:Name="ToolTab2" Header="Computer Tools" Padding="2,2,2,2" Height="33">
                 <Grid x:Name="ToolBox2" Background="#FFE5E5E5">
                     <Label x:Name="PCNameBox" Content="PC Name/IP:" HorizontalAlignment="Left" Height="30" Margin="10,0,0,0" VerticalAlignment="Center" Width="84"/>
-                    <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="94,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="130" Height="18" HorizontalScrollBarVisibility="Disabled" FontSize="11" TabIndex="1"/>
-                    <Button x:Name="RestartButton" Content="restart" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="RestartButton_Click" TabIndex="4" FontSize="11" FontFamily="Courier New"/>
-                    <Button x:Name="PingButton" Content="ping" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="PingButton_Click" TabIndex="3" FontSize="11" FontFamily="Courier New"/>
-                    <Button x:Name="NslookupButton" Content="nslookup" HorizontalAlignment="Left" Height="30" Margin="425,0,0,0" VerticalAlignment="Center" Width="60" Click="NslookupButton_Click" TabIndex="5" FontSize="11" FontFamily="Courier New"/>
-                    <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="490,0,0,0" VerticalAlignment="Center" Width="60" Click="RemoteButton_Click" TabIndex="6" FontSize="11"/>
-                    <Button x:Name="ComputerInfoButton" Content="PC info" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="ComputerInfoButton_Click" FontSize="11" TabIndex="2"/>
-                    <Button x:Name="MessageButton" Content="Message" HorizontalAlignment="Left" Height="30" Margin="555,0,0,0" VerticalAlignment="Center" Width="60" TabIndex="7" FontSize="11" Click="MessageButton_Click"/>
+                    <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="94,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="130" Height="18" HorizontalScrollBarVisibility="Disabled" FontSize="11" TabIndex="1" Padding="0,0,0,0"/>
+                    <Button x:Name="RestartButton" Content="restart" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="RestartButton_Click" TabIndex="4" FontSize="11" FontFamily="Courier New" Padding="2,2,2,2"/>
+                    <Button x:Name="PingButton" Content="ping" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="PingButton_Click" TabIndex="3" FontSize="11" FontFamily="Courier New" Padding="2,2,2,2"/>
+                    <Button x:Name="NslookupButton" Content="nslookup" HorizontalAlignment="Left" Height="30" Margin="425,0,0,0" VerticalAlignment="Center" Width="60" Click="NslookupButton_Click" TabIndex="5" FontSize="11" FontFamily="Courier New" Padding="2,2,2,2"/>
+                    <Button x:Name="RemoteButton" Content="Remote in" HorizontalAlignment="Left" Height="30" Margin="490,0,0,0" VerticalAlignment="Center" Width="60" Click="RemoteButton_Click" TabIndex="6" FontSize="11" Padding="2,2,2,2"/>
+                    <Button x:Name="ComputerInfoButton" Content="PC info" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="ComputerInfoButton_Click" FontSize="11" TabIndex="2" Padding="2,2,2,2"/>
+                    <Button x:Name="MessageButton" Content="Message" HorizontalAlignment="Left" Height="30" Margin="555,0,0,0" VerticalAlignment="Center" Width="60" TabIndex="7" FontSize="11" Click="MessageButton_Click" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ToolTab3" Header="Master Search" Margin="0,-1,0,0" Height="22">
+            <TabItem x:Name="ToolTab3" Header="Master Search" Padding="2,2,2,2" Height="33">
                 <Grid x:Name="ToolBox3" Background="#FFE5E5E5">
                     <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="16" Margin="370,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="2"/>
-                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="370,43,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" TabIndex="4"/>
-                    <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="479,42,0,0" VerticalAlignment="Top" Width="80" IsChecked="True" TabIndex="5"/>
+                    <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="370,30,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" TabIndex="4"/>
+                    <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="479,30,0,0" VerticalAlignment="Top" Width="80" IsChecked="True" TabIndex="5"/>
                     <CheckBox x:Name="SharedDriveCB" Content="Shared Drives" HorizontalAlignment="Left" Height="16" Margin="479,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="3"/>
-                    <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" FontSize="11" Margin="23,0,0,0" TabIndex="1" KeyUp="FuzzySearch"/>
-                    <Label Content="Type at least 4 characters to&#xA;start searching.&#xD;&#xA;Shows 10 results in each section" HorizontalAlignment="Left" Height="70" Margin="176,0,0,0" VerticalAlignment="Center" Width="186" Foreground="#FF545454" VerticalContentAlignment="Center"/>
-                    <Button x:Name="MasterSearchButton" Content="Full Search" HorizontalAlignment="Left" Height="30" Margin="606,0,0,0" VerticalAlignment="Center" Width="60" FontSize="11" Click="MasterSearchButton_Click" TabIndex="6"/>
+                    <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" FontSize="11" Margin="23,0,0,0" TabIndex="1" KeyUp="FuzzySearch" Padding="0,0,0,0"/>
+                    <Label Content="Type at least 4 characters to&#xA;start searching.&#xD;&#xA;Shows 10 results in each section" HorizontalAlignment="Left" Height="70" Margin="176,0,0,0" VerticalAlignment="Center" Width="186" Foreground="#FF545454" VerticalContentAlignment="Center" Padding="2,2,2,2"/>
+                    <Button x:Name="MasterSearchButton" Content="Full Search" HorizontalAlignment="Left" Height="30" Margin="606,0,0,0" VerticalAlignment="Center" Width="60" FontSize="11" Click="MasterSearchButton_Click" TabIndex="6" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ToolTab5" Header="Settings" Height="22">
+            <TabItem x:Name="ToolTab5" Header="Settings" Padding="2,2,2,2" Height="33">
                 <Grid x:Name="ToolBox5" Background="#FFE5E5E5">
-                    <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Left" Height="30" Margin="75,0,0,0" VerticalAlignment="Center" Width="60" Click="DarkButton_Click" FontSize="11" TabIndex="1"/>
-                    <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="102" Margin="10,0,0,0"/>
-                    <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="103" Margin="140,0,0,0"/>
-                    <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2" TabIndex="101" Margin="0,0,10,0"/>
+                    <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Left" Height="30" Margin="75,0,0,0" VerticalAlignment="Center" Width="60" Click="DarkButton_Click" FontSize="11" TabIndex="1" Padding="2,2,2,2"/>
+                    <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="102" Margin="10,0,0,0" Padding="2,2,2,2"/>
+                    <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="103" Margin="140,0,0,0" Padding="2,2,2,2"/>
+                    <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2" TabIndex="101" Margin="0,0,10,0" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
         </TabControl>
