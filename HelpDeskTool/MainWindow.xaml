@@ -70,7 +70,7 @@
                     <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Left" Height="30" Margin="75,0,0,0" VerticalAlignment="Center" Width="60" Click="DarkButton_Click" FontSize="11" TabIndex="1" Padding="2,2,2,2" Background="White"/>
                     <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="102" Margin="10,0,0,0" Padding="2,2,2,2" Background="White"/>
                     <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="103" Margin="140,0,0,0" Padding="2,2,2,2" Background="White"/>
-                    <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="2,2,2,2" TabIndex="101" Margin="0,0,10,0" Padding="2,2,2,2"/>
+                    <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="101" Margin="0,0,10,0" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
         </TabControl>
