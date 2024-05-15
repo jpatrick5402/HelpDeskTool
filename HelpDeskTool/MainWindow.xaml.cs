@@ -28,6 +28,7 @@ using System.Configuration;
 using Microsoft.VisualBasic;
 using System.Windows.Forms.PropertyGridInternal;
 using System.Threading;
+using MaterialDesignThemes.Wpf;
 
 namespace DTTool
 {
@@ -999,6 +1000,18 @@ namespace DTTool
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
+
+            PaletteHelper palette = new PaletteHelper();
+            Theme theme = palette.GetTheme();
+            if (Settings.Default.DarkMode)
+            {
+                theme.SetBaseTheme(BaseTheme.Dark);
+            }
+            else
+            {
+                theme.SetBaseTheme(BaseTheme.Light);
+            }
+            palette.SetTheme(theme);
         }
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
