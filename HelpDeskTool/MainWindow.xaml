@@ -19,7 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="OutputBox" Margin="19,125,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" FontFamily="Cascadia Mono" TabIndex="104" Padding="5,0,0,0" Background="White"/>
+        <TextBox x:Name="OutputBox" Margin="19,125,19,9" IsReadOnly="True" TextBlock.LineHeight="1" HorizontalScrollBarVisibility="Auto" FontFamily="Cascadia Mono" TabIndex="104" Padding="5,0,0,0" Background="White" IsHitTestVisible="False" Focusable="False"/>
         <TabControl Height="100" VerticalAlignment="Top" Margin="19,6,19,0" Foreground="Black">
             <TabControl.Background>
                 <SolidColorBrush Color="White" Opacity="0"/>
