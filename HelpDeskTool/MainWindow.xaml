@@ -43,7 +43,7 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab2" Header="Computer Tools" Padding="2,2,2,2" Height="33">
-                <Grid x:Name="ToolBox2" Background="#FFE5E5E5">
+                <Grid x:Name="ToolBox2" Background="White">
                     <Label x:Name="PCNameBox" Content="PC Name/IP:" HorizontalAlignment="Left" Height="30" Margin="10,0,0,0" VerticalAlignment="Center" Width="84"/>
                     <TextBox x:Name="NameBox" HorizontalAlignment="Left" Margin="94,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="130" Height="18" HorizontalScrollBarVisibility="Disabled" FontSize="11" TabIndex="1" Padding="0,0,0,0"/>
                     <Button x:Name="RestartButton" Content="restart" HorizontalAlignment="Left" Height="30" Margin="360,0,0,0" VerticalAlignment="Center" Width="60" Click="RestartButton_Click" TabIndex="4" FontSize="11" FontFamily="Courier New" Padding="2,2,2,2" Background="White"/>
@@ -55,7 +55,7 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab3" Header="Master Search" Padding="2,2,2,2" Height="33">
-                <Grid x:Name="ToolBox3" Background="#FFE5E5E5">
+                <Grid x:Name="ToolBox3" Background="White">
                     <CheckBox x:Name="URMCDomainCB" Content="URMC Domain" HorizontalAlignment="Left" Height="16" Margin="370,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="2"/>
                     <CheckBox x:Name="URDomainCB" Content="UR Domain" HorizontalAlignment="Left" Margin="370,30,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" TabIndex="4"/>
                     <CheckBox x:Name="PrintersCB" Content="Printers" HorizontalAlignment="Left" Height="16" Margin="479,30,0,0" VerticalAlignment="Top" Width="80" IsChecked="True" TabIndex="5"/>
@@ -66,7 +66,7 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab5" Header="Settings" Padding="2,2,2,2" Height="33">
-                <Grid x:Name="ToolBox5" Background="#FFE5E5E5">
+                <Grid x:Name="ToolBox5" Background="White">
                     <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Left" Height="30" Margin="75,0,0,0" VerticalAlignment="Center" Width="60" Click="DarkButton_Click" FontSize="11" TabIndex="1" Padding="2,2,2,2" Background="White"/>
                     <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="102" Margin="10,0,0,0" Padding="2,2,2,2" Background="White"/>
                     <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="103" Margin="140,0,0,0" Padding="2,2,2,2" Background="White"/>
