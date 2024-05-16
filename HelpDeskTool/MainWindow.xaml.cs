@@ -937,7 +937,7 @@ namespace DTTool
             }
             else
             {
-                MainWindow1.Background = new LinearGradientBrush(Colors.White, Colors.Yellow, 90.00);
+                MainWindow1.Background = new LinearGradientBrush(Colors.Yellow, Colors.White, 90.00);
                 OutputBox.Background = Brushes.White;
                 OutputBox.Foreground = Brushes.Black;
                 PCNameBox.Foreground = Brushes.Black;
