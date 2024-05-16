@@ -8,7 +8,7 @@
         Title="HelpDeskTool" Height="750" Width="751">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="Yellow" Offset="0"/>
+            <GradientStop Color="#FFE6E62B" Offset="0"/>
             <GradientStop Color="White" Offset="1"/>
         </LinearGradientBrush>
     </Window.Background>
