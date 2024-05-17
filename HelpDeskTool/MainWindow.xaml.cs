@@ -1574,5 +1574,10 @@ namespace DTTool
             else
                 GamesBox.Visibility = Visibility.Hidden;
         }
+
+        private void HideButton_Click(object sender, RoutedEventArgs e)
+        {
+            GamesBox.Visibility = Visibility.Hidden;
+        }
     }
 }
