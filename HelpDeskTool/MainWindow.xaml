@@ -76,8 +76,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="HiddenButton" Content="" HorizontalAlignment="Right" Height="10" Margin="737,724,0,0" VerticalAlignment="Bottom" Width="14" Background="White" BorderBrush="#00707070" Click="HiddenButton_Click"/>
-        <Grid x:Name="GamesBox" Background="#FF777777" Margin="19,125,19,-76" Visibility="Hidden">
+        <Button x:Name="HiddenButton" Content="" HorizontalAlignment="Right" Height="10" Margin="737,724,0,0" VerticalAlignment="Bottom" Width="14" Background="White" BorderBrush="#00707070" Click="HiddenButton_Click" IsTabStop="False"/>
+        <Grid x:Name="GamesBox" Background="#FF777777" Margin="19,125,19,10" Visibility="Hidden">
             <wv2:WebView2 x:Name="webViewPanel" Source="" Margin="0,50,0,0"/>
             <Button x:Name="Game1Button" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game1Button_Click"/>
             <Button x:Name="Game2Button" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game2Button_Click"/>

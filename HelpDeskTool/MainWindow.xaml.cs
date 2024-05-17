@@ -946,6 +946,7 @@ namespace DTTool
                 Game5Button.Foreground = Brushes.White;
                 Game6Button.Background = Brushes.Black;
                 Game6Button.Foreground = Brushes.White;
+                HiddenButton.Background = Brushes.Black;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1025,6 +1026,7 @@ namespace DTTool
                 Game5Button.Foreground = Brushes.Black;
                 Game6Button.Background = Brushes.White;
                 Game6Button.Foreground = Brushes.Black;
+                HiddenButton.Background = Brushes.White;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
