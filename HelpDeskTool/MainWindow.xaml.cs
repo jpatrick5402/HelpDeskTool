@@ -1514,7 +1514,7 @@ namespace DTTool
         private void ClearTempButton_Click(object sender, RoutedEventArgs e)
         {
             var PCName = NameBox.Text.Trim();
-            OutputBox.AppendText("Starting clear process for " + PCName + "\n\n");
+            OutputBox.AppendText("Terminal opened for file clear");
 
             System.Windows.Clipboard.SetText(PCName);
             NameBox.Clear();
@@ -1523,7 +1523,7 @@ namespace DTTool
             command.StartInfo.FileName = "\\\\NTSDRIVE05\\ISD_share\\Cust_Serv\\Help Desk Info\\Help Desk PC Setup Docs\\HD Fixes\\cleartemp7.bat";
             command.StartInfo.Arguments = "";
             command.Start();
-            OutputBox.AppendText("-----------------------------------------------------------------------------------------------\n");
+            OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
 
