@@ -934,16 +934,18 @@ namespace DTTool
                 MessageButton.Foreground = Brushes.White;
                 ClearTempButton.Background = Brushes.Black;
                 ClearTempButton.Foreground = Brushes.White;
-                DinoGameButton.Background = Brushes.Black;
-                DinoGameButton.Foreground = Brushes.White;
-                PacManButton.Background = Brushes.Black;
-                PacManButton.Foreground = Brushes.White;
-                SpaceInvadersButton.Background = Brushes.Black;
-                SpaceInvadersButton.Foreground = Brushes.White;
-                WordleButton.Background = Brushes.Black;
-                WordleButton.Foreground = Brushes.White;
-                PeggleButton.Background = Brushes.Black;
-                PeggleButton.Foreground = Brushes.White;
+                Game1Button.Background = Brushes.Black;
+                Game1Button.Foreground = Brushes.White;
+                Game2Button.Background = Brushes.Black;
+                Game2Button.Foreground = Brushes.White;
+                Game3Button.Background = Brushes.Black;
+                Game3Button.Foreground = Brushes.White;
+                Game4Button.Background = Brushes.Black;
+                Game4Button.Foreground = Brushes.White;
+                Game5Button.Background = Brushes.Black;
+                Game5Button.Foreground = Brushes.White;
+                Game6Button.Background = Brushes.Black;
+                Game6Button.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1011,16 +1013,18 @@ namespace DTTool
                 MessageButton.Foreground = Brushes.Black;
                 ClearTempButton.Background = Brushes.White;
                 ClearTempButton.Foreground = Brushes.Black;
-                DinoGameButton.Background = Brushes.White;
-                DinoGameButton.Foreground = Brushes.Black;
-                PacManButton.Background = Brushes.White;
-                PacManButton.Foreground = Brushes.Black;
-                SpaceInvadersButton.Background = Brushes.White;
-                SpaceInvadersButton.Foreground = Brushes.Black;
-                WordleButton.Background = Brushes.White;
-                WordleButton.Foreground = Brushes.Black;
-                PeggleButton.Background = Brushes.White;
-                PeggleButton.Foreground = Brushes.Black;
+                Game1Button.Background = Brushes.White;
+                Game1Button.Foreground = Brushes.Black;
+                Game2Button.Background = Brushes.White;
+                Game2Button.Foreground = Brushes.Black;
+                Game3Button.Background = Brushes.White;
+                Game3Button.Foreground = Brushes.Black;
+                Game4Button.Background = Brushes.White;
+                Game4Button.Foreground = Brushes.Black;
+                Game5Button.Background = Brushes.White;
+                Game5Button.Foreground = Brushes.Black;
+                Game6Button.Background = Brushes.White;
+                Game6Button.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1531,29 +1535,34 @@ namespace DTTool
             OutputBox.ScrollToEnd();
         }
 
-        private void SpaceInvadersButton_Click(object sender, RoutedEventArgs e)
+        private void Game1Button_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://end3r.com/games/frontinvaders/");
         }
 
-        private void DinoGameButton_Click(object sender, RoutedEventArgs e)
+        private void Game2Button_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://chrome-dino-game.github.io/");
         }
 
-        private void PacManButton_Click(object sender, RoutedEventArgs e)
+        private void Game3Button_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://freepacman.org/");
         }
 
-        private void WordleButton_Click(object sender, RoutedEventArgs e)
+        private void Game4Button_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://www.nytimes.com/games/wordle/index.html");
         }
 
-        private void PeggleButton_Click(object sender, RoutedEventArgs e)
+        private void Game5Button_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://tyst.itch.io/pegglelike");
+        }
+
+        private void Game6Button_Click(object sender, RoutedEventArgs e)
+        {
+            webViewPanel.Source = new Uri("https://freds72.itch.io/poom");
         }
     }
 }
