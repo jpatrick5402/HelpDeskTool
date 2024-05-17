@@ -77,7 +77,7 @@
             </TabItem>
             <TabItem x:Name="ToolTab6" Header="Games" Padding="2,2,2,2" Height="33">
                 <Grid x:Name="ToolBox6" Background="#FF777777" Margin="0,0,0,-618">
-                    <wv2:WebView2 x:Name="webViewPanel" Source="https://end3r.com/games/frontinvaders/" Margin="0,44,0,0"/>
+                    <wv2:WebView2 x:Name="webViewPanel" Source="" Margin="0,50,0,0"/>
                     <Button x:Name="SpaceInvadersButton" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="SpaceInvadersButton_Click"/>
                     <Button x:Name="DinoGameButton" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="DinoGameButton_Click"/>
                     <Button x:Name="PacManButton" Content="Pacman" HorizontalAlignment="Left" Height="30" Margin="158,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="PacManButton_Click"/>
