@@ -75,13 +75,14 @@
                     <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,0,10,0" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ToolTab6" Header="Games" Padding="2,2,2,2" Height="33">
+            <TabItem x:Name="ToolTab6" Header="" Padding="1,2,2,2" Height="32" Width="20" HorizontalAlignment="Right" MinWidth="0">
                 <Grid x:Name="ToolBox6" Background="#FF777777" Margin="0,0,0,-618">
                     <wv2:WebView2 x:Name="webViewPanel" Source="" Margin="0,50,0,0"/>
                     <Button x:Name="SpaceInvadersButton" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="SpaceInvadersButton_Click"/>
                     <Button x:Name="DinoGameButton" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="DinoGameButton_Click"/>
                     <Button x:Name="PacManButton" Content="Pacman" HorizontalAlignment="Left" Height="30" Margin="158,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="PacManButton_Click"/>
                     <Button x:Name="WordleButton" Content="Wordle" HorizontalAlignment="Left" Height="30" Margin="206,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="WordleButton_Click"/>
+                    <Button x:Name="PeggleButton" Content="Peggle-like" HorizontalAlignment="Left" Height="30" Margin="251,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="PeggleButton_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

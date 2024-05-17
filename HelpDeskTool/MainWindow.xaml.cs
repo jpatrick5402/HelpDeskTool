@@ -942,6 +942,8 @@ namespace DTTool
                 SpaceInvadersButton.Foreground = Brushes.White;
                 WordleButton.Background = Brushes.Black;
                 WordleButton.Foreground = Brushes.White;
+                PeggleButton.Background = Brushes.Black;
+                PeggleButton.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1017,6 +1019,8 @@ namespace DTTool
                 SpaceInvadersButton.Foreground = Brushes.Black;
                 WordleButton.Background = Brushes.White;
                 WordleButton.Foreground = Brushes.Black;
+                PeggleButton.Background = Brushes.White;
+                PeggleButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1545,6 +1549,11 @@ namespace DTTool
         private void WordleButton_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://www.nytimes.com/games/wordle/index.html");
+        }
+
+        private void PeggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            webViewPanel.Source = new Uri("https://tyst.itch.io/pegglelike");
         }
     }
 }
