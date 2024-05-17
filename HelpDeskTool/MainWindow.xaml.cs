@@ -939,7 +939,9 @@ namespace DTTool
                 PacManButton.Background = Brushes.Black;
                 PacManButton.Foreground = Brushes.White;
                 SpaceInvadersButton.Background = Brushes.Black;
-                SpaceInvadersButton.Foreground = Brushes.White; 
+                SpaceInvadersButton.Foreground = Brushes.White;
+                WordleButton.Background = Brushes.Black;
+                WordleButton.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1013,6 +1015,8 @@ namespace DTTool
                 PacManButton.Foreground = Brushes.Black;
                 SpaceInvadersButton.Background = Brushes.White;
                 SpaceInvadersButton.Foreground = Brushes.Black;
+                WordleButton.Background = Brushes.White;
+                WordleButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1536,6 +1540,11 @@ namespace DTTool
         private void PacManButton_Click(object sender, RoutedEventArgs e)
         {
             webViewPanel.Source = new Uri("https://freepacman.org/");
+        }
+
+        private void WordleButton_Click(object sender, RoutedEventArgs e)
+        {
+            webViewPanel.Source = new Uri("https://www.nytimes.com/games/wordle/index.html");
         }
     }
 }

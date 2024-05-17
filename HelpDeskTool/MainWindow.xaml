@@ -81,6 +81,7 @@
                     <Button x:Name="SpaceInvadersButton" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="SpaceInvadersButton_Click"/>
                     <Button x:Name="DinoGameButton" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="DinoGameButton_Click"/>
                     <Button x:Name="PacManButton" Content="Pacman" HorizontalAlignment="Left" Height="30" Margin="158,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="PacManButton_Click"/>
+                    <Button x:Name="WordleButton" Content="Wordle" HorizontalAlignment="Left" Height="30" Margin="206,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="WordleButton_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>
