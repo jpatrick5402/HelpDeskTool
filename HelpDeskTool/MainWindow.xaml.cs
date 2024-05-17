@@ -932,6 +932,8 @@ namespace DTTool
                 MasterSearchButton.Foreground = Brushes.White;
                 MessageButton.Background = Brushes.Black;
                 MessageButton.Foreground = Brushes.White;
+                ClearTempButton.Background = Brushes.Black;
+                ClearTempButton.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -997,6 +999,8 @@ namespace DTTool
                 MasterSearchButton.Foreground = Brushes.Black;
                 MessageButton.Background = Brushes.White;
                 MessageButton.Foreground = Brushes.Black;
+                ClearTempButton.Background = Brushes.White;
+                ClearTempButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1489,6 +1493,23 @@ namespace DTTool
             {
                 System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void ClearTempButton_Click(object sender, RoutedEventArgs e)
+        {
+            var PCName = NameBox.Text.Trim();
+            OutputBox.AppendText("Starting clear process for " + PCName + "\n\n");
+
+            System.Windows.Clipboard.SetText(PCName);
+            NameBox.Clear();
+            System.Diagnostics.Process command = new System.Diagnostics.Process();
+            command.StartInfo.CreateNoWindow = false;
+            command.StartInfo.FileName = "\\\\NTSDRIVE05\\ISD_share\\Cust_Serv\\Help Desk Info\\Help Desk PC Setup Docs\\HD Fixes\\cleartemp7.bat";
+            command.StartInfo.Arguments = "";
+            command.Start();
+            OutputBox.AppendText("-----------------------------------------------------------------------------------------------\n");
+            OutputBox.ScrollToEnd();
+        }
         }
     }
 }
