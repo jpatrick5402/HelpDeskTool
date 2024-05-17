@@ -172,6 +172,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDU_VPN_GP_FullAccess" };
+            Clipboard.SetText("ISDU_VPN_GP_FullAccess");
             AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
 
@@ -180,6 +181,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDG_VPN_FullAccess" };
+            Clipboard.SetText("ISDG_VPN_FullAccess");
             AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
 
@@ -188,6 +190,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDU_CitrixAccessGateway" };
+            Clipboard.SetText("ISDU_CitrixAccessGateway");
             AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
 
@@ -196,6 +199,7 @@ namespace DTTool
             string usertext = StringFromRTB(ARusernameBox);
             string[] myUserList = usertext.Split("\r\n").SkipLast(1).ToArray();
             string[] myGroupList = { "ISDG_CTX_eRecord2" };
+            Clipboard.SetText("ISDG_CTX_eRecord2");
             AddOrRemoveBulk(myUserList, myGroupList, "add", true);
         }
     }
