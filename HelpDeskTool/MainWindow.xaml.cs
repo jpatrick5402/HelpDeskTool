@@ -1564,5 +1564,13 @@ namespace DTTool
         {
             webViewPanel.Source = new Uri("https://freds72.itch.io/poom");
         }
+
+        private void HiddenButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GamesBox.Visibility == Visibility.Hidden)
+                GamesBox.Visibility = Visibility.Visible;
+            else
+                GamesBox.Visibility = Visibility.Hidden;
+        }
     }
 }

@@ -75,17 +75,16 @@
                     <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,0,10,0" Padding="2,2,2,2"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="ToolTab6" Header="" Padding="1,2,2,2" Height="32" Width="20" HorizontalAlignment="Right" MinWidth="0">
-                <Grid x:Name="ToolBox6" Background="#FF777777" Margin="0,0,0,-618">
-                    <wv2:WebView2 x:Name="webViewPanel" Source="" Margin="0,50,0,0"/>
-                    <Button x:Name="Game1Button" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game1Button_Click"/>
-                    <Button x:Name="Game2Button" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game2Button_Click"/>
-                    <Button x:Name="Game3Button" Content="Pacman" HorizontalAlignment="Left" Height="30" Margin="158,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game3Button_Click"/>
-                    <Button x:Name="Game4Button" Content="Wordle" HorizontalAlignment="Left" Height="30" Margin="206,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game4Button_Click"/>
-                    <Button x:Name="Game5Button" Content="Peggle-like" HorizontalAlignment="Left" Height="30" Margin="251,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game5Button_Click"/>
-                    <Button x:Name="Game6Button" Content="Doom" HorizontalAlignment="Left" Height="30" Margin="315,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game6Button_Click"/>
-                </Grid>
-            </TabItem>
         </TabControl>
+        <Button x:Name="HiddenButton" Content="" HorizontalAlignment="Right" Height="10" Margin="737,724,0,0" VerticalAlignment="Bottom" Width="14" Background="White" BorderBrush="#00707070" Click="HiddenButton_Click"/>
+        <Grid x:Name="GamesBox" Background="#FF777777" Margin="19,125,19,-76" Visibility="Hidden">
+            <wv2:WebView2 x:Name="webViewPanel" Source="" Margin="0,50,0,0"/>
+            <Button x:Name="Game1Button" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game1Button_Click"/>
+            <Button x:Name="Game2Button" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game2Button_Click"/>
+            <Button x:Name="Game3Button" Content="Pacman" HorizontalAlignment="Left" Height="30" Margin="158,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game3Button_Click"/>
+            <Button x:Name="Game4Button" Content="Wordle" HorizontalAlignment="Left" Height="30" Margin="206,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game4Button_Click"/>
+            <Button x:Name="Game5Button" Content="Peggle-like" HorizontalAlignment="Left" Height="30" Margin="251,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game5Button_Click"/>
+            <Button x:Name="Game6Button" Content="Doom" HorizontalAlignment="Left" Height="30" Margin="315,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="Game6Button_Click"/>
+        </Grid>
     </Grid>
 </Window>
