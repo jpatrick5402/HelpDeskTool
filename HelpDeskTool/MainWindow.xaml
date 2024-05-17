@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DTTool"
+        xmlns:local="clr-namespace:DTTool" xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="HelpDeskTool" Height="750" Width="751"
         WindowStartupLocation="CenterScreen">
@@ -73,6 +73,14 @@
                     <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="1" Margin="10,0,0,0" Padding="2,2,2,2" Background="White"/>
                     <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="3" Margin="140,0,0,0" Padding="2,2,2,2" Background="White"/>
                     <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,0,10,0" Padding="2,2,2,2"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="ToolTab6" Header="Games" Padding="2,2,2,2" Height="33">
+                <Grid x:Name="ToolBox6" Background="#FF777777" Margin="0,0,0,-618">
+                    <wv2:WebView2 x:Name="webViewPanel" Source="https://end3r.com/games/frontinvaders/" Margin="0,44,0,0"/>
+                    <Button x:Name="SpaceInvadersButton" Content="Space Invaders" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="SpaceInvadersButton_Click"/>
+                    <Button x:Name="DinoGameButton" Content="Dino Game" HorizontalAlignment="Left" Height="30" Margin="93,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="DinoGameButton_Click"/>
+                    <Button x:Name="PacManButton" Content="Pacman" HorizontalAlignment="Left" Height="30" Margin="158,10,0,0" VerticalAlignment="Top" TabIndex="5" FontSize="11" Padding="2,2,2,2" Background="White" Click="PacManButton_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

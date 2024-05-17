@@ -934,6 +934,12 @@ namespace DTTool
                 MessageButton.Foreground = Brushes.White;
                 ClearTempButton.Background = Brushes.Black;
                 ClearTempButton.Foreground = Brushes.White;
+                DinoGameButton.Background = Brushes.Black;
+                DinoGameButton.Foreground = Brushes.White;
+                PacManButton.Background = Brushes.Black;
+                PacManButton.Foreground = Brushes.White;
+                SpaceInvadersButton.Background = Brushes.Black;
+                SpaceInvadersButton.Foreground = Brushes.White; 
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1001,6 +1007,12 @@ namespace DTTool
                 MessageButton.Foreground = Brushes.Black;
                 ClearTempButton.Background = Brushes.White;
                 ClearTempButton.Foreground = Brushes.Black;
+                DinoGameButton.Background = Brushes.White;
+                DinoGameButton.Foreground = Brushes.Black;
+                PacManButton.Background = Brushes.White;
+                PacManButton.Foreground = Brushes.Black;
+                SpaceInvadersButton.Background = Brushes.White;
+                SpaceInvadersButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1510,6 +1522,20 @@ namespace DTTool
             OutputBox.AppendText("-----------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
         }
+
+        private void SpaceInvadersButton_Click(object sender, RoutedEventArgs e)
+        {
+            webViewPanel.Source = new Uri("https://end3r.com/games/frontinvaders/");
+        }
+
+        private void DinoGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            webViewPanel.Source = new Uri("https://chrome-dino-game.github.io/");
+        }
+
+        private void PacManButton_Click(object sender, RoutedEventArgs e)
+        {
+            webViewPanel.Source = new Uri("https://freepacman.org/");
         }
     }
 }
