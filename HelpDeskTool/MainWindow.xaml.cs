@@ -819,11 +819,11 @@ namespace DTTool
                     {
                         try
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]}".PadRight(20) + GroupResultInfo.Properties[PropertyList[i, 1]][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i, 0]}:".PadRight(20) + GroupResultInfo.Properties[PropertyList[i, 1]][0] + '\n');
                         }
                         catch (Exception ex)
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]}".PadRight(20) + "[Not Listed]\n");
+                            OutputBox.AppendText($"{PropertyList[i, 0]}:".PadRight(20) + "[Not Listed]\n");
                         }
                     }
                     PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
