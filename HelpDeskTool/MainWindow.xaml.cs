@@ -337,9 +337,8 @@ namespace DTTool
                             entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
                             searcher = new DirectorySearcher(entry);
 
-                            searcher.Filter = "(&(objectClass=user)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
+                            searcher.Filter = "(&(objectClass=*)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
                             SearchResult GroupUserResult = searcher.FindOne();
-
                             SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "").PadRight(30) + GroupUserResult.Properties["samaccountname"][0].ToString();
                         }
                         Array.Sort(SortedGroup);
@@ -348,7 +347,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText(item + '\n');
                         }
-                    }
+                        }
                     else
                     {
                         string KeyString = "";
@@ -820,11 +819,11 @@ namespace DTTool
                     {
                         try
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]}: " + GroupResultInfo.Properties[PropertyList[i, 1]][0] + '\n');
+                            OutputBox.AppendText($"{PropertyList[i, 0]}".PadRight(20) + GroupResultInfo.Properties[PropertyList[i, 1]][0] + '\n');
                         }
                         catch (Exception ex)
                         {
-                            OutputBox.AppendText($"{PropertyList[i, 0]} is not listed in object properties\n");
+                            OutputBox.AppendText($"{PropertyList[i, 0]}".PadRight(20) + "[Not Listed]\n");
                         }
                     }
                     PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
@@ -833,7 +832,7 @@ namespace DTTool
                     {
                         de.RefreshCache(new string[] { "canonicalName" });
                         string canonicalName = de.Properties["canonicalName"].Value as string;
-                        OutputBox.AppendText("OU: " + canonicalName);
+                        OutputBox.AppendText("OU".PadRight(20) + canonicalName);
                     }
                 }
                 else
