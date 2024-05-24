@@ -342,12 +342,19 @@ namespace DTTool
                     {
                         for (int i = 0; i < GroupMembersResult.Properties["member"].Count; i++)
                         {
-                            entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                            searcher = new DirectorySearcher(entry);
+                            try
+                            {
+                                entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                                searcher = new DirectorySearcher(entry);
 
-                            searcher.Filter = "(&(objectClass=*)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
-                            SearchResult GroupUserResult = searcher.FindOne();
-                            SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "").PadRight(30) + GroupUserResult.Properties["samaccountname"][0].ToString();
+                                searcher.Filter = "(&(objectClass=*)(name=" + GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "") + "))";
+                                SearchResult GroupUserResult = searcher.FindOne();
+                                SortedGroup[i] = GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "").PadRight(30) + GroupUserResult.Properties["samaccountname"][0].ToString();
+                            }
+                            catch (Exception ex)
+                            {
+                                SortedGroup[i] = $"Error occurred: {GroupMembersResult.Properties["member"][i].ToString().Substring(3, GroupMembersResult.Properties["member"][i].ToString().IndexOf(",OU") - 3).Replace("\\", "")} --- {ex.Message}";
+                            }
                         }
                         Array.Sort(SortedGroup);
                         OutputBox.AppendText($"Members of {GroupMembersResult.Properties["name"][0]}:\n\n");
@@ -355,7 +362,7 @@ namespace DTTool
                         {
                             OutputBox.AppendText(item + '\n');
                         }
-                        }
+                    }
                     else
                     {
                         string KeyString = "";
@@ -840,7 +847,7 @@ namespace DTTool
                     {
                         de.RefreshCache(new string[] { "canonicalName" });
                         string canonicalName = de.Properties["canonicalName"].Value as string;
-                        OutputBox.AppendText("OU".PadRight(20) + canonicalName);
+                        OutputBox.AppendText("OU:".PadRight(20) + canonicalName);
                     }
                 }
                 else
