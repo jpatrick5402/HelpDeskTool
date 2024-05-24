@@ -1176,6 +1176,7 @@ namespace DTTool
                         int count = 0;
                         foreach (SearchResult result in UserResult)
                         {
+                            Console.WriteLine(result);
                             OutputBox.AppendText("URMC:   ");
                             OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
                             try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
