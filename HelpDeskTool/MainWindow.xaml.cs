@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,6 +30,7 @@ using Microsoft.VisualBasic;
 using System.Windows.Forms.PropertyGridInternal;
 using System.Threading;
 using MaterialDesignThemes.Wpf;
+using System.Printing;
 
 namespace DTTool
 {
@@ -279,18 +281,24 @@ namespace DTTool
 
                             if (result != null)
                             {
-                                OutputBox.AppendText("\n    ");
+                                OutputBox.AppendText(" ---description--> ");
                                 try
                                 {
                                     OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
                                 }
-                                catch { }
-                                OutputBox.AppendText("\n    ");
+                                catch 
+                                {
+                                    OutputBox.AppendText("[No Description]");
+                                }
+                                OutputBox.AppendText(" ---info--> ");
                                 try
                                 {
                                     OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
                                 }
-                                catch { }
+                                catch 
+                                {
+                                    OutputBox.AppendText("[No Additonal Info]");
+                                }
                             }
                             OutputBox.AppendText("\n");
                         }
@@ -946,6 +954,12 @@ namespace DTTool
                 Game6Button.Background = Brushes.Black;
                 Game6Button.Foreground = Brushes.White;
                 HiddenButton.Background = Brushes.Black;
+                MapPrinterButton.Background = Brushes.Black;
+                MapPrinterButton.Foreground = Brushes.White;
+                DUOButton.Background = Brushes.Black;
+                DUOButton.Foreground = Brushes.White;
+                CDollarButton.Background = Brushes.Black;
+                CDollarButton.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1026,6 +1040,12 @@ namespace DTTool
                 Game6Button.Background = Brushes.White;
                 Game6Button.Foreground = Brushes.Black;
                 HiddenButton.Background = Brushes.White;
+                MapPrinterButton.Background = Brushes.White;
+                MapPrinterButton.Foreground = Brushes.Black;
+                DUOButton.Background = Brushes.White;
+                DUOButton.Foreground = Brushes.Black;
+                CDollarButton.Background = Brushes.White;
+                CDollarButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1539,32 +1559,32 @@ namespace DTTool
 
         private void Game1Button_Click(object sender, RoutedEventArgs e)
         {
-            webViewPanel.Source = new Uri("https://end3r.com/games/frontinvaders/");
+            GameWebView.Source = new Uri("https://end3r.com/games/frontinvaders/");
         }
 
         private void Game2Button_Click(object sender, RoutedEventArgs e)
         {
-            webViewPanel.Source = new Uri("https://chrome-dino-game.github.io/");
+            GameWebView.Source = new Uri("https://chrome-dino-game.github.io/");
         }
 
         private void Game3Button_Click(object sender, RoutedEventArgs e)
         {
-            webViewPanel.Source = new Uri("https://freepacman.org/");
+            GameWebView.Source = new Uri("https://freepacman.org/");
         }
 
         private void Game4Button_Click(object sender, RoutedEventArgs e)
         {
-            webViewPanel.Source = new Uri("https://www.nytimes.com/games/wordle/index.html");
+            GameWebView.Source = new Uri("https://www.nytimes.com/games/wordle/index.html");
         }
 
         private void Game5Button_Click(object sender, RoutedEventArgs e)
         {
-            webViewPanel.Source = new Uri("https://tyst.itch.io/pegglelike");
+            GameWebView.Source = new Uri("https://tyst.itch.io/pegglelike");
         }
 
         private void Game6Button_Click(object sender, RoutedEventArgs e)
         {
-            webViewPanel.Source = new Uri("https://freds72.itch.io/poom");
+            GameWebView.Source = new Uri("https://freds72.itch.io/poom");
         }
 
         private void HiddenButton_Click(object sender, RoutedEventArgs e)
@@ -1578,6 +1598,87 @@ namespace DTTool
         private void HideButton_Click(object sender, RoutedEventArgs e)
         {
             GamesBox.Visibility = Visibility.Hidden;
+        }
+
+        private void MapPrinterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (NameBox.Text != "")
+            {
+                var PCName = NameBox.Text.Trim();
+
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                System.Windows.Clipboard.SetText(PCName);
+                NameBox.Clear();
+
+                string PrinterInfo = Interaction.InputBox("Enter Printer info (\\\\SERVERNAME\\PRINTERNAME)?", "Printer Input").Replace("\\\\", "\\");
+                if (PrinterInfo != "")
+                {
+                    // Currently this section is throwing a type mismatch, button is disabled for now
+                    string command = $"RunDll32.EXE printui.dll,PrintUIEntry /in /n {PrinterInfo}";
+                    ConnectionOptions options = new ConnectionOptions();
+                    ManagementScope scope = new ManagementScope($"\\\\{PCName}\\root\\cimv2", options);
+                    scope.Connect();
+                    object[] theProcessToRun = { "RunDLL32.EXE", "printui.dll,PrintUIEntry", "/in", "/n", PrinterInfo };
+                    using (var managementClass = new ManagementClass(scope, new ManagementPath("Win32_Process"), new ObjectGetOptions()))
+                    {
+                        managementClass.InvokeMethod("Create", theProcessToRun);
+                    }
+                }
+                else
+                {
+                    OutputBox.AppendText("Printer Not Mapped");
+                }
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
+                OutputBox.ScrollToEnd();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void DUOButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DUOBox.Visibility == Visibility.Hidden)
+                DUOBox.Visibility = Visibility.Visible;
+            else
+                DUOBox.Visibility = Visibility.Hidden;
+        }
+
+        private void CDollarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (NameBox.Text != "")
+            {
+                var ComputerName = NameBox.Text.Trim();
+
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                System.Windows.Clipboard.SetText(ComputerName);
+                NameBox.Clear();
+
+
+                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                searcher.Filter = $"(&(objectClass=computer)(CN={ComputerName}))";
+                SearchResult result = searcher.FindOne();
+
+                if (result != null)
+                {
+                    Process.Start("explorer.exe", $@"\\{ComputerName}\C$");
+                }
+                else
+                {
+                    OutputBox.AppendText("Computer not found");
+                    OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
+                    OutputBox.ScrollToEnd();
+                }
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("No PC Name/IP Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
