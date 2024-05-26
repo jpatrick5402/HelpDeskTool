@@ -1620,23 +1620,47 @@ namespace DTTool
                 string PrinterInfo = Interaction.InputBox("Enter Printer info (\\\\SERVERNAME\\PRINTERNAME)?", "Printer Input").Replace("\\\\", "\\");
                 if (PrinterInfo != "")
                 {
-                    // Currently this section is throwing a type mismatch, button is disabled for now
+                    // Button is disabled for now
                     string command = $"RunDll32.EXE printui.dll,PrintUIEntry /in /n {PrinterInfo}";
+
                     ConnectionOptions options = new ConnectionOptions();
-                    ManagementScope scope = new ManagementScope($"\\\\{PCName}\\root\\cimv2", options);
+                    options.Impersonation = ImpersonationLevel.Impersonate;
+
+                    ManagementScope scope = new ManagementScope($@"\\{PCName}\root\cimv2", options);
                     scope.Connect();
-                    object[] theProcessToRun = { "RunDLL32.EXE", "printui.dll,PrintUIEntry", "/in", "/n", PrinterInfo };
-                    using (var managementClass = new ManagementClass(scope, new ManagementPath("Win32_Process"), new ObjectGetOptions()))
+
+                    ManagementClass managementClass = new ManagementClass(scope, new ManagementPath("Win32_Process"), null);
+
+                    ManagementBaseObject inParams = managementClass.GetMethodParameters("Create");
+                    inParams["CommandLine"] = command;
+
+                    ManagementBaseObject outParams = managementClass.InvokeMethod("Create", inParams, null);
+
+                    for (int i = 0; i < 5; i++)
                     {
-                        managementClass.InvokeMethod("Create", theProcessToRun);
+                        Thread.Sleep(1000);
+                        if (outParams["processId"] == null)
+                        {
+                            OutputBox.AppendText($"Process ID: {outParams["processId"]}\n");
+                            OutputBox.AppendText($"Return Value: {outParams["returnValue"]}\n");
+                            outParams = managementClass.InvokeMethod("Create", inParams, null);
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
+
+                    OutputBox.AppendText("Check below for a process ID to confirm that the process has been started\n");
+                    OutputBox.AppendText($"Process ID: {outParams["processId"]}\n");
+                    OutputBox.AppendText($"Return Value: {outParams["returnValue"]}\n");
                 }
                 else
                 {
                     OutputBox.AppendText("Printer Not Mapped");
                 }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-                OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
+                OutputBox.AppendText("-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
             else
