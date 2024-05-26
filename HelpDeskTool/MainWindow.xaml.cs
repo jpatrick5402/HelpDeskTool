@@ -1617,7 +1617,7 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
 
-                string PrinterInfo = Interaction.InputBox("Enter Printer info (\\\\SERVERNAME\\PRINTERNAME)?", "Printer Input").Replace("\\\\", "\\");
+                string PrinterInfo = Interaction.InputBox("Enter Printer info (\\\\SERVERNAME\\PRINTERNAME)?", "Printer Input");
                 if (PrinterInfo != "")
                 {
                     // Button is disabled for now
@@ -1632,7 +1632,8 @@ namespace DTTool
                     ManagementClass managementClass = new ManagementClass(scope, new ManagementPath("Win32_Process"), null);
 
                     ManagementBaseObject inParams = managementClass.GetMethodParameters("Create");
-                    inParams["CommandLine"] = command;
+                    // Command is now working, will need to test on a remote computer
+                    inParams["CommandLine"] = @$"RunDll32.EXE printui.dll,PrintUIEntry /in /n {PrinterInfo}";
 
                     ManagementBaseObject outParams = managementClass.InvokeMethod("Create", inParams, null);
 
@@ -1641,7 +1642,8 @@ namespace DTTool
                         Thread.Sleep(1000);
                         if (outParams["processId"] == null)
                         {
-                            OutputBox.AppendText($"Process ID: {outParams["processId"]}\n");
+                            OutputBox.AppendText("Error, trying again\t");
+                            OutputBox.AppendText($"Process ID: {outParams["processId"]}\t");
                             OutputBox.AppendText($"Return Value: {outParams["returnValue"]}\n");
                             outParams = managementClass.InvokeMethod("Create", inParams, null);
                         }
