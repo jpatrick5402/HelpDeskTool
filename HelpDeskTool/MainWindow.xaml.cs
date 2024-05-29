@@ -243,70 +243,94 @@ namespace DTTool
 
                 OutputBox.AppendText("Gathering Memberships for " + UserName + "\n\n");
 
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
+                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                {
+                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserName);
+                    GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, UserName);
+                    ComputerPrincipal acomputer = ComputerPrincipal.FindByIdentity(context, UserName);
 
-                searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
-                SearchResult MemberOfresult = searcher.FindOne();
+                    List<string> OutputResult = new List<string>();
+                    int i = 0;
 
-                if (MemberOfresult == null)
-                {
-                    searcher.Filter = "(&(objectClass=*)(urid=" + UserName + "))";
-                    MemberOfresult = searcher.FindOne();
-                }
-                if (MemberOfresult == null)
-                {
-                    searcher.Filter = "(&(objectClass=*)(name=" + UserName + "))";
-                    MemberOfresult = searcher.FindOne();
-                }
-                if (MemberOfresult != null)
-                {
-                    ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                    OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
-                    if (groups.Count > 0)
+                    if (auser != null)
                     {
-                        string[] memberships = new string[groups.Count];
-                        for (int i = 0; i < groups.Count; i++)
+                        foreach (var group in auser.GetGroups())
                         {
-                            memberships[i] = groups[i].ToString();
-                            memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
-                        }
-                        Array.Sort(memberships);
-                        foreach (var group in memberships)
-                        {
-                            OutputBox.AppendText(group.PadRight(40));
-
-                            searcher.Filter = "(&(objectClass=group)(CN=" + group + "))";
-                            SearchResult result = searcher.FindOne();
-
-                            if (result != null)
+                            DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
+                            OutputResult.Add(group.Name.PadRight(45));
+                            if (group.Description != null)
+                                OutputResult[i] = OutputResult[i] + " --description-> " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                            else
+                                OutputResult[i] = OutputResult[i] + " [Description not listed] ";
+                            try
                             {
-                                OutputBox.AppendText(" ---description--> ");
-                                try
-                                {
-                                    OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
-                                }
-                                catch 
-                                {
-                                    OutputBox.AppendText("[No Description]");
-                                }
-                                OutputBox.AppendText(" ---info--> ");
-                                try
-                                {
-                                    OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
-                                }
-                                catch 
-                                {
-                                    OutputBox.AppendText("[No Additonal Info]");
-                                }
+                                OutputResult[i] = OutputResult[i] + " --info-> " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
                             }
-                            OutputBox.AppendText("\n");
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                OutputResult[i] = OutputResult[i] + " [Additional Info not listed]\n";
+                            }
+                            i++;
                         }
+                        OutputResult.Sort();
+                        string[] OutputArray = OutputResult.ToArray();
+                        foreach (var group in OutputArray)
+                            OutputBox.AppendText(group);
                     }
-                }
-                else
-                {
-                    OutputBox.AppendText($"Unable to find object \"{UserName}\"");
+                    else if (agroup != null)
+                    {
+                        foreach (var group in agroup.GetGroups())
+                        {
+                            DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
+                            OutputResult.Add(group.Name.PadRight(45));
+                            if (group.Description != null)
+                                OutputResult[i] = OutputResult[i] + " --description-> " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                            else
+                                OutputResult[i] = OutputResult[i] + " [Description not listed] ";
+                            try
+                            {
+                                OutputResult[i] = OutputResult[i] + " --info-> " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                OutputResult[i] = OutputResult[i] + " [Additional Info not listed]\n";
+                            }
+                            i++;
+                        }
+                        OutputResult.Sort();
+                        string[] OutputArray = OutputResult.ToArray();
+                        foreach (var group in OutputArray)
+                            OutputBox.AppendText(group);
+                    }
+                    else if (acomputer != null)
+                    {
+                        foreach (var group in acomputer.GetGroups())
+                        {
+                            DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
+                            OutputResult.Add(group.Name.PadRight(45));
+                            if (group.Description != null)
+                                OutputResult[i] = OutputResult[i] + " --description-> " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                            else
+                                OutputResult[i] = OutputResult[i] + " [Description not listed] ";
+                            try
+                            {
+                                OutputResult[i] = OutputResult[i] + " --info-> " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                OutputResult[i] = OutputResult[i] + " [Additional Info not listed]\n";
+                            }
+                            i++;
+                        }
+                        OutputResult.Sort();
+                        string[] OutputArray = OutputResult.ToArray();
+                        foreach (var group in OutputArray)
+                            OutputBox.AppendText(group);
+                    }
+                    else
+                    {
+                        OutputBox.AppendText("No object found");
+                    }
                 }
                 OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
