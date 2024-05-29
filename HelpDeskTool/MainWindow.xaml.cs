@@ -241,7 +241,7 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
-                OutputBox.AppendText("Gathering Memberships for " + UserName + "\n\n");
+                OutputBox.AppendText("Gathering Memberships for \"" + UserName + "\"\n\n");
 
                 using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                 {
