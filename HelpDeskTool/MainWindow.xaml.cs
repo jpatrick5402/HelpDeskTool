@@ -1581,7 +1581,7 @@ namespace DTTool
             NameBox.Clear();
             System.Diagnostics.Process command = new System.Diagnostics.Process();
             command.StartInfo.CreateNoWindow = false;
-            command.StartInfo.FileName = "\\\\NTSDRIVE05\\ISD_share\\Cust_Serv\\Help Desk Info\\Help Desk PC Setup Docs\\HD Fixes\\cleartemp7.bat";
+            command.StartInfo.FileName = "\\\\NTSDRIVE05\\ISD_share\\Cust_Serv\\Help Desk Info\\Help Desk PC Setup Docs\\HD Fixes\\cleartemp10.bat";
             command.StartInfo.Arguments = "";
             command.Start();
             OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
