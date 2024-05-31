@@ -770,11 +770,20 @@ namespace DTTool
 
                 if (result != null)
                 {
-                    Ping ping = new Ping();
-                    bool PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                    bool PingResult;
+                    try
+                    {
+                        Ping ping = new Ping();
+                        PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                    }
+                    catch
+                    {
+                        OutputBox.AppendText("Error while pinging\n\n");
+                        PingResult = false;
+                    }
 
                     if (!PingResult)
-                        OutputBox.AppendText($"{ComputerName} is offline (unpingable)\n");
+                        OutputBox.AppendText($"{ComputerName} is offline (unpingable)\n\n");
 
                     string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
 
