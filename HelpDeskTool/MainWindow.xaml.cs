@@ -31,6 +31,7 @@ using System.Windows.Forms.PropertyGridInternal;
 using System.Threading;
 using MaterialDesignThemes.Wpf;
 using System.Printing;
+using System.Net.NetworkInformation;
 
 namespace DTTool
 {
@@ -751,7 +752,7 @@ namespace DTTool
                 System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
+        private async void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (NameBox.Text != "")
             {
@@ -769,18 +770,11 @@ namespace DTTool
 
                 if (result != null)
                 {
-                    System.Diagnostics.Process proc = new System.Diagnostics.Process();
-                    proc.StartInfo.CreateNoWindow = true;
-                    proc.StartInfo.FileName = "Powershell";
-                    proc.StartInfo.Arguments = $"quser /SERVER:{ComputerName}";
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    proc.StartInfo.RedirectStandardError = true;
-                    proc.Start();
-                    proc.WaitForExit();
-                    if (proc.ExitCode != 0)
-                        OutputBox.AppendText($"Computer is offline\n\n");
-                    else
-                    OutputBox.AppendText("Currently Logged on\n" + proc.StandardOutput.ReadToEnd() + "\n");
+                    Ping ping = new Ping();
+                    bool PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+
+                    if (!PingResult)
+                        OutputBox.AppendText($"{ComputerName} is offline (unpingable)\n");
 
                     string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
 
@@ -803,7 +797,7 @@ namespace DTTool
                         string canonicalName = de.Properties["canonicalName"].Value as string;
                         OutputBox.AppendText("OU: ".PadRight(27) + canonicalName + "\n");
                     }
-                    if (proc.ExitCode == 0)
+                    if (PingResult)
                     {
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
@@ -820,6 +814,15 @@ namespace DTTool
                         command2.StartInfo.RedirectStandardOutput = true;
                         command2.Start();
                         OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
+
+                        System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                        proc.StartInfo.CreateNoWindow = true;
+                        proc.StartInfo.FileName = "Powershell";
+                        proc.StartInfo.Arguments = $"quser /SERVER:{ComputerName}";
+                        proc.StartInfo.RedirectStandardOutput = true;
+                        proc.StartInfo.RedirectStandardError = true;
+                        proc.Start();
+                        OutputBox.AppendText(proc.StandardOutput.ReadToEnd());
                     }
                 }
                 else
