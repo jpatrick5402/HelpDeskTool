@@ -1725,20 +1725,41 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(ComputerName);
                 NameBox.Clear();
 
-
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                searcher.Filter = $"(&(objectClass=computer)(CN={ComputerName}))";
-                SearchResult result = searcher.FindOne();
-
-                if (result != null)
+                bool PingResult;
+                try
                 {
-                    Process.Start("explorer.exe", $@"\\{ComputerName}\C$");
+                    Ping ping = new Ping();
+                    PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                }
+                catch
+                {
+                    OutputBox.AppendText("Error while pinging\n\n");
+                    PingResult = false;
+                }
+
+                if (PingResult)
+                {
+
+                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                    DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                    searcher.Filter = $"(&(objectClass=computer)(CN={ComputerName}))";
+                    SearchResult result = searcher.FindOne();
+
+                    if (result != null)
+                    {
+                        Process.Start("explorer.exe", $@"\\{ComputerName}\C$");
+                    }
+                    else
+                    {
+                        OutputBox.AppendText("Computer not found");
+                        OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
+                        OutputBox.ScrollToEnd();
+                    }
                 }
                 else
                 {
-                    OutputBox.AppendText("Computer not found");
+                    OutputBox.AppendText("Computer not pingable");
                     OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                     OutputBox.ScrollToEnd();
                 }
