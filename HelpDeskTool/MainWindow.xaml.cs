@@ -260,12 +260,12 @@ namespace DTTool
                             DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
                             OutputResult.Add(group.Name.PadRight(45));
                             if (group.Description != null)
-                                OutputResult[i] = OutputResult[i] + " --description-> " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                                OutputResult[i] = OutputResult[i] + " | " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
                             else
                                 OutputResult[i] = OutputResult[i] + " [Description not listed] ";
                             try
                             {
-                                OutputResult[i] = OutputResult[i] + " --info-> " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
+                                OutputResult[i] = OutputResult[i] + " | " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
                             }
                             catch (ArgumentOutOfRangeException)
                             {

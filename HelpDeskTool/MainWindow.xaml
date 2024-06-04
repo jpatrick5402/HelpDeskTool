@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DTTool" xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        Title="HelpDeskTool" Height="750" Width="874"
+        Title="HelpDeskTool" Height="750" Width="924"
         WindowStartupLocation="CenterScreen">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -75,10 +75,10 @@
                     <Button x:Name="DarkButton" Content="Dark Mode" HorizontalAlignment="Left" Height="30" Margin="75,0,0,0" VerticalAlignment="Center" Width="60" Click="DarkButton_Click" FontSize="11" TabIndex="2" Padding="2,2,2,2" Background="White" ToolTip="Change device theme"/>
                     <Button x:Name="HelpButton" Content="Help" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="HelpButton_Click" FontSize="11" TabIndex="1" Margin="10,0,0,0" Padding="2,2,2,2" Background="White" ToolTip="Displays a help message to terminal"/>
                     <Button x:Name="ExportButton" Content="Export" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" Click="ExportButton_Click" FontSize="11" TabIndex="3" Margin="140,0,0,0" Padding="2,2,2,2" Background="White" ToolTip="Export screen to desktop"/>
-                    <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,0,10,0" Padding="2,2,2,2" ToolTip="Clear screen"/>
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,58,30,0" Padding="2,2,2,2" ToolTip="Clear screen"/>
         <Grid x:Name="DUOBox" Background="#FF777777" Margin="19,125,19,10" Visibility="Hidden">
             <wv2:WebView2 x:Name="DUOWebView" Source="https://www.rochester.edu/it/security/duo/helpdesk/?domain=urmc" Margin="0,0,0,0"/>
         </Grid>
