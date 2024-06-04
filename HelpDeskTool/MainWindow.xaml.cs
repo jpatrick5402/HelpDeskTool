@@ -260,16 +260,16 @@ namespace DTTool
                             DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
                             OutputResult.Add(group.Name.PadRight(45));
                             if (group.Description != null)
-                                OutputResult[i] = OutputResult[i] + " | " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                                OutputResult[i] = OutputResult[i] + " | " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(70);
                             else
-                                OutputResult[i] = OutputResult[i] + " [Description not listed] ";
+                                OutputResult[i] = OutputResult[i] + " | " + "[Description not listed in AD] ".PadRight(70);
                             try
                             {
                                 OutputResult[i] = OutputResult[i] + " | " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
                             }
                             catch (ArgumentOutOfRangeException)
                             {
-                                OutputResult[i] = OutputResult[i] + " [Additional Info not listed]\n";
+                                OutputResult[i] = OutputResult[i] + " | " + "[Additional Info not listed in AD]\n";
                             }
                             i++;
                         }
@@ -285,16 +285,16 @@ namespace DTTool
                             DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
                             OutputResult.Add(group.Name.PadRight(45));
                             if (group.Description != null)
-                                OutputResult[i] = OutputResult[i] + " --description-> " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                                OutputResult[i] = OutputResult[i] + " | " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(70);
                             else
-                                OutputResult[i] = OutputResult[i] + " [Description not listed] ";
+                                OutputResult[i] = OutputResult[i] + " | " + "[Description not listed in AD] ".PadRight(70);
                             try
                             {
-                                OutputResult[i] = OutputResult[i] + " --info-> " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
+                                OutputResult[i] = OutputResult[i] + " | " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
                             }
                             catch (ArgumentOutOfRangeException)
                             {
-                                OutputResult[i] = OutputResult[i] + " [Additional Info not listed]\n";
+                                OutputResult[i] = OutputResult[i] + " | " + "[Additional Info not listed in AD]\n";
                             }
                             i++;
                         }
@@ -818,7 +818,7 @@ namespace DTTool
 
                         System.Diagnostics.Process command2 = new System.Diagnostics.Process();
                         command2.StartInfo.CreateNoWindow = true;
-                        command2.StartInfo.FileName = "powershell";
+                        command2.StartInfo.FileName = "Powershell";
                         command2.StartInfo.Arguments = "systeminfo /S " + ComputerName;
                         command2.StartInfo.RedirectStandardOutput = true;
                         command2.Start();
@@ -831,7 +831,7 @@ namespace DTTool
                         proc.StartInfo.RedirectStandardOutput = true;
                         proc.StartInfo.RedirectStandardError = true;
                         proc.Start();
-                        OutputBox.AppendText(proc.StandardOutput.ReadToEnd());
+                        OutputBox.AppendText("\n" + proc.StandardOutput.ReadToEnd());
                     }
                 }
                 else
