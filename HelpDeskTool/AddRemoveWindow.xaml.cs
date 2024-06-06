@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
@@ -66,31 +67,23 @@ namespace DTTool
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 string ErrorList = "";
                 string PriorUser = "";
+                string InputGroup;
+                string InputUser;
 
                 using PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu");
                 foreach (string group in groups)
                 {
+                    InputGroup = group.Trim();
                     if (group != "")
                     {
-                        GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group.Trim());
-                        if (agroup == null)
-                        {
-                            ErrorList = ErrorList + $" Group: \"{group.Trim()}\" not found" + '\n';
-                        }
-                        else
+                        GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
+                        if (agroup != null)
                         {
                             foreach (string user in users)
                             {
-                                UserPrincipal auser = UserPrincipal.FindByIdentity(context, user.Trim());
-                                if (auser == null)
-                                {
-                                    if (user.Trim() != PriorUser)
-                                    {
-                                        ErrorList = ErrorList + $" User: \"{user.Trim()}\" not found" + '\n';
-                                        PriorUser = user.Trim();
-                                    }
-                                }
-                                else
+                                InputUser = user.Trim();
+                                UserPrincipal auser = UserPrincipal.FindByIdentity(context, InputUser);
+                                if (auser != null)
                                 {
                                     try
                                     {
@@ -98,50 +91,65 @@ namespace DTTool
                                         {
                                             try
                                             {
-                                                agroup.Members.Add(UserPrincipal.FindByIdentity(context, user.Trim()));
+                                                agroup.Members.Add(auser);
                                             }
                                             catch (Exception ex)
                                             {
-                                                ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
+                                                ErrorList = ErrorList + ex.Message + $" - Fail to Add: \"{InputUser}\" to {InputGroup}" + '\n';
                                             }
                                         }
                                         else if (AddorRemove.ToLower() == "remove")
                                         {
                                             try
                                             {
-                                                agroup.Members.Remove(UserPrincipal.FindByIdentity(context, user.Trim()));
+                                                agroup.Members.Remove(auser);
                                             }
                                             catch (Exception ex)
                                             {
-                                                ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
+                                                ErrorList = ErrorList + ex.Message + $" - Fail to Remove: \"{InputUser}\" from {InputGroup}" + '\n';
                                             }
                                         }
                                     }
                                     catch (Exception ex)
                                     {
-                                        ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
+                                        ErrorList = ErrorList + ex.Message + $" - Unknown Add/Remove Error: \"{InputUser}\" with {InputGroup}" + '\n';
                                     }
-
                                     try
                                     {
                                         agroup.Save();
                                     }
                                     catch (Exception ex)
                                     {
-                                        ErrorList = ErrorList + ex.Message + $" Details: \"{user}\" for {group}" + '\n';
+                                        ErrorList = ErrorList + ex.Message + $" - Save Error: \"{InputUser}\" with {InputGroup}" + '\n';
+                                    }
+                                }
+                                else
+                                {
+                                    if (InputUser != PriorUser)
+                                    {
+                                        ErrorList = ErrorList + $"User: \"{InputUser}\" not found" + '\n';
+                                        PriorUser = InputUser;
                                     }
                                 }
                             }
                         }
+                        else
+                        {
+                            ErrorList = ErrorList + $"Group: \"{InputGroup}\" not found" + '\n';
+                        }
                     }
                 }
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+                Mouse.OverrideCursor = Cursors.Arrow;
                 if (ErrorList != "")
                 {
                     MessageBox.Show(ErrorList, "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
-                    System.Windows.Clipboard.SetText(ErrorList);
+                    Clipboard.SetText(ErrorList);
+                    MessageBox.Show("All other user(s)/group(s) have been processed (Errors have been copied to your clipboard)", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
-                MessageBox.Show("All user(s)/group(s) have been processed (Any errors have been copied to your clipboard)", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                else
+                {
+                    MessageBox.Show("All user(s)/group(s) have been processed without error", "Processing", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
             }
             else
             {
