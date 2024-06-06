@@ -1560,7 +1560,7 @@ namespace DTTool
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
                         command.StartInfo.FileName = "powershell";
-                        command.StartInfo.Arguments = "Invoke-WmiMethod -Path Win32_Process -Name Create -ArgumentList \"'msg * " + message + "'\" -ComputerName " + PCName;
+                        command.StartInfo.Arguments = "Invoke-WmiMethod -Path Win32_Process -Name Create -ArgumentList \"'msg * " + message.Replace("'", "`") + "'\" -ComputerName " + PCName;
                         command.StartInfo.RedirectStandardOutput = true;
                         command.Start();
                         OutputBox.AppendText(command.StandardOutput.ReadToEnd());
