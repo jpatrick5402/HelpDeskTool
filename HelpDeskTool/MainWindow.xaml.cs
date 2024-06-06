@@ -31,6 +31,7 @@ using System.Windows.Forms.PropertyGridInternal;
 using System.Threading;
 using MaterialDesignThemes.Wpf;
 using System.Printing;
+using System.Net.NetworkInformation;
 
 namespace DTTool
 {
@@ -241,72 +242,96 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(UserName);
                 UserTextbox.Clear();
 
-                OutputBox.AppendText("Gathering Memberships for " + UserName + "\n\n");
+                OutputBox.AppendText("Gathering Memberships for \"" + UserName + "\"\n\n");
 
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
+                using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                {
+                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserName);
+                    GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, UserName);
+                    ComputerPrincipal acomputer = ComputerPrincipal.FindByIdentity(context, UserName);
 
-                searcher.Filter = "(&(objectClass=*)(sAMAccountName=" + UserName + "))";
-                SearchResult MemberOfresult = searcher.FindOne();
+                    List<string> OutputResult = new List<string>();
+                    int i = 0;
 
-                if (MemberOfresult == null)
-                {
-                    searcher.Filter = "(&(objectClass=*)(urid=" + UserName + "))";
-                    MemberOfresult = searcher.FindOne();
-                }
-                if (MemberOfresult == null)
-                {
-                    searcher.Filter = "(&(objectClass=*)(name=" + UserName + "))";
-                    MemberOfresult = searcher.FindOne();
-                }
-                if (MemberOfresult != null)
-                {
-                    ResultPropertyValueCollection groups = MemberOfresult.Properties["memberOf"];
-                    OutputBox.AppendText($"{MemberOfresult.Properties["name"][0]} ({MemberOfresult.Properties["SAMAccountName"][0]}) is a member of {groups.Count} groups\n\n");
-                    if (groups.Count > 0)
+                    if (auser != null)
                     {
-                        string[] memberships = new string[groups.Count];
-                        for (int i = 0; i < groups.Count; i++)
+                        foreach (var group in auser.GetGroups())
                         {
-                            memberships[i] = groups[i].ToString();
-                            memberships[i] = memberships[i].ToString().Substring(3, memberships[i].IndexOf(",") - 3);
-                        }
-                        Array.Sort(memberships);
-                        foreach (var group in memberships)
-                        {
-                            OutputBox.AppendText(group.PadRight(40));
-
-                            searcher.Filter = "(&(objectClass=group)(CN=" + group + "))";
-                            SearchResult result = searcher.FindOne();
-
-                            if (result != null)
+                            DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
+                            OutputResult.Add(group.Name.PadRight(45));
+                            if (group.Description != null)
+                                OutputResult[i] = OutputResult[i] + " | " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(70);
+                            else
+                                OutputResult[i] = OutputResult[i] + " | " + "[Description not listed in AD] ".PadRight(70);
+                            try
                             {
-                                OutputBox.AppendText(" ---description--> ");
-                                try
-                                {
-                                    OutputBox.AppendText(result.Properties["description"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
-                                }
-                                catch 
-                                {
-                                    OutputBox.AppendText("[No Description]");
-                                }
-                                OutputBox.AppendText(" ---info--> ");
-                                try
-                                {
-                                    OutputBox.AppendText(result.Properties["info"][0].ToString().PadRight(40).Replace('\n', ' ').Replace('\r', ' '));
-                                }
-                                catch 
-                                {
-                                    OutputBox.AppendText("[No Additonal Info]");
-                                }
+                                OutputResult[i] = OutputResult[i] + " | " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
                             }
-                            OutputBox.AppendText("\n");
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                OutputResult[i] = OutputResult[i] + " | " + "[Additional Info not listed in AD]\n";
+                            }
+                            i++;
                         }
+                        OutputResult.Sort();
+                        string[] OutputArray = OutputResult.ToArray();
+                        foreach (var group in OutputArray)
+                            OutputBox.AppendText(group);
                     }
-                }
-                else
-                {
-                    OutputBox.AppendText($"Unable to find object \"{UserName}\"");
+                    else if (agroup != null)
+                    {
+                        foreach (var group in agroup.GetGroups())
+                        {
+                            DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
+                            OutputResult.Add(group.Name.PadRight(45));
+                            if (group.Description != null)
+                                OutputResult[i] = OutputResult[i] + " | " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(70);
+                            else
+                                OutputResult[i] = OutputResult[i] + " | " + "[Description not listed in AD] ".PadRight(70);
+                            try
+                            {
+                                OutputResult[i] = OutputResult[i] + " | " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                OutputResult[i] = OutputResult[i] + " | " + "[Additional Info not listed in AD]\n";
+                            }
+                            i++;
+                        }
+                        OutputResult.Sort();
+                        string[] OutputArray = OutputResult.ToArray();
+                        foreach (var group in OutputArray)
+                            OutputBox.AppendText(group);
+                    }
+                    else if (acomputer != null)
+                    {
+                        foreach (var group in acomputer.GetGroups())
+                        {
+                            DirectoryEntry lowerLdap = (DirectoryEntry)group.GetUnderlyingObject();
+                            OutputResult.Add(group.Name.PadRight(45));
+                            if (group.Description != null)
+                                OutputResult[i] = OutputResult[i] + " --description-> " + group.Description.Replace("\n", "").Replace("\r", "").PadRight(50);
+                            else
+                                OutputResult[i] = OutputResult[i] + " [Description not listed] ";
+                            try
+                            {
+                                OutputResult[i] = OutputResult[i] + " --info-> " + lowerLdap.Properties["info"][0].ToString().Replace("\n", "").Replace("\r", "") + "\n";
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                OutputResult[i] = OutputResult[i] + " [Additional Info not listed]\n";
+                            }
+                            i++;
+                        }
+                        OutputResult.Sort();
+                        string[] OutputArray = OutputResult.ToArray();
+                        foreach (var group in OutputArray)
+                            OutputBox.AppendText(group);
+                    }
+                    else
+                    {
+                        OutputBox.AppendText("No object found");
+                    }
                 }
                 OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
@@ -727,7 +752,7 @@ namespace DTTool
                 System.Windows.MessageBox.Show("No AD Name Detected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
+        private async void ComputerInfoButton_Click(object sender, RoutedEventArgs e)
         {
             if (NameBox.Text != "")
             {
@@ -745,18 +770,20 @@ namespace DTTool
 
                 if (result != null)
                 {
-                    System.Diagnostics.Process proc = new System.Diagnostics.Process();
-                    proc.StartInfo.CreateNoWindow = true;
-                    proc.StartInfo.FileName = "Powershell";
-                    proc.StartInfo.Arguments = $"quser /SERVER:{ComputerName}";
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    proc.StartInfo.RedirectStandardError = true;
-                    proc.Start();
-                    proc.WaitForExit();
-                    if (proc.ExitCode != 0)
-                        OutputBox.AppendText($"Computer is offline\n\n");
-                    else
-                    OutputBox.AppendText("Currently Logged on\n" + proc.StandardOutput.ReadToEnd() + "\n");
+                    bool PingResult;
+                    try
+                    {
+                        Ping ping = new Ping();
+                        PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                    }
+                    catch
+                    {
+                        OutputBox.AppendText("Error while pinging\n\n");
+                        PingResult = false;
+                    }
+
+                    if (!PingResult)
+                        OutputBox.AppendText($"{ComputerName} is offline (unpingable)\n\n");
 
                     string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
 
@@ -779,7 +806,7 @@ namespace DTTool
                         string canonicalName = de.Properties["canonicalName"].Value as string;
                         OutputBox.AppendText("OU: ".PadRight(27) + canonicalName + "\n");
                     }
-                    if (proc.ExitCode == 0)
+                    if (PingResult)
                     {
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
                         command.StartInfo.CreateNoWindow = true;
@@ -791,11 +818,20 @@ namespace DTTool
 
                         System.Diagnostics.Process command2 = new System.Diagnostics.Process();
                         command2.StartInfo.CreateNoWindow = true;
-                        command2.StartInfo.FileName = "powershell";
+                        command2.StartInfo.FileName = "Powershell";
                         command2.StartInfo.Arguments = "systeminfo /S " + ComputerName;
                         command2.StartInfo.RedirectStandardOutput = true;
                         command2.Start();
                         OutputBox.AppendText(command2.StandardOutput.ReadToEnd());
+
+                        System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                        proc.StartInfo.CreateNoWindow = true;
+                        proc.StartInfo.FileName = "Powershell";
+                        proc.StartInfo.Arguments = $"quser /SERVER:{ComputerName}";
+                        proc.StartInfo.RedirectStandardOutput = true;
+                        proc.StartInfo.RedirectStandardError = true;
+                        proc.Start();
+                        OutputBox.AppendText("\n" + proc.StandardOutput.ReadToEnd());
                     }
                 }
                 else
@@ -1557,7 +1593,7 @@ namespace DTTool
             NameBox.Clear();
             System.Diagnostics.Process command = new System.Diagnostics.Process();
             command.StartInfo.CreateNoWindow = false;
-            command.StartInfo.FileName = "\\\\NTSDRIVE05\\ISD_share\\Cust_Serv\\Help Desk Info\\Help Desk PC Setup Docs\\HD Fixes\\cleartemp7.bat";
+            command.StartInfo.FileName = "\\\\NTSDRIVE05\\ISD_share\\Cust_Serv\\Help Desk Info\\Help Desk PC Setup Docs\\HD Fixes\\cleartemp10.bat";
             command.StartInfo.Arguments = "";
             command.Start();
             OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
@@ -1617,7 +1653,7 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(PCName);
                 NameBox.Clear();
 
-                string PrinterInfo = Interaction.InputBox("Enter Printer info (\\\\SERVERNAME\\PRINTERNAME)?", "Printer Input").Replace("\\\\", "\\");
+                string PrinterInfo = Interaction.InputBox("Enter Printer info (\\\\SERVERNAME\\PRINTERNAME)?", "Printer Input");
                 if (PrinterInfo != "")
                 {
                     // Button is disabled for now
@@ -1632,7 +1668,8 @@ namespace DTTool
                     ManagementClass managementClass = new ManagementClass(scope, new ManagementPath("Win32_Process"), null);
 
                     ManagementBaseObject inParams = managementClass.GetMethodParameters("Create");
-                    inParams["CommandLine"] = command;
+                    // Command is now working, will need to test on a remote computer
+                    inParams["CommandLine"] = @$"RunDll32.EXE printui.dll,PrintUIEntry /in /n {PrinterInfo}";
 
                     ManagementBaseObject outParams = managementClass.InvokeMethod("Create", inParams, null);
 
@@ -1641,7 +1678,8 @@ namespace DTTool
                         Thread.Sleep(1000);
                         if (outParams["processId"] == null)
                         {
-                            OutputBox.AppendText($"Process ID: {outParams["processId"]}\n");
+                            OutputBox.AppendText("Error, trying again\t");
+                            OutputBox.AppendText($"Process ID: {outParams["processId"]}\t");
                             OutputBox.AppendText($"Return Value: {outParams["returnValue"]}\n");
                             outParams = managementClass.InvokeMethod("Create", inParams, null);
                         }
@@ -1687,20 +1725,41 @@ namespace DTTool
                 System.Windows.Clipboard.SetText(ComputerName);
                 NameBox.Clear();
 
-
-                DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
-                DirectorySearcher searcher = new DirectorySearcher(entry);
-
-                searcher.Filter = $"(&(objectClass=computer)(CN={ComputerName}))";
-                SearchResult result = searcher.FindOne();
-
-                if (result != null)
+                bool PingResult;
+                try
                 {
-                    Process.Start("explorer.exe", $@"\\{ComputerName}\C$");
+                    Ping ping = new Ping();
+                    PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                }
+                catch
+                {
+                    OutputBox.AppendText("Error while pinging\n\n");
+                    PingResult = false;
+                }
+
+                if (PingResult)
+                {
+
+                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                    DirectorySearcher searcher = new DirectorySearcher(entry);
+
+                    searcher.Filter = $"(&(objectClass=computer)(CN={ComputerName}))";
+                    SearchResult result = searcher.FindOne();
+
+                    if (result != null)
+                    {
+                        Process.Start("explorer.exe", $@"\\{ComputerName}\C$");
+                    }
+                    else
+                    {
+                        OutputBox.AppendText("Computer not found");
+                        OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
+                        OutputBox.ScrollToEnd();
+                    }
                 }
                 else
                 {
-                    OutputBox.AppendText("Computer not found");
+                    OutputBox.AppendText("Computer not pingable");
                     OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                     OutputBox.ScrollToEnd();
                 }
