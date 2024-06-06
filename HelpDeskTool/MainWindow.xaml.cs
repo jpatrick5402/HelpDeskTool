@@ -125,25 +125,45 @@ namespace DTTool
         {
             if (NameBox.Text != "")
             {
-                var PCName = NameBox.Text.Trim();
+                var ComputerName = NameBox.Text.Trim();
 
-                MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to restart this computer? " + PCName,
+                MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to restart this computer? " + ComputerName,
                                           "Confirmation",
                                           MessageBoxButton.YesNo,
                                           MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                    System.Windows.Clipboard.SetText(PCName);
-                    NameBox.Clear();
-                    System.Diagnostics.Process command = new System.Diagnostics.Process();
-                    command.StartInfo.CreateNoWindow = true;
-                    command.StartInfo.FileName = "cmd";
-                    command.StartInfo.Arguments = "/C shutdown -r -t 2 -m " + PCName;
-                    command.StartInfo.RedirectStandardOutput = true;
-                    command.Start();
-                    OutputBox.AppendText("Restart Initiated (Ask to ensure as this is not 100% accurate)");
-                    OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+
+                    bool PingResult;
+                    try
+                    {
+                        Ping ping = new Ping();
+                        PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                    }
+                    catch
+                    {
+                        OutputBox.AppendText("Error while pinging\n\n");
+                        PingResult = false;
+                    }
+
+                    if (PingResult)
+                    {
+                        Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                        System.Windows.Clipboard.SetText(ComputerName);
+                        NameBox.Clear();
+                        System.Diagnostics.Process command = new System.Diagnostics.Process();
+                        command.StartInfo.CreateNoWindow = true;
+                        command.StartInfo.FileName = "cmd";
+                        command.StartInfo.Arguments = "/C shutdown -r -t 2 -m " + ComputerName;
+                        command.StartInfo.RedirectStandardOutput = true;
+                        command.Start();
+                        OutputBox.AppendText("Restart Initiated (Ask to ensure as this is not 100% accurate)\n");
+                        OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                    }
+                    else
+                    {
+                        OutputBox.AppendText($"{ComputerName} is unpingable (possibly remote)\n");
+                    }
                     Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 }
                 else
@@ -189,18 +209,37 @@ namespace DTTool
         {
             if (NameBox.Text != "")
             {
-                var PCName = NameBox.Text.Trim();
-                OutputBox.AppendText("Looking for " + PCName + "\n\n");
-
-                System.Windows.Clipboard.SetText(PCName);
+                var ComputerName = NameBox.Text.Trim();
+                System.Windows.Clipboard.SetText(ComputerName);
                 NameBox.Clear();
-                System.Diagnostics.Process command = new System.Diagnostics.Process();
-                command.StartInfo.CreateNoWindow = true;
-                command.StartInfo.FileName = "cmd";
-                command.StartInfo.Arguments = "/C nslookup " + PCName;
-                command.StartInfo.RedirectStandardOutput = true;
-                command.Start();
-                OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+
+                bool PingResult;
+                try
+                {
+                    Ping ping = new Ping();
+                    PingResult = ping.Send(ComputerName).Status == IPStatus.Success;
+                }
+                catch
+                {
+                    OutputBox.AppendText("Error while pinging\n\n");
+                    PingResult = false;
+                }
+
+                if (PingResult)
+                {
+                    OutputBox.AppendText("Looking for " + ComputerName + "\n\n");
+                    System.Diagnostics.Process command = new System.Diagnostics.Process();
+                    command.StartInfo.CreateNoWindow = true;
+                    command.StartInfo.FileName = "cmd";
+                    command.StartInfo.Arguments = "/C nslookup " + ComputerName;
+                    command.StartInfo.RedirectStandardOutput = true;
+                    command.Start();
+                    OutputBox.AppendText(command.StandardOutput.ReadToEnd());
+                }
+                else
+                {
+                    OutputBox.AppendText($"{ComputerName} is unpingable (possibly remote)\n");
+                }
                 OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
             }
@@ -783,7 +822,7 @@ namespace DTTool
                     }
 
                     if (!PingResult)
-                        OutputBox.AppendText($"{ComputerName} is offline (unpingable)\n\n");
+                        OutputBox.AppendText($"{ComputerName} is unpingable (possibly remote)\n");
 
                     string[,] PropertyList = { { "Domain Name", "DNSHostName" }, { "OS", "operatingsystem" }, { "OS Version", "operatingsystemversion" }, { "LAPS password", "ms-mcs-admpwd" } };
 
