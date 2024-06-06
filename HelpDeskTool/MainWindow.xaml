@@ -78,7 +78,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,58,30,0" Padding="2,2,2,2" ToolTip="Clear screen"/>
+        <Button x:Name="ClearButton" Content="Clear" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="60" Click="ClearButton_Click" RenderTransformOrigin="0.533,0.562" Background="#FFC33636" BorderThickness="1,1,1,1" TabIndex="4" Margin="0,57,30,0" Padding="2,2,2,2" ToolTip="Clear screen"/>
         <Grid x:Name="DUOBox" Background="#FF777777" Margin="19,125,19,10" Visibility="Hidden">
             <wv2:WebView2 x:Name="DUOWebView" Source="https://www.rochester.edu/it/security/duo/helpdesk/?domain=urmc" Margin="0,0,0,0"/>
         </Grid>
