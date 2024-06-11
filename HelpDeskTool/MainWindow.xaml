@@ -67,7 +67,9 @@
                     <CheckBox x:Name="SharedDriveCB" Content="Shared Drives" HorizontalAlignment="Left" Height="16" Margin="479,10,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="3" ToolTip="Shared drives, pulled from DMD"/>
                     <TextBox x:Name="MasterSearchBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Center" Width="140" FontSize="11" Margin="23,0,0,0" TabIndex="1" KeyUp="FuzzySearch" Padding="0,0,0,0" ToolTip="Search bar for master search, start typing to search"/>
                     <Label Content="Type at least 4 characters to&#xA;start searching.&#xD;&#xA;Shows 10 results in each section" HorizontalAlignment="Left" Height="70" Margin="170,0,0,0" VerticalAlignment="Center" Width="186" Foreground="#FF545454" VerticalContentAlignment="Center" Padding="2,2,2,2"/>
-                    <Button x:Name="MasterSearchButton" Content="Full Search" HorizontalAlignment="Left" Height="30" Margin="606,0,0,0" VerticalAlignment="Center" Width="60" FontSize="11" Click="MasterSearchButton_Click" TabIndex="6" Padding="2,2,2,2" Background="White" ToolTip="Lists the full search results"/>
+                    <Button x:Name="MasterSearchButton" Content="Full Search" HorizontalAlignment="Left" Height="30" Margin="725,0,0,0" VerticalAlignment="Center" Width="60" FontSize="11" Click="MasterSearchButton_Click" TabIndex="6" Padding="2,2,2,2" Background="White" ToolTip="Lists the full search results"/>
+                    <CheckBox x:Name="DLCB" Content="Distribution Lists" HorizontalAlignment="Left" Height="16" Margin="579,11,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="3" ToolTip="Shared drives, pulled from DMD"/>
+                    <CheckBox x:Name="SMCB" Content="Shared MailBoxes" HorizontalAlignment="Left" Height="16" Margin="579,30,0,0" VerticalAlignment="Top" IsChecked="True" TabIndex="3" ToolTip="Shared drives, pulled from DMD" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab5" Header="Settings" Padding="2,2,2,2" Height="33">

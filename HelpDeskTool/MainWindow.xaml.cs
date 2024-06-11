@@ -1042,6 +1042,8 @@ namespace DTTool
                 DUOButton.Foreground = Brushes.White;
                 CDollarButton.Background = Brushes.Black;
                 CDollarButton.Foreground = Brushes.White;
+                SMCB.Foreground = Brushes.White;
+                DLCB.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1128,6 +1130,8 @@ namespace DTTool
                 DUOButton.Foreground = Brushes.Black;
                 CDollarButton.Background = Brushes.White;
                 CDollarButton.Foreground = Brushes.Black;
+                SMCB.Foreground = Brushes.Black;
+                DLCB.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1359,7 +1363,7 @@ namespace DTTool
                             {
                                 if (ShareList[i].Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
+                                    OutputBox.AppendText("Share:".PadRight(20) + ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     ItemFound = true;
                                     if (count == 10)
                                     {
@@ -1415,6 +1419,61 @@ namespace DTTool
                         OutputBox.AppendText($"An error has occurred: {ex.Message}\n\n");
                     }
                 }
+                if (SMCB.IsChecked == true)
+                {
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
+                    {
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+                        MailboxOwners = MailboxOwners[..^1];
+                        bool resultFound = false;
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            {
+                                OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
+                                resultFound = true;
+                            }
+                        }
+                        if (!resultFound) OutputBox.AppendText("No Shared Mailboxes found with criteria\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
+                    {
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+                        MailboxOwners = MailboxOwners[..^1];
+                        bool resultFound = false;
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            {
+                                OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
+                                resultFound = true;
+                            }
+                        }
+                        if (!resultFound) OutputBox.AppendText("No Shared Mailboxes found with criteria\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+                }
+                if (DLCB.IsChecked == true)
+                {
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
+                    {
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+                        MailboxOwners = MailboxOwners[..^1];
+                        bool resultFound = false;
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            {
+                                OutputBox.AppendText("Distribution List:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
+                                resultFound = true;
+                            }
+                        }
+                        if (!resultFound) OutputBox.AppendText("No Distribution List found with criteria\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+                }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToHome();
@@ -1444,7 +1503,7 @@ namespace DTTool
 
                         foreach (SearchResult result in UserResult)
                         {
-                            OutputBox.AppendText("URMC:   ");
+                            OutputBox.AppendText("URMC:".PadRight(20));
                             OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
                             try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
                             catch { OutputBox.AppendText("[No Username]".PadRight(15)); }
@@ -1478,7 +1537,7 @@ namespace DTTool
 
                         foreach (SearchResult result in UserResult)
                         {
-                            OutputBox.AppendText("UR:     ");
+                            OutputBox.AppendText("UR:".PadRight(20));
                             OutputBox.AppendText(result.Properties["cn"][0].ToString().PadRight(25));
                             try { OutputBox.AppendText(result.Properties["SamAccountName"][^1].ToString().PadRight(15)); }
                             catch { OutputBox.AppendText("[No Username]".PadRight(15)); }
@@ -1511,7 +1570,7 @@ namespace DTTool
                             {
                                 if (ShareList[i].Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    OutputBox.AppendText(ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
+                                    OutputBox.AppendText("Share:".PadRight(20) + ShareList[i].Substring(ShareList[i].LastIndexOf('|') + 1, ShareList[i].Substring(ShareList[i].LastIndexOf('|')).Length - 2) + " | " + ShareList[i].Substring(ShareList[i].IndexOf("\\") + 1, ShareList[i].IndexOf('|') - 8) + '\n');
                                     ItemFound = true;
                                 }
                             }
@@ -1531,33 +1590,22 @@ namespace DTTool
                     try
                     {
                         // This section is used to see if there are any printers that match the search criteria as well
-                        string url = "https://apps.mc.rochester.edu/ISD/SIG/PrintQueues/PrintQReport.csv";
-                        using (HttpClient client = new HttpClient())
+                        using (var sr = new StreamReader($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\HDTCACHE\\HDT_Printer_Report.csv"))
                         {
                             bool ResultIsFound = false;
-                            HttpResponseMessage response = await client.GetAsync(url);
-                            if (response.IsSuccessStatusCode)
+                            string[] PrinterList = sr.ReadToEnd().Split("\n");
+                            for (int i = 0; i < PrinterList.Length; i++)
                             {
-                                string csvContent = await response.Content.ReadAsStringAsync();
-                                string[] StringArray = csvContent.Split('\n');
-
-                                for (int i = 0; i < StringArray.Length; i++)
+                                if (PrinterList[i].Contains($"{SearchObject}", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    if (StringArray[i].Contains($"{SearchObject}", StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        OutputBox.AppendText(StringArray[i].Replace("\"", "").Replace(",", ", "));
-                                        ResultIsFound = true;
-                                    }
+                                    OutputBox.AppendText(PrinterList[i].Replace("\"", "").Replace(",", ", "));
+                                    ResultIsFound = true;
                                 }
-                                if (!ResultIsFound)
-                                    OutputBox.AppendText("No printers found with criteria\n\n");
-                                else
-                                    OutputBox.AppendText("\n");
                             }
+                            if (!ResultIsFound)
+                                OutputBox.AppendText("No printers found with criteria\n\n");
                             else
-                            {
-                                OutputBox.AppendText($"Failed to download CSV. Status code: {response.StatusCode}");
-                            }
+                                OutputBox.AppendText("\n");
                         }
                     }
                     catch (Exception ex)
@@ -1565,6 +1613,61 @@ namespace DTTool
                         OutputBox.AppendText($"An error has occurred: {ex.Message}\n\n");
                     }
 
+                }
+                if (SMCB.IsChecked == true)
+                {
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\Mailbox-Owners-Managers.csv"))
+                    {
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+                        MailboxOwners = MailboxOwners[..^1];
+                        bool resultFound = false;
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            {
+                                OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
+                                resultFound = true;
+                            }
+                        }
+                        if (!resultFound) OutputBox.AppendText("No Shared Mailboxes found with criteria\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\ResourceMailboxOwners.csv"))
+                    {
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+                        MailboxOwners = MailboxOwners[..^1];
+                        bool resultFound = false;
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            {
+                                OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
+                                resultFound = true;
+                            }
+                        }
+                        if (!resultFound) OutputBox.AppendText("No Shared Mailboxes found with criteria\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
+                }
+                if (DLCB.IsChecked == true)
+                {
+                    using (var sr = new StreamReader("\\\\nt014\\AdminApps\\Utils\\AD Utilities\\HDAMU-Support\\MigratedDistributionGroupExport.csv"))
+                    {
+                        string[] MailboxOwners = sr.ReadToEnd().Split('\n');
+                        MailboxOwners = MailboxOwners[..^1];
+                        bool resultFound = false;
+                        for (int i = 0; i < MailboxOwners.Length; i++)
+                        {
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            {
+                                OutputBox.AppendText("Distribution List:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
+                                resultFound = true;
+                            }
+                        }
+                        if (!resultFound) OutputBox.AppendText("No Distribution List found with criteria\n\n");
+                        else OutputBox.AppendText("\n");
+                    }
                 }
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
                 OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
