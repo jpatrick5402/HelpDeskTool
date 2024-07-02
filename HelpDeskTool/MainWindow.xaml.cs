@@ -1402,12 +1402,13 @@ namespace DTTool
                                     ResultIsFound = true;
                                     if (count == 10)
                                     {
-                                        OutputBox.AppendText("There are more results available, keep typing to refine your search\n");
+                                        OutputBox.AppendText("There are more results available, keep typing to refine your search");
                                         break;
                                     }
                                     else count++;           
                                 }
                             }
+                            OutputBox.AppendText("\n");
                             if (!ResultIsFound)
                                 OutputBox.AppendText("No printers found with criteria\n\n");
                             else
