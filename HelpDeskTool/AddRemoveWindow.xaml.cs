@@ -82,54 +82,61 @@ namespace DTTool
                             foreach (string user in users)
                             {
                                 InputUser = user.Trim();
-                                UserPrincipal auser = UserPrincipal.FindByIdentity(context, InputUser);
-                                if (auser != null)
+                                if (InputUser != null && InputUser.Length > 0)
                                 {
-                                    try
+                                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, InputUser);
+                                    if (auser != null)
                                     {
-                                        if (AddorRemove.ToLower() == "add")
+                                        try
                                         {
-                                            try
+                                            if (AddorRemove.ToLower() == "add")
                                             {
-                                                agroup.Members.Add(auser);
+                                                try
+                                                {
+                                                    agroup.Members.Add(auser);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    ErrorList = ErrorList + ex.Message + $" - Fail to Add: \"{InputUser}\" to {InputGroup}" + '\n';
+                                                }
                                             }
-                                            catch (Exception ex)
+                                            else if (AddorRemove.ToLower() == "remove")
                                             {
-                                                ErrorList = ErrorList + ex.Message + $" - Fail to Add: \"{InputUser}\" to {InputGroup}" + '\n';
+                                                try
+                                                {
+                                                    agroup.Members.Remove(auser);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    ErrorList = ErrorList + ex.Message + $" - Fail to Remove: \"{InputUser}\" from {InputGroup}" + '\n';
+                                                }
                                             }
                                         }
-                                        else if (AddorRemove.ToLower() == "remove")
+                                        catch (Exception ex)
                                         {
-                                            try
-                                            {
-                                                agroup.Members.Remove(auser);
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                ErrorList = ErrorList + ex.Message + $" - Fail to Remove: \"{InputUser}\" from {InputGroup}" + '\n';
-                                            }
+                                            ErrorList = ErrorList + ex.Message + $" - Unknown Add/Remove Error: \"{InputUser}\" with {InputGroup}" + '\n';
+                                        }
+                                        try
+                                        {
+                                            agroup.Save();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            ErrorList = ErrorList + ex.Message + $" - Save Error: \"{InputUser}\" with {InputGroup}" + '\n';
                                         }
                                     }
-                                    catch (Exception ex)
+                                    else
                                     {
-                                        ErrorList = ErrorList + ex.Message + $" - Unknown Add/Remove Error: \"{InputUser}\" with {InputGroup}" + '\n';
-                                    }
-                                    try
-                                    {
-                                        agroup.Save();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        ErrorList = ErrorList + ex.Message + $" - Save Error: \"{InputUser}\" with {InputGroup}" + '\n';
+                                        if (InputUser != PriorUser)
+                                        {
+                                            ErrorList = ErrorList + $"User: \"{InputUser}\" not found" + '\n';
+                                            PriorUser = InputUser;
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    if (InputUser != PriorUser)
-                                    {
-                                        ErrorList = ErrorList + $"User: \"{InputUser}\" not found" + '\n';
-                                        PriorUser = InputUser;
-                                    }
+                                    ErrorList = ErrorList + $"User: \"{InputUser}\" not found" + '\n';
                                 }
                             }
                         }
