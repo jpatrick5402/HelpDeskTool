@@ -952,7 +952,8 @@ namespace DTTool
                 "\n" +
                 "\nOnce information is entered in the \"AD Name\" or the \"PC Name/IP\" boxes, you can click on any button next to that input box to perform action on that item" +
                 "\nThe Master Seach Button Queries URMC and UR servers and the print Q report for any items that match" +
-                "\nFor questions comments and conerns please use https://github.com/jpatrick5402/HelpDeskTool/issues/new";
+                "\nFor questions comments and conerns please use https://github.com/jpatrick5402/HelpDeskTool/issues/new" +
+                "\nor reach out to joseph_patrick@urmc.rochester.edu";
             OutputBox.AppendText(helpInfo);
             OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
             OutputBox.ScrollToEnd();
