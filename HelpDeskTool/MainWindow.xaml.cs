@@ -1037,8 +1037,6 @@ namespace DTTool
                 Game6Button.Background = Brushes.Black;
                 Game6Button.Foreground = Brushes.White;
                 HiddenButton.Background = Brushes.Black;
-                MapPrinterButton.Background = Brushes.Black;
-                MapPrinterButton.Foreground = Brushes.White;
                 DUOButton.Background = Brushes.Black;
                 DUOButton.Foreground = Brushes.White;
                 CDollarButton.Background = Brushes.Black;
@@ -1125,8 +1123,6 @@ namespace DTTool
                 Game6Button.Background = Brushes.White;
                 Game6Button.Foreground = Brushes.Black;
                 HiddenButton.Background = Brushes.White;
-                MapPrinterButton.Background = Brushes.White;
-                MapPrinterButton.Foreground = Brushes.Black;
                 DUOButton.Background = Brushes.White;
                 DUOButton.Foreground = Brushes.Black;
                 CDollarButton.Background = Brushes.White;
