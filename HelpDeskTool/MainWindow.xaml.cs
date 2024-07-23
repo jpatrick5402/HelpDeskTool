@@ -1036,6 +1036,8 @@ namespace DTTool
                 Game5Button.Foreground = Brushes.White;
                 Game6Button.Background = Brushes.Black;
                 Game6Button.Foreground = Brushes.White;
+                Game7Button.Background = Brushes.Black;
+                Game7Button.Foreground = Brushes.White;
                 HiddenButton.Background = Brushes.Black;
                 DUOButton.Background = Brushes.Black;
                 DUOButton.Foreground = Brushes.White;
@@ -1122,6 +1124,8 @@ namespace DTTool
                 Game5Button.Foreground = Brushes.Black;
                 Game6Button.Background = Brushes.White;
                 Game6Button.Foreground = Brushes.Black;
+                Game7Button.Background = Brushes.White;
+                Game7Button.Foreground = Brushes.Black;
                 HiddenButton.Background = Brushes.White;
                 DUOButton.Background = Brushes.White;
                 DUOButton.Foreground = Brushes.Black;
@@ -1768,6 +1772,10 @@ namespace DTTool
         private void Game6Button_Click(object sender, RoutedEventArgs e)
         {
             GameWebView.Source = new Uri("https://freds72.itch.io/poom");
+        }
+        private void Game7Button_Click(object sender, RoutedEventArgs e)
+        {
+            GameWebView.Source = new Uri("https://minesweeperonline.com/");
         }
 
         private void HiddenButton_Click(object sender, RoutedEventArgs e)
