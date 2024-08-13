@@ -133,7 +133,7 @@ namespace DTTool
                                           MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                     bool PingResult;
                     try
                     {
@@ -148,7 +148,6 @@ namespace DTTool
 
                     if (PingResult)
                     {
-                        Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                         System.Windows.Clipboard.SetText(ComputerName);
                         NameBox.Clear();
                         System.Diagnostics.Process command = new System.Diagnostics.Process();
@@ -168,7 +167,7 @@ namespace DTTool
                 }
                 else
                 {
-                    OutputBox.AppendText("PC not restarted\n");
+                    OutputBox.AppendText("PC not restarted");
                 }
                 OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
                 OutputBox.ScrollToEnd();
