@@ -1203,7 +1203,7 @@ namespace DTTool
                 if (UserResult != null)
                 {
 
-                    string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05" };
+                    string[] DCs = { "ADPDC01", "ADPDC02", "ADPDC03", "ADPDC04", "ADPDC05", "ADSDC01", "ADSDC02", "ADSDC03", "ADSDC04", "ADSDC05", "AD22PDC01", "AD22PDC02", "AD22SDC01", "AD22SDC02", "AD22SDC05" };
                     string result1 = "";
                     string result2 = "";
                     string result3 = "";
@@ -1214,6 +1214,11 @@ namespace DTTool
                     string result8 = "";
                     string result9 = "";
                     string result10 = "";
+                    string result11 = "";
+                    string result12 = "";
+                    string result13 = "";
+                    string result14 = "";
+                    string result15 = "";
 
                     OutputBox.AppendText("DC".PadRight(10) + "Count".PadRight(6) + "Time".PadRight(25) + "Last Set".PadRight(25) + "\n");
                     Thread Thread1 = new Thread(() => result1 += GetLockoutInfo(UserResult, DCs[0]));
@@ -1226,6 +1231,11 @@ namespace DTTool
                     Thread Thread8 = new Thread(() => result8 += GetLockoutInfo(UserResult, DCs[7]));
                     Thread Thread9 = new Thread(() => result9 += GetLockoutInfo(UserResult, DCs[8]));
                     Thread Thread10 = new Thread(() => result10 += GetLockoutInfo(UserResult, DCs[9]));
+                    Thread Thread11 = new Thread(() => result11 += GetLockoutInfo(UserResult, DCs[10]));
+                    Thread Thread12 = new Thread(() => result12 += GetLockoutInfo(UserResult, DCs[11]));
+                    Thread Thread13 = new Thread(() => result13 += GetLockoutInfo(UserResult, DCs[12]));
+                    Thread Thread14 = new Thread(() => result14 += GetLockoutInfo(UserResult, DCs[13]));
+                    Thread Thread15 = new Thread(() => result15 += GetLockoutInfo(UserResult, DCs[14]));
                     Thread1.Start();
                     Thread2.Start();
                     Thread3.Start();
@@ -1236,12 +1246,18 @@ namespace DTTool
                     Thread8.Start();
                     Thread9.Start();
                     Thread10.Start();
+                    Thread11.Start();
+                    Thread12.Start();
+                    Thread13.Start();
+                    Thread14.Start();
+                    Thread15.Start();
+
                     bool ThreadIsRunning = true;
                     while (ThreadIsRunning)
                     {
-                        if(!Thread1.IsAlive && !Thread2.IsAlive && !Thread3.IsAlive && !Thread4.IsAlive && !Thread5.IsAlive && !Thread6.IsAlive && !Thread7.IsAlive && !Thread8.IsAlive && !Thread9.IsAlive && !Thread10.IsAlive) ThreadIsRunning = false;
+                        if(!Thread1.IsAlive && !Thread2.IsAlive && !Thread3.IsAlive && !Thread4.IsAlive && !Thread5.IsAlive && !Thread6.IsAlive && !Thread7.IsAlive && !Thread8.IsAlive && !Thread9.IsAlive && !Thread10.IsAlive && !Thread11.IsAlive && !Thread12.IsAlive && !Thread13.IsAlive && !Thread14.IsAlive && !Thread15.IsAlive) ThreadIsRunning = false;
                     }
-                    OutputBox.AppendText(result1 + result2 + result3 + result4 + result5 + result6 + result7 + result8 + result9 + result10 + "\n");
+                    OutputBox.AppendText(result1 + result2 + result3 + result4 + result5 + result6 + result7 + result8 + result9 + result10 + result11 + result12 + result13 + result14 + result15 + "\n");
                 }
                 else
                 {
