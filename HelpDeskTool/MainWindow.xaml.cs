@@ -516,7 +516,7 @@ namespace DTTool
                     {
                         using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
                         {
-                            UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserName);
+                            UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
 
                             foreach (var group in auser.GetGroups())
                             {
