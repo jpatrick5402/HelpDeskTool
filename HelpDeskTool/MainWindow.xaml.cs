@@ -512,6 +512,26 @@ namespace DTTool
 
                     OutputBox.AppendText("Gathering info for " + UserResult.Properties["name"][0] + " (" + UserResult.Properties["samaccountname"][0].ToString() + ")\n\n");
 
+                    try
+                    {
+                        using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                        {
+                            UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserName);
+
+                            foreach (var group in auser.GetGroups())
+                            {
+                                if (group.Name == "IDM_IdleAccounts_URMC")
+                                {
+                                    OutputBox.AppendText("User account is IDLE, and will not be able to sign in with URMC AD\n");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText("An error has occurred: " + ex.Message);
+                    }
+
                     // Grabbing common items
                     string[,] PropertyList = { { "First Name:", "givenname" }, { "Last Name:", "sn" }, { "URMC AD:", "samaccountname" }, { "UR AD:\t", ""}, { "NetID:\t", "uid" }, { "URID:\t", "urid" }, { "Title:\t", "title" }, { "Dept.:\t", "department" }, { "Email:\t", "mail" }, { "Phone:\t", "telephoneNumber" }, { "Description:", "description" },  { "space", "" }, { "Most Recent HR Role", "urrolestatus" },{ "space", "" }, { "PWD Last Set:\t", "pwdlastset" }, { "OU", "adspath" }};
                     try
@@ -541,7 +561,7 @@ namespace DTTool
                                     passwordLastSet = passwordLastSet.AddHours(1);
                                 }
 
-                            OutputBox.AppendText(PropertyList[i,0] + passwordLastSet + "\n");
+                                OutputBox.AppendText(PropertyList[i,0] + passwordLastSet + "\n");
 
                                 TimeSpan diff = DateTime.Today - passwordLastSet;
                                 if (diff.TotalDays >= 365)
