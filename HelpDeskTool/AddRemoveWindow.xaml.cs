@@ -74,9 +74,9 @@ namespace DTTool
                 foreach (string group in groups)
                 {
                     InputGroup = group.Trim();
-                    if (group != "")
+                    if (InputGroup != "")
                     {
-                        GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, group);
+                        GroupPrincipal agroup = GroupPrincipal.FindByIdentity(context, InputGroup);
                         if (agroup != null)
                         {
                             foreach (string user in users)
