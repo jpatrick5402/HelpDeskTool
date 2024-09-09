@@ -33,7 +33,7 @@
                     </LinearGradientBrush>
                 </TabItem.Background>
                 <Grid x:Name="ToolBox1" Background="White">
-                    <Label x:Name="ADNameBox" Content="AD Name:" HorizontalAlignment="Left" Height="29" Margin="10,0,0,0" VerticalAlignment="Center" Width="84"/>
+                    <Label x:Name="ADNameBox" Content="AD Name:" HorizontalAlignment="Left" Height="30" Margin="10,0,0,0" VerticalAlignment="Center" Width="84"/>
                     <TextBox x:Name="UserTextbox" HorizontalAlignment="Left" Height="18" Margin="94,0,0,0" VerticalAlignment="Center" Width="130" FontSize="11" TextWrapping="Wrap" Grid.IsSharedSizeScope="True" UseLayoutRounding="False" TabIndex="1" Padding="0,0,0,0"/>
                     <Button x:Name="UserInfoButton" Content="User info" HorizontalAlignment="Left" Height="30" Margin="230,0,0,0" VerticalAlignment="Center" Width="60" Click="UserInfoButton_Click" RenderTransformOrigin="0.021,0.544" TabIndex="2" FontSize="11" Padding="2,2,2,2" Background="White" ToolTip="Displays the User's AD info, HR status, Password info, Mailbox Info, Shared/H drive info"/>
                     <Button x:Name="MemberOfButton" Content="Member of" HorizontalAlignment="Left" Height="30" Margin="295,0,0,0" VerticalAlignment="Center" Width="60" Click="MemberOfButton_Click" FontSize="11" TabIndex="3" Padding="2,2,2,2" Background="White" ToolTip="Displays the groups that a user is a member of and provides the description and info of that group"/>
