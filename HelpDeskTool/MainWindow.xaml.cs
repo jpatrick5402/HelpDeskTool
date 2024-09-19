@@ -1853,7 +1853,7 @@ namespace DTTool
         {
             if (DUOBox.Visibility == Visibility.Hidden)
             {
-                DUOWebView.Source = new Uri("https://www.rochester.edu/it/security/duo/helpdesk/");
+                DUOWebView.Source = new Uri("https://www.rochester.edu/it/security/duo/helpdesk/?domain=urmc");
                 DUOBox.Visibility = Visibility.Visible;
             }
             else
