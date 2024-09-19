@@ -522,8 +522,25 @@ namespace DTTool
                             {
                                 if (group.Name == "IDM_IdleAccounts_URMC")
                                 {
-                                    OutputBox.AppendText("User account is IDLE, and will not be able to sign in with URMC AD\n");
+                                    OutputBox.AppendText("User account is IDLE, and will not be able to sign in with URMC AD\n\n");
                                 }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OutputBox.AppendText("An error has occurred: " + ex.Message);
+                    }
+
+                    try
+                    {
+                        using (PrincipalContext context = new PrincipalContext(ContextType.Domain, "urmc-sh.rochester.edu"))
+                        {
+                            UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
+
+                            if (auser.AccountExpirationDate > DateTime.Today)
+                            {
+                                OutputBox.AppendText("User account is EXPIRED, and will not be able to sign in with URMC AD\n\n");
                             }
                         }
                     }
