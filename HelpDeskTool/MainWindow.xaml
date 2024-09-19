@@ -42,6 +42,7 @@
                     <Button x:Name="LockoutToolButton" Content="Lockout&#xD;&#xA;Tool" HorizontalAlignment="Left" Height="30" Margin="490,0,0,0" VerticalAlignment="Center" Width="60" Click="LockoutToolButton_Click" FontSize="10" TabIndex="6" Padding="2,2,2,2" Background="White" ToolTip="Clone of LockoutStatus.exe, displays bad password attempts"/>
                     <Button x:Name="AddgroupButton" Content="Add/Remove&#xA;Group" HorizontalAlignment="Left" Height="30" Margin="555,0,0,0" VerticalAlignment="Center" Width="60" Click="AddgroupButton_Click" FontSize="9" TabIndex="7" Padding="2,2,2,2" Background="White" ToolTip="Launches Add/Remove window, used for bulk AD group management"/>
                     <Button x:Name="DUOButton" Content="Toggle&#xD;&#xA;DUO" HorizontalAlignment="Left" Height="30" Margin="620,0,0,0" VerticalAlignment="Center" Width="60" Click="DUOButton_Click" FontSize="9" TabIndex="8" Padding="2,2,2,2" Background="White" ToolTip="DUO web panel"/>
+                    <Button x:Name="LMSButton" Content="Toggle&#xD;&#xA;LMS" HorizontalAlignment="Left" Height="30" Margin="685,0,0,0" VerticalAlignment="Center" Width="60" Click="LMSButton_Click" FontSize="9" TabIndex="8" Padding="2,2,2,2" Background="White" ToolTip="LMS check web panel"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ToolTab2" Header="Computer Tools" Padding="2,2,2,2" Height="33">

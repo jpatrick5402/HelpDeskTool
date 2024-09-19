@@ -1083,6 +1083,8 @@ namespace DTTool
                 CDollarButton.Foreground = Brushes.White;
                 SMCB.Foreground = Brushes.White;
                 DLCB.Foreground = Brushes.White;
+                LMSButton.Background = Brushes.Black;
+                LMSButton.Foreground = Brushes.White;
                 Settings.Default.DarkMode = true;
                 Settings.Default.Save();
             }
@@ -1171,6 +1173,8 @@ namespace DTTool
                 CDollarButton.Foreground = Brushes.Black;
                 SMCB.Foreground = Brushes.Black;
                 DLCB.Foreground = Brushes.Black;
+                LMSButton.Background = Brushes.White;
+                LMSButton.Foreground = Brushes.Black;
                 Settings.Default.DarkMode = false;
                 Settings.Default.Save();
             }
@@ -1848,7 +1852,21 @@ namespace DTTool
         private void DUOButton_Click(object sender, RoutedEventArgs e)
         {
             if (DUOBox.Visibility == Visibility.Hidden)
+            {
+                DUOWebView.Source = new Uri("https://www.rochester.edu/it/security/duo/helpdesk/");
                 DUOBox.Visibility = Visibility.Visible;
+            }
+            else
+                DUOBox.Visibility = Visibility.Hidden;
+        }
+
+        private void LMSButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DUOBox.Visibility == Visibility.Hidden)
+            {
+                DUOWebView.Source = new Uri("https://urmc.sumtotal.host/");
+                DUOBox.Visibility = Visibility.Visible;
+            }
             else
                 DUOBox.Visibility = Visibility.Hidden;
         }
