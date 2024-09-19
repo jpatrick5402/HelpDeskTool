@@ -981,6 +981,8 @@ namespace DTTool
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             OutputBox.Clear();
+            GamesBox.Visibility = Visibility.Hidden;
+            DUOBox.Visibility = Visibility.Hidden;
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
