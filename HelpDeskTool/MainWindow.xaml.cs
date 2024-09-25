@@ -981,6 +981,9 @@ namespace DTTool
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             OutputBox.Clear();
+            NameBox.Clear();
+            MasterSearchBox.Clear();
+            UserTextbox.Clear();
             GamesBox.Visibility = Visibility.Hidden;
             DUOBox.Visibility = Visibility.Hidden;
         }
