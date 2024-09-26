@@ -1867,7 +1867,7 @@ namespace DTTool
         {
             if (DUOBox.Visibility == Visibility.Hidden)
             {
-                DUOWebView.Source = new Uri("https://urmc.sumtotal.host/");
+                DUOWebView.Source = new Uri("https://urmc.sumtotal.host/rcore/c/administration/users/allusers");
                 DUOBox.Visibility = Visibility.Visible;
             }
             else
