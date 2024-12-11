@@ -1,6 +1,15 @@
-This program is made to ease the learning curve required to work the service desk effectively.
-It does so by providing reducing complicated processes to simple button actions.
+# Help Desk Tool
+A C#/.NET desktop application created to ease the learning curve required to understand and effectively work on the help desk.
+The tool accomplishes this by reducing complicated processes to single button actions.
 
-Created 9/25/2023
+This application uses custom-built tooling found in: 
+* Active Directory Administrative Center
+* DUO
+* Employee Search
+* A Learning Management Platform
+* Microsoft Proprietary software
+* Azure
+
+Initial Creation: 9/25/2023
 
 <img src="HelpDeskToolScreenshot.png"/>
