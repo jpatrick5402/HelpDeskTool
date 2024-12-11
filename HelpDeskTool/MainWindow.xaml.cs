@@ -794,7 +794,7 @@ namespace DTTool
                     try
                     {
                         ResultPropertyValueCollection groups = UserResult.Properties["memberOf"];
-                        using (var sr = new StreamReader("\\\\ADPDC02\\netlogon\\SIG\\logon.dmd"))
+                        using (var sr = new StreamReader("\\\\AD22PDC01\\netlogon\\SIG\\logon.dmd"))
                         {
                             string[] ShareList = sr.ReadToEnd().Split("\n");
                             foreach (var group in groups)
@@ -1437,8 +1437,6 @@ namespace DTTool
                             }
                             if (!ItemFound)
                                 OutputBox.AppendText("No Shares found with criteria\n");
-                            else
-                                OutputBox.AppendText("");
                         }
                     }
                     catch (Exception ex)
@@ -1624,7 +1622,7 @@ namespace DTTool
                 {
                     try
                     {
-                        using (var sr = new StreamReader("\\\\ADPDC02\\netlogon\\SIG\\logon.dmd"))
+                        using (var sr = new StreamReader("\\\\AD22PDC01\\netlogon\\SIG\\logon.dmd"))
                         {
                             string[] ShareList = sr.ReadToEnd().Split("\n");
                             bool ItemFound = false;
