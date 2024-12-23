@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
@@ -84,9 +85,24 @@ namespace DTTool
                                 InputUser = user.Trim();
                                 if (InputUser != null && InputUser.Length > 0)
                                 {
-                                    UserPrincipal auser = UserPrincipal.FindByIdentity(context, InputUser);
-                                    if (auser != null)
+                                    DirectoryEntry entry = new DirectoryEntry("LDAP://urmc-sh.rochester.edu/DC=urmc-sh,DC=rochester,DC=edu");
+                                    DirectorySearcher searcher = new DirectorySearcher(entry);
+                                    searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + InputUser + "))";
+                                    SearchResult UserResult = searcher.FindOne();
+                                    if (UserResult == null)
                                     {
+                                        searcher.Filter = "(&(objectClass=user)(urid=" + InputUser + "))";
+                                        UserResult = searcher.FindOne();
+                                    }
+                                    if (UserResult == null)
+                                    {
+                                        searcher.Filter = "(&(objectClass=user)(mail=" + InputUser + "))";
+                                        UserResult = searcher.FindOne();
+                                    }
+
+                                    if (UserResult != null)
+                                    {
+                                        UserPrincipal auser = UserPrincipal.FindByIdentity(context, UserResult.Properties["samaccountname"][0].ToString());
                                         try
                                         {
                                             if (AddorRemove.ToLower() == "add")
