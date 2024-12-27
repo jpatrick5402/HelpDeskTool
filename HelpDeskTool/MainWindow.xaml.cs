@@ -1505,7 +1505,7 @@ namespace DTTool
                         bool resultFound = false;
                         for (int i = 0; i < MailboxOwners.Length; i++)
                         {
-                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                             {
                                 OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
                                 resultFound = true;
@@ -1524,7 +1524,7 @@ namespace DTTool
                         bool resultFound = false;
                         for (int i = 0; i < MailboxOwners.Length; i++)
                         {
-                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                             {
                                 OutputBox.AppendText("Distribution List:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
                                 resultFound = true;
@@ -1683,7 +1683,7 @@ namespace DTTool
                         bool resultFound = false;
                         for (int i = 0; i < MailboxOwners.Length; i++)
                         {
-                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                             {
                                 OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
                                 resultFound = true;
@@ -1700,7 +1700,7 @@ namespace DTTool
                         bool resultFound = false;
                         for (int i = 0; i < MailboxOwners.Length; i++)
                         {
-                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject))
+                            if (MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')).Contains(SearchObject, StringComparison.OrdinalIgnoreCase))
                             {
                                 OutputBox.AppendText("Shared Mailbox:".PadRight(20) + MailboxOwners[i].Substring(0, MailboxOwners[i].IndexOf(',')) + "\n");
                                 resultFound = true;
