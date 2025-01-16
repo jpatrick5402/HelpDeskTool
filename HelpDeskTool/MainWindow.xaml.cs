@@ -1435,7 +1435,7 @@ namespace DTTool
                                 }
                             }
                             if (!ItemFound)
-                                OutputBox.AppendText("No Shares found with criteria\n");
+                                OutputBox.AppendText("No Shares found with criteria\n\n");
                         }
                     }
                     catch (Exception ex)
