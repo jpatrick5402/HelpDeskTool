@@ -1,3 +1,5 @@
+### This tool has been migrated to https://github.com/LostProgrammer1010/URMC-HUB
+
 # Help Desk Tool
 A C#/.NET desktop application created to ease the learning curve required to understand and effectively work on the help desk.
 The tool accomplishes this by reducing complicated processes to single button actions.
