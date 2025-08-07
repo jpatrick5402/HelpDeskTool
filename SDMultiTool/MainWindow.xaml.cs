@@ -1,36 +1,17 @@
-﻿using HelpDeskTool;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 using System.IO;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.DirectoryServices;
-using System.Windows.Forms;
-using System.Collections.Immutable;
-using System.Data;
 using System.DirectoryServices.AccountManagement;
 using System.Net.Http;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Configuration;
 using Microsoft.VisualBasic;
-using System.Windows.Forms.PropertyGridInternal;
 using System.Threading;
 using MaterialDesignThemes.Wpf;
-using System.Printing;
 using System.Net.NetworkInformation;
 
 namespace SDMultiTool
@@ -38,10 +19,11 @@ namespace SDMultiTool
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// Created 9/25/2023
-    /// Program HDTool written by Joseph Patrick for use in the URMC ISD Help Desk environment
+    /// Program SDMultiTool written by Joseph Patrick for use in the URMC ISD Help Desk environment
     /// Credit to Alex McCune for initial LDAP usage and integration
     /// Contact: jpatrick5402@gmail.com
     /// </summary>
+
     public partial class MainWindow : Window
     {
         // Initialization Function
@@ -54,7 +36,7 @@ namespace SDMultiTool
             if (Settings.Default.DarkMode)
                 DarkButton_Click(null, null);
 
-            OutputBox.AppendText("\nHelp Desk Tool\n");
+            OutputBox.AppendText("\nService Desk Multi-Tool\n");
             OutputBox.AppendText("\nAwaiting Commands\n");
             OutputBox.AppendText("\n-----------------------------------------------------------------------------------------------\n");
         }
