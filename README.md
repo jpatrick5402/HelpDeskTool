@@ -14,4 +14,4 @@ This application uses custom-built tooling found in:
 
 Initial Creation: 9/25/2023
 
-<img src="HelpDeskToolScreenshot.png"/>
+<img src="app.png"/>
