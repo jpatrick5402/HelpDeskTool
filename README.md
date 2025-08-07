@@ -1,4 +1,4 @@
-### This tool has been migrated to https://github.com/LostProgrammer1010/URMC-HUB
+### This tool has a web app version as well, written in golang and reactjs: https://github.com/LostProgrammer1010/URMC-HUB
 
 # Help Desk Tool
 A C#/.NET desktop application created to ease the learning curve required to understand and effectively work on the help desk.
