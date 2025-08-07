@@ -1,8 +1,8 @@
-HelpDeskTool/PSTools/*
-HelpDeskTool/bin/*
-HelpDeskTool/obj/*
+SDMultiTool/PSTools/*
+SDMultiTool/bin/*
+SDMultiTool/obj/*
 .vs/*
-HelpDeskTool/.vs/*
-/HelpDeskTool/Properties/PublishProfiles/ClickOnceProfile.pubxml.user
-/HelpDeskTool/Properties/PublishProfiles/ClickOnceProfile.pubxml
-/HelpDeskTool/Properties/PublishProfiles
+SDMultiTool/.vs/*
+/SDMultiTool/Properties/PublishProfiles/ClickOnceProfile.pubxml.user
+/SDMultiTool/Properties/PublishProfiles/ClickOnceProfile.pubxml
+/SDMultiTool/Properties/PublishProfiles
