@@ -25,7 +25,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace DTTool
+namespace SDMultiTool
 {
     /// <summary>
     /// Interaction logic for AddRemoveWindow.xaml

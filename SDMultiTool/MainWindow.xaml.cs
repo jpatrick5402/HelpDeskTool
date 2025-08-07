@@ -33,7 +33,7 @@ using MaterialDesignThemes.Wpf;
 using System.Printing;
 using System.Net.NetworkInformation;
 
-namespace DTTool
+namespace SDMultiTool
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
